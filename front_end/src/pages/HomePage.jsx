@@ -19,6 +19,9 @@ export default function HomePage() {
 
     }, [])
 
+    
+    console.log("non funge nulla");
+
 
     const today = new Date();
 
