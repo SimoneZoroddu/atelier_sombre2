@@ -6,6 +6,7 @@ function ShopProvider({ children }) {
 
   const [loader, setLoader] = useState(false);
 
+
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
     const saved = localStorage.getItem('cartList');
@@ -26,13 +27,19 @@ function ShopProvider({ children }) {
     console.log(CartItem, CartList);
   }; */
 
+  const [genre, setGenre] = useState("")
+
+
   return (
     <GlobalContext.Provider
       value={{
         loader,
         setLoader,
         cartList,
-        setCartList
+        setCartList,
+        genre,
+        setGenre,
+
       }}>
       {children}
     </GlobalContext.Provider>
