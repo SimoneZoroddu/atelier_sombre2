@@ -9,7 +9,8 @@ export default function DetailPage(){
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-
+    const [recommended, setRecommended] = useState([]);
+// Fetch del prodotto specifico
     useEffect(() => {
         fetch(`http://127.0.0.1:3000/product/${name}/${color}`)
             .then(res => res.json())
@@ -19,6 +20,25 @@ export default function DetailPage(){
                 setLoading(false);
             });
     }, [name, color]);
+    
+// Fetch dei prodotti consigliati    
+    useEffect(() => {
+        if (!product) return;
+
+        fetch("http://127.0.0.1:3000/index")
+            .then(res => res.json())
+            .then(allProducts => {
+                const filtered = allProducts
+                    .filter(p => p.category === product.category)
+                    .filter(p => p.genre === product.genre)
+                    .filter(p => p.id !== product.id)
+                    .slice(0, 4);
+
+                setRecommended(filtered);
+            });
+    }, [product]);
+
+
 
     if (!product) return <p>Prodotto non trovato.</p>;
     return (
@@ -29,21 +49,25 @@ export default function DetailPage(){
 
                 {/* COLONNA THUMBNAILS */}
                 <div style={styles.thumbnailsColumn}>
-                    {[product.image.main_image_url,
-                    product.image.top_view_url,
-                    product.image.secondary_image_url,
-                    product.image.model_image_url].map((img, i) => (
-                        <img
-                            key={i}
-                            src={img}
-                            alt="thumb"
-                            style={{
-                                ...styles.thumbnailVertical,
-                                border: mainImage === img ? "2px solid black" : "1px solid #ccc"
-                            }}
-                            onClick={() => setMainImage(img)}
-                        />
-                    ))}
+                    {[
+                        product.image.main_image_url,
+                        product.image.top_view_url,
+                        product.image.secondary_image_url,
+                        product.image.model_image_url
+                    ]
+                        .filter(img => img) 
+                        .map((img, i) => (
+                            <img
+                                key={i}
+                                src={img}
+                                alt="thumb"
+                                style={{
+                                    ...styles.thumbnailVertical,
+                                    border: mainImage === img ? "2px solid black" : "1px solid #ccc"
+                                }}
+                                onClick={() => setMainImage(img)}
+                            />
+                        ))}
                 </div>
 
                 {/* IMMAGINE PRINCIPALE */}
@@ -104,9 +128,51 @@ export default function DetailPage(){
                     <button style={styles.wishlistButton}><i className="bi bi-heart"></i></button>
                 </div>
             </div>
+            {/* PRODOTTI CONSIGLIATI */}
+            {recommended.length > 0 && (
+                <div style={{ marginTop: "3rem" }}>
+                    <h2>Prodotti consigliati</h2>
+
+                    <div style={{
+                        display: "flex",
+                        gap: "1.5rem",
+                        flexWrap: "wrap",
+                        marginTop: "1rem"
+                    }}>
+                        {recommended.map(item => (
+                            <a
+                                key={item.id}
+                                href={`/products/${item.name}/${item.color}`}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "black",
+                                    width: "200px"
+                                }}
+                            >
+                                <img
+                                    src={item.image.main_image_url}
+                                    alt={item.name}
+                                    style={{
+                                        width: "100%",
+                                        height: "250px",
+                                        objectFit: "cover",
+                                        borderRadius: "6px"
+                                    }}
+                                />
+                                <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>
+                                    {item.name}
+                                </p>
+                                <p style={{ color: "#555" }}>{item.price} €</p>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
+
 const styles = {
     container: {
         display: "flex",
