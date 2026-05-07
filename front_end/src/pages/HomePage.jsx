@@ -1,10 +1,11 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
-
+import { useShop } from "../contexts/GlobalContext"
 import img from "../img/tods-hp-summerselection-01-hero-d-16-9.webp"
 
 export default function HomePage() {
+    const { setGenre } = useShop()
 
     const url = import.meta.env.VITE_API_ADDRESS + "index";
 
@@ -42,7 +43,15 @@ export default function HomePage() {
 
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Donna")
-        console.log("funge");
+
+
+    }
+
+    function FilterUomo() {
+
+        // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
+        setGenre("Uomo")
+
 
     }
 
@@ -72,12 +81,12 @@ export default function HomePage() {
                 <div className="text-center">
                     {
                         <div className="d-flex justify-content-start flex-wrap pt-2" key={newArrivalsMan[0]?.ID}  >
-                            <Link to="/shoes">
+                            <Link to="/shoes" onClick={FilterUomo}>
                                 <img src={newArrivalsMan[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "80rem" }} />
                             </Link>
                         </div>
                     }
-                    <Link to="/shoes" className="fs-5 text-black underline_hover">
+                    <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterUomo}>
                         New Arrivals Man
                     </Link>
                 </div>

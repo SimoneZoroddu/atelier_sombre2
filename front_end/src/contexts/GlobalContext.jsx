@@ -7,6 +7,7 @@ function ShopProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [loader, setLoader] = useState(false);
 
+  const [genre, setGenre] = useState("")
 
   return (
     <GlobalContext.Provider
@@ -14,7 +15,9 @@ function ShopProvider({ children }) {
         cartItems,
         setCartItems,
         loader,
-        setLoader
+        setLoader,
+        genre,
+        setGenre
       }}>
       {children}
     </GlobalContext.Provider>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useShop } from "../contexts/GlobalContext"
 
 export default function AppSearch() {
+    const { genre } = useShop()
 
     const url = import.meta.env.VITE_API_ADDRESS + "index";
 
@@ -11,7 +13,7 @@ export default function AppSearch() {
     const [filteredShoes, setFilteredShoes] = useState([]);
     const [prova, setProva] = useState(filteredShoes)
     const [category, setCategory] = useState([])
-    const [genre, setGenre] = useState("Donna")
+
 
 
     useEffect(() => {
