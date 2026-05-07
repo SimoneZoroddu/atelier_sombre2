@@ -28,6 +28,9 @@ export default function AppSearch() {
     }, [searchValue, shoes]);
 
 
+
+    console.log("hello");
+
     return (
         <>
             {/* navbar */}
