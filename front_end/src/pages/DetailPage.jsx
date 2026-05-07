@@ -1,14 +1,17 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useShop } from "../contexts/GlobalContext";
 
 
-export default function DetailPage(){
+
+export default function DetailPage() {
     const { name, color } = useParams();
     const [product, setProduct] = useState(null);
     const [mainImage, setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
+    const { cartList, setCartList } = useShop();
 
     useEffect(() => {
         fetch(`http://127.0.0.1:3000/product/${name}/${color}`)
@@ -21,6 +24,27 @@ export default function DetailPage(){
     }, [name, color]);
 
     if (!product) return <p>Prodotto non trovato.</p>;
+
+    /* Declare cartItem */
+    const cartItem = {
+        id: product.id,
+        name: product.name,
+        color: product.color,
+        image: product.image.main_image_url,
+        price: product.price,
+        size: selectedSize,
+    };
+    
+    const addToCart = (item) => {
+
+        if (!selectedSize) {
+            alert("Seleziona una taglia prima di aggiungere al carrello.")
+            return;
+        }
+        setCartList((prev) => [...prev, cartItem]);
+        console.log(cartItem, cartList);
+    };
+
     return (
         <div style={styles.container}>
 
@@ -96,7 +120,7 @@ export default function DetailPage(){
 
                 {/* BOTTONI */}
                 <div style={styles.buttonsRow}>
-                    <button style={styles.cartButton}>
+                    <button style={styles.cartButton} onClick={addToCart}>
                         <span className="cart-text">Aggiungi al carrello</span>
                         <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
                     </button>
@@ -137,13 +161,13 @@ const styles = {
         height: "70px",
         objectFit: "cover",
         cursor: "pointer",
-        
+
     },
 
     mainImage: {
         width: "450px",
         maxWidth: "100%",
-        
+
     },
 
     /* INFO PRODOTTO */
