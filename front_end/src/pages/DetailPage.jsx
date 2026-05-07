@@ -1,8 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShop } from "../contexts/GlobalContext";
 
 
+
+import "./DetailPage.css";
 
 export default function DetailPage() {
     const { name, color } = useParams();
@@ -12,7 +14,45 @@ export default function DetailPage() {
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
     const { cartList, setCartList } = useShop();
+    const [recommended, setRecommended] = useState([]);
+    const [quantity, setQuantity] = useState(1);
 
+    function addToCart() {
+        if (!selectedSize) {
+            alert("Seleziona una taglia prima di aggiungere al carrello.");
+            return;
+        }
+
+        const cartItem = {
+            id: product.id,
+            name: product.name,
+            color: product.color,
+            image: product.image.main_image_url,
+            price: product.price,
+            size: selectedSize,
+            quantity: quantity,
+        };
+        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // 2. Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
+        const existingItem = existingCart.find(
+            item => item.id === cartItem.id && item.size === cartItem.size
+        );
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            existingCart.push(cartItem);
+        }
+
+        // 3. Salva nel localStorage
+        localStorage.setItem("cart", JSON.stringify(existingCart));
+
+        alert("Prodotto aggiunto al carrello!");
+        console.log("Aggiunto al carrello:", cartItem);
+    }
+
+    // Fetch prodotto
     useEffect(() => {
         fetch(`http://127.0.0.1:3000/product/${name}/${color}`)
             .then(res => res.json())
@@ -22,6 +62,23 @@ export default function DetailPage() {
                 setLoading(false);
             });
     }, [name, color]);
+
+    // Fetch prodotti consigliati
+    useEffect(() => {
+        if (!product) return;
+
+        fetch("http://127.0.0.1:3000/index")
+            .then(res => res.json())
+            .then(allProducts => {
+                const filtered = allProducts
+                    .filter(p => p.category === product.category)
+                    .filter(p => p.genre === product.genre)
+                    .filter(p => p.id !== product.id)
+                    .slice(0, 4);
+
+                setRecommended(filtered);
+            });
+    }, [product]);
 
     if (!product) return <p>Prodotto non trovato.</p>;
 
@@ -35,55 +92,54 @@ export default function DetailPage() {
         size: selectedSize,
     };
     
-    const addToCart = (item) => {
-
-        if (!selectedSize) {
-            alert("Seleziona una taglia prima di aggiungere al carrello.")
-            return;
-        }
-        setCartList((prev) => [...prev, cartItem]);
-        console.log(cartItem, cartList);
-    };
+    
+    const selectedStock = selectedSize
+        ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
+        : 0;
 
     return (
-        <div style={styles.container}>
+        <div className="container">
 
             {/* LEFT: IMMAGINI */}
-            <div style={styles.imagesWrapper}>
+            <div className="imagesWrapper">
 
-                {/* COLONNA THUMBNAILS */}
-                <div style={styles.thumbnailsColumn}>
-                    {[product.image.main_image_url,
-                    product.image.top_view_url,
-                    product.image.secondary_image_url,
-                    product.image.model_image_url].map((img, i) => (
-                        <img
-                            key={i}
-                            src={img}
-                            alt="thumb"
-                            style={{
-                                ...styles.thumbnailVertical,
-                                border: mainImage === img ? "2px solid black" : "1px solid #ccc"
-                            }}
-                            onClick={() => setMainImage(img)}
-                        />
-                    ))}
+                {/* THUMBNAILS */}
+                <div className="thumbnailsColumn">
+                    {[
+                        product.image.main_image_url,
+                        product.image.top_view_url,
+                        product.image.secondary_image_url,
+                        product.image.model_image_url
+                    ]
+                        .filter(img => img)
+                        .map((img, i) => (
+                            <img
+                                key={i}
+                                src={img}
+                                alt="thumb"
+                                className="thumbnailVertical"
+                                style={{
+                                    border: mainImage === img ? "2px solid black" : "1px solid #ccc"
+                                }}
+                                onClick={() => setMainImage(img)}
+                            />
+                        ))}
                 </div>
 
                 {/* IMMAGINE PRINCIPALE */}
-                <img src={mainImage} alt={product.name} style={styles.mainImage} />
-
+                <img src={mainImage} alt={product.name} className="mainImage" />
             </div>
 
-
             {/* RIGHT: INFO PRODOTTO */}
-            <div style={styles.infoColumn}>
+            <div className="infoColumn">
                 <h1>{product.name}</h1>
-                <p style={styles.category}>{product.category} · {product.genre}</p>
-                <p style={styles.price}>{product.price} €</p>
-                <div style={styles.accordion}>
+                <p className="category">{product.category} · {product.genre}</p>
+                <p className="price">{product.price} €</p>
+
+                {/* ACCORDION */}
+                <div className="accordion">
                     <button
-                        style={styles.accordionHeader}
+                        className="accordionHeader"
                         onClick={() => setShowDetails(prev => !prev)}
                     >
                         Dettagli prodotto
@@ -91,23 +147,25 @@ export default function DetailPage() {
                     </button>
 
                     {showDetails && (
-                        <div style={styles.accordionContent}>
+                        <div className="accordionContent">
                             <p>{product.details}</p>
                         </div>
                     )}
                 </div>
 
-
                 {/* TAGLIE */}
                 <h3>Taglie disponibili</h3>
-                <div style={styles.sizesRow}>
+                <div className="sizesRow">
                     {product.quantity.map(q => (
                         <button
                             key={q.id}
                             disabled={q.stock === 0}
-                            onClick={() => setSelectedSize(q.size)}
+                            onClick={() => {
+                                setSelectedSize(q.size);
+                                setQuantity(1);
+                            }}
+                            className="sizeButton"
                             style={{
-                                ...styles.sizeButton,
                                 background: selectedSize === q.size ? "black" : "white",
                                 color: selectedSize === q.size ? "white" : "black",
                                 opacity: q.stock === 0 ? 0.4 : 1
@@ -118,149 +176,64 @@ export default function DetailPage() {
                     ))}
                 </div>
 
+                {/* QUANTITÀ */}
+                {selectedSize && (
+                    <div style={{ marginTop: "1rem" }}>
+                        <label style={{ fontWeight: "bold" }}>Quantità:</label>
+                        <select
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            style={{
+                                marginLeft: "1rem",
+                                padding: "0.5rem",
+                                borderRadius: "4px",
+                                border: "1px solid #ccc"
+                            }}
+                        >
+                            {Array.from({ length: selectedStock }, (_, i) => i + 1).map(num => (
+                                <option key={num} value={num}>{num}</option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
                 {/* BOTTONI */}
-                <div style={styles.buttonsRow}>
-                    <button style={styles.cartButton} onClick={addToCart}>
+                <div className="buttonsRow">
+                    <button className="cartButton" onClick={addToCart}>
                         <span className="cart-text">Aggiungi al carrello</span>
                         <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
                     </button>
 
-                    <button style={styles.wishlistButton}><i className="bi bi-heart"></i></button>
+                    <button className="wishlistButton">
+                        <i className="bi bi-heart"></i>
+                    </button>
                 </div>
             </div>
+
+            {/* PRODOTTI CONSIGLIATI */}
+            {recommended.length > 0 && (
+                <div style={{ marginTop: "3rem" }}>
+                    <h2>Prodotti consigliati</h2>
+
+                    <div className="recommendedRow">
+                        {recommended.map(item => (
+                            <Link
+                                key={item.id}
+                                to={`/products/${item.name}/${item.color}`}
+                                className="recommendedItem"
+                            >
+                                <img
+                                    src={item.image.main_image_url}
+                                    alt={item.name}
+                                    className="recommendedImage"
+                                />
+                                <p className="recommendedName">{item.name}</p>
+                                <p className="recommendedPrice">{item.price} €</p>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
-const styles = {
-    container: {
-        display: "flex",
-        gap: "3rem",
-        padding: "2rem",
-        maxWidth: "1200px",
-        margin: "0 auto",
-        flexWrap: "wrap"
-    },
-
-    /* IMMAGINI */
-    imagesWrapper: {
-        display: "flex",
-        gap: "1rem",
-        alignItems: "flex-start",
-        flex: 1,
-        minWidth: "300px"
-    },
-
-    thumbnailsColumn: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem"
-    },
-
-    thumbnailVertical: {
-        width: "70px",
-        height: "70px",
-        objectFit: "cover",
-        cursor: "pointer",
-
-    },
-
-    mainImage: {
-        width: "450px",
-        maxWidth: "100%",
-
-    },
-
-    /* INFO PRODOTTO */
-    infoColumn: {
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        minWidth: "300px"
-    },
-
-    category: {
-        color: "#555",
-        fontSize: "0.9rem"
-    },
-
-    price: {
-        fontSize: "1.4rem",
-        fontWeight: "bold"
-    },
-
-    /* ACCORDION */
-    accordion: {
-        borderTop: "1px solid #ddd",
-        paddingTop: "1rem",
-        marginTop: "1rem"
-    },
-
-    accordionHeader: {
-        width: "100%",
-        background: "none",
-        border: "none",
-        padding: "1rem 0",
-        fontSize: "1.1rem",
-        fontWeight: "bold",
-        display: "flex",
-        justifyContent: "space-between",
-        cursor: "pointer"
-    },
-
-    accordionContent: {
-        padding: "0.5rem 0",
-        color: "#444",
-        lineHeight: "1.5"
-    },
-
-    /* TAGLIE */
-    sizesRow: {
-        display: "flex",
-        gap: "0.5rem",
-        flexWrap: "wrap"
-    },
-
-    sizeButton: {
-        padding: "0.6rem 1rem",
-        border: "1px solid black",
-        borderRadius: "4px",
-        cursor: "pointer",
-        fontSize: "0.9rem"
-    },
-
-    /* BOTTONI */
-    buttonsRow: {
-        display: "flex",
-        gap: "1rem",
-        marginTop: "1rem"
-    },
-
-    cartButton: {
-        flex: 1,
-        padding: "1rem",
-        background: "black",
-        color: "white",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontSize: "1rem",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "0.5rem"
-    },
-
-    wishlistButton: {
-        padding: "1rem",
-        background: "white",
-        border: "1px solid black",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontSize: "1.2rem",
-        width: "60px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    }
-};

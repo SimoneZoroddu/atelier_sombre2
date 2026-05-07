@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 //import { useShop } from "../contexts/GlobalContext";
 
 /* Andrà sostituito con l'array fetchato dal DB */
-/* const cartList = [
+const cartList = [
   {
     id: 1,
     user_id: 1,
@@ -65,11 +65,11 @@ import { useState, useEffect } from "react";
     quantity: 1,
     price: 710,
   },
-]; */
+]; 
 
 
 
-/* function addToCart() {
+ function addToCart() {
   if (!selectedSize) {
     alert("Seleziona una taglia prima di aggiungere al carrello.");
     return;
@@ -84,7 +84,7 @@ import { useState, useEffect } from "react";
     size: selectedSize,
 
   }
-} */
+}
 
 const cartItem = {/* qui i dati recuperati dalla pagina dettaglio */};
 function AddToCartList() {
