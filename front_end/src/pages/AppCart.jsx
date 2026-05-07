@@ -84,46 +84,50 @@ export default function AppCart() {
     } else {
       return (
         <div className="container cart_list_container">
-          <section className="cart_list">
-            <div className="row row-cols-1">
+          <div className="cart_list">
 
-              {cartItems.map((item) => (
-                <div className="col cart_list_item d-flex gap-3" key={item.id}>
-                  <img src={item.image} alt={item.name} className="item_image" />
-                  <div className="item_info ">
-                    <div className="item_name">{item.name}</div>
+            {cartItems.map((item) => (
+              <div className="row d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
+                <div className="col-6 d-flex item_info">
+                  <img src={item.image} alt={item.name} className="item_image" height="150px" />
+                  <div className="mx-3">
+                    <div className="fs-5 my-2 item_name">{item.name}</div>
                     <div className="item_details">
-                      <div className="item_color">
-                        Color
-                        <span> {item.color}</span>
-                      </div>
                       <div className="item_size">
                         Taglia
-                        <span> {item.size}</span>
+                        <span className="fw-semibold"> {item.size}</span>
                       </div>
-                      <div className="item_amount">
-                        Quantità
-                        <span> {item.quantity}</span>
+                      <div className="item_color">
+                        Color
+                        <span className="fw-semibold"> {item.color}</span>
+                      </div>
+                      <div className="my-2 item_price">
+                        € {item.price}
                       </div>
                     </div>
                   </div>
-                  <div className="item_price">
-                      € {item.price}
-                  </div>
                 </div>
-              ))}
+                <div className="col-1 item_amount">
+                  <ul className="list-group list-group-horizontal">
+                    <li className="list-group-item">+</li>
+                    <li className="list-group-item">{item.quantity}</li>
+                    <li className="list-group-item">-</li>
+                  </ul>
+                </div>
+                <div className="col-2 ">Rimuovi</div>
+              </div>
+            ))}
 
-            </div>
-          </section>
+          </div>
         </div>
       )
     }
   }
   return (
     <>
-      <div className="cart_container">
+      <div className="container cart_container d-flex flex-column">
 
-        <div className="cart_header">
+        <div className="cart_header ">
           <h2>
             Shopping bag
           </h2>
@@ -137,13 +141,13 @@ export default function AppCart() {
           {renderCart()}
         </div >
 
-        <div className="cart_footer">
-          <div className="cart_total">
-            Subtotale:
-            <span> € {cartTotal}</span>
+        <div className="cart_footer text-end my-3">
+          <div className="d-flex justify-content-between fs-5 my-3 cart_total">
+            <div className="fw-semibold">Subtotale:</div>
+            <div> € {cartTotal}</div>
           </div>
           <div className="cart_checkout">
-            <button type="submit">
+            <button type="submit" className="btn btn-dark">
               Procedi all'acquisto
             </button>
           </div >
