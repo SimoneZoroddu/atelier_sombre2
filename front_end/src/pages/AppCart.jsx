@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 //import { useShop } from "../contexts/GlobalContext";
 
 /* Andrà sostituito con l'array fetchato dal DB */
-const cartItems = [
+/* const cartList = [
   {
     id: 1,
     user_id: 1,
@@ -65,16 +65,75 @@ const cartItems = [
     quantity: 1,
     price: 710,
   },
-];
+]; */
+
+
+
+/* function addToCart() {
+  if (!selectedSize) {
+    alert("Seleziona una taglia prima di aggiungere al carrello.");
+    return;
+
+  }
+  const cartItem = {
+    Id: product.id,
+    name: product.name,
+    color: product.color,
+    image: product.image.main_image_url,
+    price: product.price,
+    size: selectedSize,
+
+  }
+} */
+
+const cartItem = {/* qui i dati recuperati dalla pagina dettaglio */};
+function AddToCartList() {
+  /* Initialize localStorage */
+  const [cartList, setCartList] = useState(() => {
+    const saved = localStorage.setItem('cartList');
+    return saved ? JSON.parse(saved) : [];
+  });
+  /* Save changes to localStorage */
+useEffect(() => {
+  localStorage.setItem('cartList', JSON.stringify(cartList));
+}, [cartList]);
+
+return (
+  <button onClick={() => setCartList([...cartList, cartItem])}>
+    Bottone
+  </button>
+)
+}
+
+
 
 export default function AppCart() {
-  const [cartTotal, setCartTotal] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0); /* ⚠️ static, to be implemented */
+
+  function AddCartList() {
+    const [cartList, setcartList] = useState([]);
+
+    useEffect(() => {
+      const saved = localStorage.getItem('');
+      if (saved) setcartList(saved);
+    }, []);
+
+    useEffect(() => {
+      localStorage.setItem('cartList', cartList);
+    }, [cartList]);
+
+    return (
+      <button onClick={() => setcartList(t => t === 'light' ? 'dark' : 'light')}>
+        cartList: {cartList}
+      </button>
+    );
+  }
 
   function renderCart() {
     /* Declare support variables */
-    //const { cartItems, setCartItems } = useShop();
+    //const { cartList, setCartList } = useShop();
 
-    if (cartItems.length === 0) {
+    if (cartList.length === 0) {
       return (
         <>
           <div>La tua Shopping bag è vuota</div>
@@ -86,7 +145,7 @@ export default function AppCart() {
         <div className="container cart_list_container">
           <div className="cart_list">
 
-            {cartItems.map((item) => (
+            {cartList.map((item) => (
               <div className="row row-cols-2d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
                 <div className="col-6 d-flex item_info">
                   <img src={item.image} alt={item.name} className="item_image" height="150px" />
@@ -127,12 +186,14 @@ export default function AppCart() {
     <>
       <div className="container cart_container d-flex flex-column">
 
+        {AddCartList()}{/* ⚠️ it's a test, to be removed */}
+
         <div className="cart_header ">
           <h2>
             Shopping bag
           </h2>
           <div>
-            {(cartItems.length === 0) ? <span>(0)</span> : <span>({cartItems.length}) </span>}
+            {(cartList.length === 0) ? <span>(0)</span> : <span>({cartList.length}) </span>}
             prodotti
           </div>
         </div>
