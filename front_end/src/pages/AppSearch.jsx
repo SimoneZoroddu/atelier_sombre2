@@ -28,6 +28,7 @@ export default function AppSearch() {
     }, [searchValue, shoes]);
 
 
+    console.log("test2");
 
     console.log("hello");
 
