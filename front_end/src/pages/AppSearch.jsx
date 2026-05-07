@@ -13,6 +13,7 @@ export default function AppSearch() {
             });
     }, []);
     console.log(shoes);
+    console.log(shoes);
 
     return (
         <>

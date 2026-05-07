@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
-import img from "../img/tods-hp-summerselection-01-hero-d-16-9.webp"
+import hero_img from "../img/hero_space.jpg"
 
 export default function HomePage() {
 
@@ -18,6 +18,8 @@ export default function HomePage() {
             )
 
     }, [])
+
+    
 
 
     const today = new Date();
@@ -45,7 +47,7 @@ export default function HomePage() {
 
     return (
         <div>
-            <img src={img} alt="tods-hp-summerselection" className="img-fluid w-100 px-3" />
+            <img src={hero_img} alt="tods-hp-summerselection" className="img-fluid w-100 px-3" />
             <div className="text-center fs-2 pt-4">Nuovi arrivi di Atelier Sombre</div>
             <div className="text-center">
                 <Link to="/shoes" className="fs-5 text-black underline_hover">
