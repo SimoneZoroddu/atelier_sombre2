@@ -5,15 +5,26 @@ export default function AppSearch() {
 
     const url = import.meta.env.VITE_API_ADDRESS + "index";
     const [shoes, setShoes] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("")
+    const [category, setCategory] = useState([])
+
 
     useEffect(() => {
         axios.get(url)
             .then(datas => {
                 setShoes(datas.data);
-            });
+                setCategory([...new Set(datas.data.map(shoe => shoe.category))])
+            })
     }, []);
-    console.log(shoes);
-    console.log(shoes);
+
+
+    const filteredShoes = shoes.filter((shoe) => {
+        const term = searchTerm.toLowerCase();
+        return (
+            shoe.name.toLowerCase().includes(term) ||
+            shoe.color.toLowerCase().includes(term)
+        )
+    })
 
     return (
         <>
@@ -39,17 +50,25 @@ export default function AppSearch() {
                 </div>
 
                 <div className="offcanvas-body">
-                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" />
-                    <button className="btn btn-dark w-100">Search</button>
+                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" onChange={(e) => setSearchTerm(e.target.value)} />
+                    {
+                        category?.map((item, index) => (
+                            <div className="p-1" data-bs-dismiss="offcanvas" key={index} onClick={() => setSearchTerm(item)} style={{ cursor: "pointer" }}>
+                                {item}
+                            </div>
+                        ))
+                    }
+                    {/* <button  utton className="btn btn-dark w-100">Search</button> */}
+
                 </div>
             </div>
 
             {/* list shoes*/}
-            <div className="container-fluid px-0">
+            <div className="container-fluid ">
                 <div className="row g-0 row-cols-2 row-cols-md-4">
-                    {shoes.map((shoe) => (
+                    {filteredShoes.map((shoe) => (
                         <div className="col position-relative" key={shoe.id} >
-                            <div className="image-container">
+                            <div className="image-container mt-3 mb-3">
                                 <img className="w-100 d-flex align-items-center justify-content-center p-1 " src={shoe.image.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
                             </div>
 
@@ -70,6 +89,7 @@ export default function AppSearch() {
                                     <p className="mb-0 text-muted">
                                         {shoe.color}
                                     </p>
+                                    <p>{shoe.category}</p>
                                     <p className="mb-0 mt-1">
                                         €{shoe.price}
                                     </p>
