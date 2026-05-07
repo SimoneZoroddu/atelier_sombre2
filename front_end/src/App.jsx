@@ -8,7 +8,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import AppCart from "./pages/AppCart";
 import AppSearch from "./pages/AppSearch";
-
+import DetailPage from "./pages/DetailPage";
 
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/cart" element={<AppCart />} />
             <Route path="/shoes" element={<AppSearch />} />
-
+            <Route path="/products/:name/:color" element={<DetailPage />} />
 
           </Route>
         </Routes>
