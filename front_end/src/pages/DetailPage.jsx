@@ -19,7 +19,7 @@ export default function DetailPage() {
         }
 
         const cartItem = {
-            Id: product.id,
+            id: product.id,
             name: product.name,
             color: product.color,
             image: product.image.main_image_url,
@@ -27,7 +27,23 @@ export default function DetailPage() {
             size: selectedSize,
             quantity: quantity,
         };
+        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
+        // 2. Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
+        const existingItem = existingCart.find(
+            item => item.id === cartItem.id && item.size === cartItem.size
+        );
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            existingCart.push(cartItem);
+        }
+
+        // 3. Salva nel localStorage
+        localStorage.setItem("cart", JSON.stringify(existingCart));
+
+        alert("Prodotto aggiunto al carrello!");
         console.log("Aggiunto al carrello:", cartItem);
     }
 
