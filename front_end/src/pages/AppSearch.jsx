@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function AppSearch() {
@@ -8,7 +9,10 @@ export default function AppSearch() {
     const [shoes, setShoes] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     const [filteredShoes, setFilteredShoes] = useState([]);
+    const [prova, setProva] = useState(filteredShoes)
     const [category, setCategory] = useState([])
+    const [genre, setGenre] = useState("Donna")
+
 
     useEffect(() => {
         axios.get(url)
@@ -19,18 +23,19 @@ export default function AppSearch() {
             });
     }, []);
 
-    /* useEffect Search */
+
+    /* useEffect for filtering by genre */
     useEffect(() => {
-        const result = shoes.filter((shoe) =>
-            shoe.name.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        setFilteredShoes(result);
-    }, [searchValue, shoes]);
+        const filtered = shoes
+            .filter(s =>
+                s.genre.toLowerCase().includes(genre.toLowerCase())
+            )
+            .filter(s =>
+                s.name.toLowerCase().includes(searchValue.toLowerCase())
+            );
 
-
-    console.log("test2");
-
-    console.log("hello");
+        setFilteredShoes(filtered);
+    }, [shoes, genre, searchValue]);
 
     return (
         <>
@@ -63,11 +68,13 @@ export default function AppSearch() {
             <div className="container-fluid px-0">
                 <div className="row g-0 row-cols-2 row-cols-md-4">
 
-                    {filteredShoes.map((shoe) => (
+                    {filteredShoes?.map((shoe) => (
                         <div className="col position-relative" key={shoe.id}>
 
                             <div className="image-container">
-                                <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
+                                <Link to={`/products/${shoe.name}/${shoe.color}`}>
+                                    <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
+                                </Link>
                             </div>
 
                             <div className="card-body px-1">

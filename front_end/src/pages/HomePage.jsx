@@ -19,8 +19,6 @@ export default function HomePage() {
 
     }, [])
 
-    
-
 
     const today = new Date();
 
@@ -40,7 +38,7 @@ export default function HomePage() {
     function filterSet() {
 
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
-
+        setGenre("Donna")
         console.log("funge");
 
     }
@@ -59,7 +57,7 @@ export default function HomePage() {
                 <div className="text-center">
                     {
                         <div className="d-flex justify-content-start flex-wrap pt-2" key={newArrivalsWoman[0]?.ID}  >
-                            <Link to="/shoes">
+                            <Link to="/shoes" onClick={filterSet}>
                                 <img src={newArrivalsWoman[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "80rem" }} />
                             </Link>
                         </div>
