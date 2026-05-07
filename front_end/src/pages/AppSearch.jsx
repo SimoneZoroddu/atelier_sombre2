@@ -26,6 +26,9 @@ export default function AppSearch() {
         )
     })
 
+
+    console.log("hello");
+
     return (
         <>
             {/* sidebar whit icon*/}
