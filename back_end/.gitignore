@@ -1,0 +1,4 @@
+node_modules
+*.env
+schema.png
+READMESERVER.md
