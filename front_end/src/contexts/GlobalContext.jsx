@@ -4,15 +4,12 @@ const GlobalContext = createContext();
 
 function ShopProvider({ children }) {
 
-  const [cartItems, setCartItems] = useState([]);
   const [loader, setLoader] = useState(false);
 
 
   return (
     <GlobalContext.Provider
       value={{
-        cartItems,
-        setCartItems,
         loader,
         setLoader
       }}>
