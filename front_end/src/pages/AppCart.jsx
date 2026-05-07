@@ -87,7 +87,7 @@ export default function AppCart() {
           <div className="cart_list">
 
             {cartItems.map((item) => (
-              <div className="row d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
+              <div className="row row-cols-2d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
                 <div className="col-6 d-flex item_info">
                   <img src={item.image} alt={item.name} className="item_image" height="150px" />
                   <div className="mx-3">
@@ -107,14 +107,14 @@ export default function AppCart() {
                     </div>
                   </div>
                 </div>
-                <div className="col-1 item_amount">
-                  <ul className="list-group list-group-horizontal">
-                    <li className="list-group-item">+</li>
-                    <li className="list-group-item">{item.quantity}</li>
-                    <li className="list-group-item">-</li>
+                <div className="col item_amount">
+                  <ul className="list-group list-group-horizontal small">
+                    <li className="list-group-item p-2 bg-light">+</li>
+                    <li className="list-group-item p-2">{item.quantity}</li>
+                    <li className="list-group-item p-2 bg-light">-</li>
                   </ul>
                 </div>
-                <div className="col-2 ">Rimuovi</div>
+                <div className="col ">Rimuovi</div>
               </div>
             ))}
 
