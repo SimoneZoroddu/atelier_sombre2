@@ -63,12 +63,7 @@ export default function AppSearch() {
                         <div className="col position-relative" key={shoe.id}>
 
                             <div className="image-container">
-                                <img
-                                    className="w-100 d-flex align-items-center justify-content-center p-1"
-                                    src={shoe.image.main_image_url}
-                                    alt={shoe.name}
-                                    style={{ width: "18rem" }}
-                                />
+                                <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
                             </div>
 
                             <div className="card-body px-1">
@@ -82,12 +77,7 @@ export default function AppSearch() {
 
                                         <button
                                             className="btn btn-sm bg-transparent border-0 p-0"
-                                            style={{
-                                                fontSize: "1.5rem",
-                                                lineHeight: 1,
-                                                color: "#555"
-                                            }}
-                                        >
+                                            style={{ fontSize: "1.5rem", lineHeight: 1, color: "#555" }}>
                                             ♡
                                         </button>
 
