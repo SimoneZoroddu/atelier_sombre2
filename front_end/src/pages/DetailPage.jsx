@@ -1,5 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useShop } from "../contexts/GlobalContext";
+
+
+
 import "./DetailPage.css";
 
 export default function DetailPage() {
@@ -9,6 +13,7 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
+    const { cartList, setCartList } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
 
@@ -77,6 +82,17 @@ export default function DetailPage() {
 
     if (!product) return <p>Prodotto non trovato.</p>;
 
+    /* Declare cartItem */
+    const cartItem = {
+        id: product.id,
+        name: product.name,
+        color: product.color,
+        image: product.image.main_image_url,
+        price: product.price,
+        size: selectedSize,
+    };
+    
+    
     const selectedStock = selectedSize
         ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
         : 0;

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 //import { useShop } from "../contexts/GlobalContext";
 
 /* Andrà sostituito con l'array fetchato dal DB */
-const cartItems = [
+const cartList = [
   {
     id: 1,
     user_id: 1,
@@ -65,16 +65,75 @@ const cartItems = [
     quantity: 1,
     price: 710,
   },
-];
+]; 
+
+
+
+ function addToCart() {
+  if (!selectedSize) {
+    alert("Seleziona una taglia prima di aggiungere al carrello.");
+    return;
+
+  }
+  const cartItem = {
+    Id: product.id,
+    name: product.name,
+    color: product.color,
+    image: product.image.main_image_url,
+    price: product.price,
+    size: selectedSize,
+
+  }
+}
+
+const cartItem = {/* qui i dati recuperati dalla pagina dettaglio */};
+function AddToCartList() {
+  /* Initialize localStorage */
+  const [cartList, setCartList] = useState(() => {
+    const saved = localStorage.setItem('cartList');
+    return saved ? JSON.parse(saved) : [];
+  });
+  /* Save changes to localStorage */
+useEffect(() => {
+  localStorage.setItem('cartList', JSON.stringify(cartList));
+}, [cartList]);
+
+return (
+  <button onClick={() => setCartList([...cartList, cartItem])}>
+    Bottone
+  </button>
+)
+}
+
+
 
 export default function AppCart() {
-  const [cartTotal, setCartTotal] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0); /* ⚠️ static, to be implemented */
+
+  function AddCartList() {
+    const [cartList, setcartList] = useState([]);
+
+    useEffect(() => {
+      const saved = localStorage.getItem('');
+      if (saved) setcartList(saved);
+    }, []);
+
+    useEffect(() => {
+      localStorage.setItem('cartList', cartList);
+    }, [cartList]);
+
+    return (
+      <button onClick={() => setcartList(t => t === 'light' ? 'dark' : 'light')}>
+        cartList: {cartList}
+      </button>
+    );
+  }
 
   function renderCart() {
     /* Declare support variables */
-    //const { cartItems, setCartItems } = useShop();
+    //const { cartList, setCartList } = useShop();
 
-    if (cartItems.length === 0) {
+    if (cartList.length === 0) {
       return (
         <>
           <div>La tua Shopping bag è vuota</div>
@@ -84,51 +143,57 @@ export default function AppCart() {
     } else {
       return (
         <div className="container cart_list_container">
-          <section className="cart_list">
-            <div className="row row-cols-1">
+          <div className="cart_list">
 
-              {cartItems.map((item) => (
-                <div className="col cart_list_item d-flex gap-3" key={item.id}>
-                  <img src={item.image} alt={item.name} className="item_image" />
-                  <div className="item_info ">
-                    <div className="item_name">{item.name}</div>
+            {cartList.map((item) => (
+              <div className="row row-cols-2d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
+                <div className="col-6 d-flex item_info">
+                  <img src={item.image} alt={item.name} className="item_image" height="150px" />
+                  <div className="mx-3">
+                    <div className="fs-5 my-2 item_name">{item.name}</div>
                     <div className="item_details">
-                      <div className="item_color">
-                        Color
-                        <span> {item.color}</span>
-                      </div>
                       <div className="item_size">
                         Taglia
-                        <span> {item.size}</span>
+                        <span className="fw-semibold"> {item.size}</span>
                       </div>
-                      <div className="item_amount">
-                        Quantità
-                        <span> {item.quantity}</span>
+                      <div className="item_color">
+                        Color
+                        <span className="fw-semibold"> {item.color}</span>
+                      </div>
+                      <div className="my-2 item_price">
+                        € {item.price}
                       </div>
                     </div>
                   </div>
-                  <div className="item_price">
-                      € {item.price}
-                  </div>
                 </div>
-              ))}
+                <div className="col item_amount">
+                  <ul className="list-group list-group-horizontal small">
+                    <li className="list-group-item p-2 bg-light">+</li>
+                    <li className="list-group-item p-2">{item.quantity}</li>
+                    <li className="list-group-item p-2 bg-light">-</li>
+                  </ul>
+                </div>
+                <div className="col ">Rimuovi</div>
+              </div>
+            ))}
 
-            </div>
-          </section>
+          </div>
         </div>
       )
     }
   }
   return (
     <>
-      <div className="cart_container">
+      <div className="container cart_container d-flex flex-column">
 
-        <div className="cart_header">
+        {AddCartList()}{/* ⚠️ it's a test, to be removed */}
+
+        <div className="cart_header ">
           <h2>
             Shopping bag
           </h2>
           <div>
-            {(cartItems.length === 0) ? <span>(0)</span> : <span>({cartItems.length}) </span>}
+            {(cartList.length === 0) ? <span>(0)</span> : <span>({cartList.length}) </span>}
             prodotti
           </div>
         </div>
@@ -137,13 +202,13 @@ export default function AppCart() {
           {renderCart()}
         </div >
 
-        <div className="cart_footer">
-          <div className="cart_total">
-            Subtotale:
-            <span> € {cartTotal}</span>
+        <div className="cart_footer text-end my-3">
+          <div className="d-flex justify-content-between fs-5 my-3 cart_total">
+            <div className="fw-semibold">Subtotale:</div>
+            <div> € {cartTotal}</div>
           </div>
           <div className="cart_checkout">
-            <button type="submit">
+            <button type="submit" className="btn btn-dark">
               Procedi all'acquisto
             </button>
           </div >
