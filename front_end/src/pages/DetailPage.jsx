@@ -145,7 +145,7 @@ export default function DetailPage() {
                             key={q.id}
                             disabled={q.stock === 0}
                             onClick={() => {
-                                setSelectedSize(q.size);
+                                setSelectedSize(selectedSize === q.size ? null : q.size);
                                 setQuantity(1);
                             }}
                             className="sizeButton"
