@@ -29,6 +29,12 @@ export default function AppCart() {
     }
   }, [cartList, isInitialLoading]);
 
+  /* get and update cart total */
+  useEffect(() => {
+    /* ⚠️ to be implemented, add if discount */
+    setCartTotal(cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0))
+  }, [cartList]);
+
   function renderCart() {
     /* Declare support variables */
     //const { cartList, setCartList } = useShop();
@@ -46,7 +52,7 @@ export default function AppCart() {
           <div className="cart_list">
 
             {cartList.map((item) => (
-              <div className="row row-cols-2d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
+              <div className="row row-cols-2 d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
                 <div className="col-6 d-flex item_info">
                   <img src={item.image} alt={item.name} className="item_image" height="200px" />
                   <div className="mx-3">
@@ -106,7 +112,8 @@ export default function AppCart() {
             <div> € {cartTotal}</div>
           </div>
           <div className="cart_checkout">
-            <button type="submit" className="btn btn-dark">
+            <button type="button" className="btn btn-dark"
+              onClick={() => { /* ⚠️ to be implemented */ }}>
               Procedi all'acquisto
             </button>
           </div >
