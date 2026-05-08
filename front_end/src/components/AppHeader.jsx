@@ -49,7 +49,7 @@ export default function AppHeader() {
                 </div>
 
                 <div className="offcanvas-body">
-                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyDown={(e) => {
+                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" value={searchValue} onChange={(e) => {setSearchValue(e.target.value), setGenre("")}} onKeyDown={(e) => {
                         if (e.key === "Enter")
                             navigate("/shoes")
                     }} />
