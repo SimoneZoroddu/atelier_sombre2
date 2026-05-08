@@ -196,22 +196,24 @@ export default function DetailPage() {
                 <p className="price">{product.price} €</p>
 
                 {/* ACCORDION */}
-                <div className="accordion">
-                    <button
-                        className="accordionHeader"
-                        onClick={() => setShowDetails(prev => !prev)}
-                    >
-                        Dettagli prodotto
-                        <span>{showDetails ? "−" : "+"}</span>
-                    </button>
+                    <div className="accordion">
+                        <button
+                            className="accordionHeader"
+                            onClick={() => setShowDetails(prev => !prev)}
+                        >
+                            Dettagli prodotto
+                            <span>{showDetails ? "−" : "+"}</span>
+                        </button>
 
-                    {showDetails && (
-                        <div className="accordionContent">
+                        <div className={`accordionContent ${showDetails ? "open" : ""}`}>
                             <p>{product.details}</p>
-                            <p><span style={{ color: "#000", fontWeight: 550 }}>Colore:</span> {capitalizeWords(product.color)}</p>
+                            <p>
+                                <span style={{ color: "#000", fontWeight: 550 }}>Colore:</span>
+                                {" "}{capitalizeWords(product.color)}
+                            </p>
                         </div>
-                    )}
-                </div>
+                    </div>
+
 
                 {/* TAGLIE */}
                 <h3>Taglie disponibili</h3>
