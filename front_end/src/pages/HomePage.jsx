@@ -39,7 +39,7 @@ export default function HomePage() {
     const newArrivalsMan = newArrivals.filter(shoe => shoe.genre == "Uomo")
 
     function filterSet() {
-
+        window.scrollTo({ top: 0 })
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Donna")
         setSearchValue("")
@@ -47,7 +47,7 @@ export default function HomePage() {
     }
 
     function FilterUomo() {
-
+        window.scrollTo({ top: 0 })
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Uomo")
         setSearchValue("")
@@ -94,43 +94,3 @@ export default function HomePage() {
         </div >
     )
 }
-
-
-
-
-
-
-
-
-
-{/* <div className="mx-5 my-3">
-            <img src={img} alt="tods-hp-summerselection" className="img-fluid w-100"/>
-            <div className="container p-0">
-                <div className="row row-cols-1 row-cols-md-2 g-4 pt-3">
-                    <div className="col">
-                        <h3 className="div text-center">
-                            New Arrival Woman
-                        </h3>
-                        {
-                        newArrivalsWoman.map(newArrival => (
-                            <div className="d-flex justify-content-start flex-wrap pt-2" key={newArrival.ID}>
-                                <img src={newArrival.image.model_image_url} className="img-fluid" alt={newArrival.name} /> 
-                            </div>
-                        ))
-                        }
-                    </div>
-                    <div className="col">
-                        <h3 className="div text-center">
-                            New Arrival Man
-                        </h3>
-                        {
-                        newArrivalsMan.map(shoe => (
-                            <div className="d-flex justify-content-start flex-wrap pt-2" key={shoe.ID}>
-                                <img src={shoe.image.model_image_url} className="img-fluid" alt={shoe.name} /> 
-                            </div>
-                        ))
-                        }
-                    </div>
-                </div>
-            </div>
-        </div> */}
