@@ -27,7 +27,7 @@ export default function AppHeader() {
                                 <Link className="nav-link" href="#">Pricing</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="#">Cart</Link>
+                                <Link className="nav-link" to="/cart">Cart</Link>
                             </li>
                         </ul>
                     </div>
