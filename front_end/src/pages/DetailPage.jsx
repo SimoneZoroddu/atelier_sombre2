@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShop } from "../contexts/GlobalContext";
 
@@ -8,6 +8,7 @@ import "./DetailPage.css";
 
 export default function DetailPage() {
     const { name, color } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [mainImage, setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState(null);
@@ -17,6 +18,7 @@ export default function DetailPage() {
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
+
     const shippingInfo = [
         {
             id: "standard",
@@ -37,6 +39,24 @@ export default function DetailPage() {
             detail: "Resi gratuiti entro 30 giorni dall'acquisto. Il rimborso viene elaborato in 3-5 giorni lavorativi."
         }
     ];
+
+    const handleBack = () => {
+        if (window.history.length > 1) {
+            navigate(-1);
+        } else {
+            navigate("/");
+        }
+    };
+ //funzione per normalizzare i nomi composti da più parole, es: "dark blue" -> "Dark blue"
+    function capitalizeWords(str) {
+        return str
+            .toLowerCase()
+            .split(" ")
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+
     function addToCart() {
         if (!selectedSize) {
             alert("Seleziona una taglia prima di aggiungere al carrello.");
@@ -118,8 +138,22 @@ export default function DetailPage() {
         : 0;
 
     return (
+        <>
+            {/* Back button */}
+            <button
+                onClick={handleBack}
+                style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    paddingLeft: "3rem",
+                    marginTop: "1rem",
+                }}
+            >
+                <i className="bi bi-arrow-left"></i>
+            </button>
         <div className="product-page">
-
+            
             {/* LEFT: IMMAGINI */}
             <div className="imagesWrapper">
 
@@ -169,6 +203,7 @@ export default function DetailPage() {
                     {showDetails && (
                         <div className="accordionContent">
                             <p>{product.details}</p>
+                            <p><span style={{ color: "#000", fontWeight: 550 }}>Colore:</span> {capitalizeWords(product.color)}</p>
                         </div>
                     )}
                 </div>
@@ -295,5 +330,6 @@ export default function DetailPage() {
             </div>
 
         </div>
+        </>
     );
 }
