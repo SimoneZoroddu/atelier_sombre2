@@ -10,7 +10,7 @@ const index = (req, res, next) => {
         }
 
         if (!shoesResults) {
-            return res.json([]);
+            return res.json(['nessun risultato']);
         }
         //get all images
         const queryImages = 'SELECT * FROM image';
