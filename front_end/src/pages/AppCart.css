@@ -1,0 +1,342 @@
+/* ─── RESET ─── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* ─── CONTAINER ─── */
+.cart_container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+}
+
+/* ─── HEADER ─── */
+.cart_header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.25rem;
+}
+
+.cart_header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: -0.01em;
+}
+
+.cart_count {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ─── LAYOUT PRINCIPALE ─── */
+.cart_content {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+/* ─── SINISTRA: lista ─── */
+.cart_body {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart_list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart_item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart_item:first-child {
+    border-top: 1px solid #e0e0e0;
+}
+
+/* ─── IMMAGINE ─── */
+.item_image_wrapper {
+    flex-shrink: 0;
+    width: 120px;
+}
+
+.item_image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
+
+/* ─── INFO PRODOTTO ─── */
+.item_info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item_name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.item_meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.item_meta p {
+    font-size: 0.82rem;
+    color: #666;
+}
+
+.item_meta strong {
+    color: #111;
+    font-weight: 500;
+}
+
+.item_price {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* ─── QUANTITÀ ─── */
+.item_quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.item_quantity span {
+    font-size: 0.9rem;
+    min-width: 1.2rem;
+    text-align: center;
+}
+
+.qty_btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s;
+    flex-shrink: 0;
+}
+
+.qty_btn:hover {
+    border-color: #111;
+}
+
+/* ─── RIMUOVI ─── */
+.remove_btn {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #999;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 0;
+    margin-top: auto;
+    transition: color 0.15s;
+}
+
+.remove_btn:hover {
+    color: #111;
+}
+
+/* ─── DESTRA: sidebar ─── */
+.cart_sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #e0e0e0;
+    padding: 1.75rem;
+}
+
+.sidebar_title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+}
+
+.sidebar_row strong {
+    font-weight: 500;
+}
+
+.shipping_placeholder {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+}
+
+.sidebar_divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 0.25rem 0;
+}
+
+.sidebar_total {
+    font-size: 0.95rem;
+}
+
+.sidebar_total strong {
+    font-size: 1.05rem;
+}
+
+/* ─── CHECKOUT ─── */
+.btn_checkout {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    background: black;
+    color: white;
+    border: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.25rem;
+}
+
+.btn_checkout:hover {
+    background: #222;
+}
+
+/* ─── ECO BOX ─── */
+.eco-box {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1rem;
+    background: #f5f7f4;
+    border-left: 2px solid #7a9e7e;
+    margin-top: 0.5rem;
+}
+
+.eco-icon {
+    font-size: 1rem;
+    color: #7a9e7e;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.eco-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #3a5a3e;
+    margin-bottom: 0.35rem;
+}
+
+.eco-body {
+    font-size: 0.78rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ─── CARRELLO VUOTO ─── */
+.cart_empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 5rem 0;
+    color: #888;
+    font-size: 0.95rem;
+}
+
+.btn_continue {
+    padding: 0.8rem 2rem;
+    border: 1px solid #111;
+    background: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn_continue:hover {
+    background: #111;
+    color: white;
+}
+
+/* ─── RESPONSIVE: mobile ─── */
+@media (max-width: 768px) {
+
+    .cart_container {
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+    }
+
+    /* su mobile lista e sidebar si impilano */
+    .cart_content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    /* sidebar a larghezza piena */
+    .cart_sidebar {
+        width: 100%;
+        position: static;
+    }
+
+    /* immagini nascoste */
+    .item_image_wrapper {
+        display: none;
+    }
+}
