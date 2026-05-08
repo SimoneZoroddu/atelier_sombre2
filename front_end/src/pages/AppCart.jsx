@@ -6,9 +6,11 @@ import { useShop } from "../contexts/GlobalContext";
 export default function AppCart() {
   const { cartList, setCartList } = useShop();
   const [cartTotal, setCartTotal] = useState(0); /* ⚠️ static, to be implemented */
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
+  /* get data from localStorage */
   useEffect(() => {
-    let storedCartList = localStorage.getItem('cartList');
+    let storedCartList = localStorage.getItem('cart');
 
     if (storedCartList) {
       /* check the parsing */
@@ -16,8 +18,16 @@ export default function AppCart() {
     } else {
       setCartList([])
     }
+    setIsInitialLoading(false);
   }, []);
   console.log(cartList);
+
+  /* keep update data in localStorage */
+  useEffect(() => {
+    if (!isInitialLoading) {
+      localStorage.setItem('cart', JSON.stringify(cartList))
+    }
+  }, [cartList, isInitialLoading]);
 
   function renderCart() {
     /* Declare support variables */
@@ -110,6 +120,6 @@ export default function AppCart() {
 
 
 
-{/* nella card mostra immagine, nome, prezzo, quantità (modificabile) e cestino */ }
+{/* nella card mostra quantità (modificabile) e cestino */ }
 {/* mostra totale */ }
 {/* OPZIONALE: mostra in basso wishlist con possibilità di aggiunta diretta */ }
