@@ -118,8 +118,15 @@ img {
     color: #555;
     line-height: 1.6;
     overflow-wrap: break-word;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.25s ease;
+    opacity: 0;
 }
-
+.accordionContent.open {
+    max-height: 500px; /* abbastanza grande da contenere il testo */
+    opacity: 1;
+}
 /* ─── TAGLIE ─── */
 .infoColumn h3 {
     font-size: 0.8rem;
@@ -258,7 +265,9 @@ img {
 }
 
 .recommendedItem:hover .recommendedImage {
-    opacity: 0.85;
+    opacity: 0.95;
+    transform: scale(1.1);
+    transition: transform 0.3s, opacity 0.2s;
 }
 
 .recommendedName {

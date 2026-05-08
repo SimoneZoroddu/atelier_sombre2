@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShop } from "../contexts/GlobalContext";
 
@@ -14,10 +14,11 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList } = useShop();
+    const { cartList, setCartList, genre, setGenre } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
+    const location = useLocation();
 
     const shippingInfo = [
         {
@@ -40,14 +41,15 @@ export default function DetailPage() {
         }
     ];
 
-    const handleBack = () => {
-        if (window.history.length > 1) {
+    const handleBack = () => {//naviga indietro alla pagina precedente o alla home se non c'è una pagina precedente
+        setGenre(product.genre); // Aggiorna il contesto con il genere del prodotto visualizzato
+        if (location.key !== "default") {
             navigate(-1);
         } else {
             navigate("/");
         }
     };
- //funzione per normalizzare i nomi composti da più parole, es: "dark blue" -> "Dark blue"
+    //funzione per normalizzare i nomi composti da più parole, es: "dark blue" -> "Dark blue"
     function capitalizeWords(str) {
         return str
             .toLowerCase()
@@ -57,13 +59,14 @@ export default function DetailPage() {
     }
 
 
+
     function addToCart() {
-        if (!selectedSize) {
+        if (!selectedSize) {//controlla se è stata selezionata una taglia
             alert("Seleziona una taglia prima di aggiungere al carrello.");
             return;
         }
 
-        const cartItem = {
+        const cartItem = {// crea l'oggetto da aggiungere al carrello
             id: product.id,
             name: product.name,
             color: product.color,
@@ -72,20 +75,21 @@ export default function DetailPage() {
             size: selectedSize,
             quantity: quantity,
         };
+        //recupera il carrello esistente dal localStorage o inizzializza un carrello vuoto
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // 2. Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
+        // Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
         );
 
-        if (existingItem) {
+        if (existingItem) {//Se il prodotto esiste già aggiorna la quantità
             existingItem.quantity += quantity;
-        } else {
+        } else {// Altrimenti aggiungi il nuovo prodotto al carrello
             existingCart.push(cartItem);
         }
 
-        // 3. Salva nel localStorage
+        // Salva il carrello aggiornato nel localStorage
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
         alert("Prodotto aggiunto al carrello!");
@@ -122,16 +126,11 @@ export default function DetailPage() {
 
     if (!product) return <p>Prodotto non trovato.</p>;
 
-    /* Declare cartItem */
-    const cartItem = {
-        id: product.id,
-        name: product.name,
-        color: product.color,
-        image: product.image.main_image_url,
-        price: product.price,
-        size: selectedSize,
-    };
-
+    //normalizza dettagli del prodotto
+    const normalizedDetails = product.details
+        .split('.')
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
 
     const selectedStock = selectedSize
         ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
@@ -152,184 +151,200 @@ export default function DetailPage() {
             >
                 <i className="bi bi-arrow-left"></i>
             </button>
-        <div className="product-page">
-            
-            {/* LEFT: IMMAGINI */}
-            <div className="imagesWrapper">
+            {/* Home button */}
 
-                {/* THUMBNAILS */}
-                <div className="thumbnailsColumn">
-                    {[
-                        product.image.main_image_url,
-                        product.image.top_view_url,
-                        product.image.secondary_image_url,
-                        product.image.model_image_url
-                    ]
-                        .filter(img => img)
-                        .map((img, i) => (
-                            <img
-                                key={i}
-                                src={img}
-                                alt="thumb"
-                                className="thumbnailVertical"
-                                style={{
-                                    border: mainImage === img ? "2px solid black" : "1px solid #ccc"
-                                }}
-                                onClick={() => setMainImage(img)}
-                            />
-                        ))}
+            <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+                <i className="bi bi-house-door-fill" style={{ padding: "0.5rem" }}></i>
+            </Link>
+            {/* Search button */}
+
+            <Link to="/shoes" style={{ textDecoration: "none", color: "black" }}>
+                <i className="bi bi-search" style={{ padding: "0.5rem" }}></i>
+            </Link>
+            <div className="product-page">
+
+                {/* LEFT: IMMAGINI */}
+                <div className="imagesWrapper">
+
+                    {/* THUMBNAILS */}
+                    <div className="thumbnailsColumn">
+                        {[
+                            product.image.main_image_url,
+                            product.image.top_view_url,
+                            product.image.secondary_image_url,
+                            product.image.model_image_url
+                        ]
+                            .filter(img => img)
+                            .map((img, i) => (//renderizza solo le immagini che esistono, alcune potrebbero essere null
+                                <img
+                                    key={i}
+                                    src={img}
+                                    alt="thumb"
+                                    className="thumbnailVertical"
+                                    style={{
+                                        border: mainImage === img ? "2px solid black" : "1px solid #ccc"
+                                    }}
+                                    onMouseEnter={() => setMainImage(img)}//al passaggio del mouse cambia l'immagine principale
+                                    onClick={() => setMainImage(img)}//al click cambia l'immagine principale
+                                />
+                            ))}
+                    </div>
+
+                    {/* IMMAGINE PRINCIPALE */}
+                    <img src={mainImage} alt={product.name} className="mainImage" />
                 </div>
 
-                {/* IMMAGINE PRINCIPALE */}
-                <img src={mainImage} alt={product.name} className="mainImage" />
-            </div>
+                {/* RIGHT: INFO PRODOTTO */}
+                <div className="infoColumn">
+                    <h1>{product.name}</h1>
+                    <p className="category">{product.category} · {product.genre}</p>
+                    <p className="price">{product.price} €</p>
 
-            {/* RIGHT: INFO PRODOTTO */}
-            <div className="infoColumn">
-                <h1>{product.name}</h1>
-                <p className="category">{product.category} · {product.genre}</p>
-                <p className="price">{product.price} €</p>
+                    {/* ACCORDION */}
+                    <div className="accordion">
+                        <button
+                            className="accordionHeader"
+                            onClick={() => setShowDetails(prev => !prev)}
+                        >
+                            Dettagli prodotto
+                            <span>{showDetails ? "−" : "+"}</span>
+                        </button>
 
-                {/* ACCORDION */}
-                <div className="accordion">
-                    <button
-                        className="accordionHeader"
-                        onClick={() => setShowDetails(prev => !prev)}
-                    >
-                        Dettagli prodotto
-                        <span>{showDetails ? "−" : "+"}</span>
-                    </button>
+                        <div className={`accordionContent ${showDetails ? "open" : ""}`}>
+                            {normalizedDetails.map((detail, index) => (
+                                <div key={index}>{detail}</div>
+                            ))}
+                            <p>
+                                <span style={{ color: "#000", fontWeight: 550, paddingTop : "1rem" }}>Colore:</span>
+                                {" "}{capitalizeWords(product.color)}
+                            </p>
+                        </div>
+                    </div>
 
-                    {showDetails && (
-                        <div className="accordionContent">
-                            <p>{product.details}</p>
-                            <p><span style={{ color: "#000", fontWeight: 550 }}>Colore:</span> {capitalizeWords(product.color)}</p>
+
+                    {/* TAGLIE */}
+                    <h3>Taglie disponibili</h3>
+                    <div className="sizesRow">
+                        {product.quantity.map(q => (//renderizza un pulsante per ogni taglia esistente nel db, disabilitandolo se la stock è 0
+                            <button
+                                key={q.id}
+                                disabled={q.stock === 0}
+                                onClick={() => {
+                                    setSelectedSize(prev => prev === q.size ? null : q.size);
+                                    setQuantity(1);
+                                }}
+                                className="sizeButton"
+                                style={{
+                                    background: selectedSize === q.size ? "black" : "white",
+                                    color: selectedSize === q.size ? "white" : "black",
+                                    opacity: q.stock === 0 ? 0.4 : 1
+                                }}
+                            >
+                                {q.size}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* QUANTITÀ */}
+
+                    {selectedSize && (// Mostra selettore quantità solo se è stata selezionata una taglia
+                        <div style={{ marginTop: "1rem" }}>
+                            <label style={{ fontWeight: 550 }}>Quantità:</label>
+                            <select
+                                value={quantity}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
+                                style={{
+                                    marginLeft: "1rem",
+                                    padding: "0.5rem",
+                                    borderRadius: "4px",
+                                    border: "1px solid #ccc"
+                                }}
+                            >
+                                {Array.from({ length: selectedStock }, (_, i) => i + 1).map(num => (// Crea un array con n elementi dove n=selectedStock e renderizza un'opzione per ogni elemento dell'array
+                                    <option key={num} value={num}>{num}</option>
+                                ))}
+                            </select>
                         </div>
                     )}
-                </div>
 
-                {/* TAGLIE */}
-                <h3>Taglie disponibili</h3>
-                <div className="sizesRow">
-                    {product.quantity.map(q => (
-                        <button
-                            key={q.id}
-                            disabled={q.stock === 0}
-                            onClick={() => {
-                                setSelectedSize(prev => prev === q.size ? null : q.size);
-                                setQuantity(1);
-                            }}
-                            className="sizeButton"
-                            style={{
-                                background: selectedSize === q.size ? "black" : "white",
-                                color: selectedSize === q.size ? "white" : "black",
-                                opacity: q.stock === 0 ? 0.4 : 1
-                            }}
-                        >
-                            {q.size}
+                    {/* BOTTONI */}
+                    <div className="buttonsRow">
+                        <button className="cartButton" onClick={addToCart}>
+                            <span className="cart-text">Aggiungi al carrello</span>
+                            <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
                         </button>
-                    ))}
+
+                        <button className="wishlistButton">
+                            <i className="bi bi-heart"></i>
+                        </button>
+                    </div>
                 </div>
 
-                {/* QUANTITÀ */}
-                {selectedSize && (
-                    <div style={{ marginTop: "1rem" }}>
-                        <label style={{ fontWeight: "bold" }}>Quantità:</label>
-                        <select
-                            value={quantity}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                            style={{
-                                marginLeft: "1rem",
-                                padding: "0.5rem",
-                                borderRadius: "4px",
-                                border: "1px solid #ccc"
-                            }}
-                        >
-                            {Array.from({ length: selectedStock }, (_, i) => i + 1).map(num => (
-                                <option key={num} value={num}>{num}</option>
+                {/* PRODOTTI CONSIGLIATI */}
+                {recommended.length > 0 && (
+                    <div style={{ marginTop: "3rem" }}>
+                        <h2>Prodotti consigliati</h2>
+
+                        <div className="recommendedRow">
+                            {recommended.map(item => (
+                                <Link
+                                    key={item.id}
+                                    to={`/products/${item.name}/${item.color}`}
+                                    className="recommendedItem"
+                                >
+                                    <img
+                                        src={item.image.main_image_url}
+                                        alt={item.name}
+                                        className="recommendedImage"
+                                    />
+                                    <p className="recommendedName">{item.name}</p>
+                                    <p className="recommendedPrice">{item.price} €</p>
+                                </Link>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 )}
+                {/*informazioni sulla spedizione*/}
+                <div>
+                    <div className="shipping-section">
+                        <p className="shipping-label">Spedizione & Resi</p>
+                        <div className="shipping-items">
+                            {shippingInfo.map(item => (
+                                <div key={item.id} className="shipping-item">
+                                    <button
+                                        className="shipping-item-header"
+                                        onClick={() => setOpenShipping(prev => prev === item.id ? null : item.id)}
+                                    >
+                                        <span className="shipping-item-left">
+                                            <i className={item.icon}></i>
+                                            {item.title}
+                                        </span>
+                                        <i className={`bi ${openShipping === item.id ? "bi-dash" : "bi-plus"}`}></i>
+                                    </button>
+                                    {openShipping === item.id && (
+                                        <p className="shipping-item-detail">{item.detail}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
-                {/* BOTTONI */}
-                <div className="buttonsRow">
-                    <button className="cartButton" onClick={addToCart}>
-                        <span className="cart-text">Aggiungi al carrello</span>
-                        <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
-                    </button>
 
-                    <button className="wishlistButton">
-                        <i className="bi bi-heart"></i>
-                    </button>
+                    <div className="eco-box">
+                        <span className="eco-icon"><i className="bi bi-leaf"></i></span>
+                        <div className="eco-text">
+                            <p className="eco-title">Il nostro impegno per il pianeta</p>
+                            <p className="eco-body">
+                                Ogni scelta che facciamo è guidata dal rispetto per l'ambiente.
+                                Utilizziamo materiali certificati e confezioni in carta riciclata,
+                                e lavoriamo con corrieri che adottano pratiche di consegna a basse emissioni.
+                                Perché il lusso non dovrebbe avere un costo per la terra.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+
             </div>
-
-            {/* PRODOTTI CONSIGLIATI */}
-            {recommended.length > 0 && (
-                <div style={{ marginTop: "3rem" }}>
-                    <h2>Prodotti consigliati</h2>
-
-                    <div className="recommendedRow">
-                        {recommended.map(item => (
-                            <Link
-                                key={item.id}
-                                to={`/products/${item.name}/${item.color}`}
-                                className="recommendedItem"
-                            >
-                                <img
-                                    src={item.image.main_image_url}
-                                    alt={item.name}
-                                    className="recommendedImage"
-                                />
-                                <p className="recommendedName">{item.name}</p>
-                                <p className="recommendedPrice">{item.price} €</p>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
-            {/*informazioni sulla spedizione*/}
-            <div>
-                <div className="shipping-section">
-                    <p className="shipping-label">Spedizione & Resi</p>
-                    <div className="shipping-items">
-                        {shippingInfo.map(item => (
-                            <div key={item.id} className="shipping-item">
-                                <button
-                                    className="shipping-item-header"
-                                    onClick={() => setOpenShipping(prev => prev === item.id ? null : item.id)}
-                                >
-                                    <span className="shipping-item-left">
-                                        <i className={item.icon}></i>
-                                        {item.title}
-                                    </span>
-                                    <i className={`bi ${openShipping === item.id ? "bi-dash" : "bi-plus"}`}></i>
-                                </button>
-                                {openShipping === item.id && (
-                                    <p className="shipping-item-detail">{item.detail}</p>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-
-                <div className="eco-box">
-                    <span className="eco-icon"><i className="bi bi-leaf"></i></span>
-                    <div className="eco-text">
-                        <p className="eco-title">Il nostro impegno per il pianeta</p>
-                        <p className="eco-body">
-                            Ogni scelta che facciamo è guidata dal rispetto per l'ambiente.
-                            Utilizziamo materiali certificati e confezioni in carta riciclata,
-                            e lavoriamo con corrieri che adottano pratiche di consegna a basse emissioni.
-                            Perché il lusso non dovrebbe avere un costo per la terra.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
         </>
     );
 }
