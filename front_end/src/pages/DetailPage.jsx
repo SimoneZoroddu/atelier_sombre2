@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useShop } from "../contexts/GlobalContext";
 
@@ -14,10 +14,11 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList } = useShop();
+    const { cartList, setCartList, genre, setGenre } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
+    const location = useLocation();
 
     const shippingInfo = [
         {
@@ -40,8 +41,9 @@ export default function DetailPage() {
         }
     ];
 
-    const handleBack = () => {
-        if (window.history.length > 1) {
+    const handleBack = () => {//naviga indietro alla pagina precedente o alla home se non c'è una pagina precedente
+        setGenre(product.genre); // Aggiorna il contesto con il genere del prodotto visualizzato
+        if (location.key !== "default") {
             navigate(-1);
         } else {
             navigate("/");
@@ -58,12 +60,12 @@ export default function DetailPage() {
 
 
     function addToCart() {
-        if (!selectedSize) {
+        if (!selectedSize) {//controlla se è stata selezionata una taglia
             alert("Seleziona una taglia prima di aggiungere al carrello.");
             return;
         }
 
-        const cartItem = {
+        const cartItem = {// crea l'oggetto da aggiungere al carrello
             id: product.id,
             name: product.name,
             color: product.color,
@@ -72,20 +74,21 @@ export default function DetailPage() {
             size: selectedSize,
             quantity: quantity,
         };
+        //recupera il carrello esistente dal localStorage o inizzializza un carrello vuoto
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // 2. Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
+        // Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
         );
 
-        if (existingItem) {
+        if (existingItem) {//Se il prodotto esiste già aggiorna la quantità
             existingItem.quantity += quantity;
-        } else {
+        } else {// Altrimenti aggiungi il nuovo prodotto al carrello
             existingCart.push(cartItem);
         }
 
-        // 3. Salva nel localStorage
+        // Salva il carrello aggiornato nel localStorage
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
         alert("Prodotto aggiunto al carrello!");
@@ -122,16 +125,7 @@ export default function DetailPage() {
 
     if (!product) return <p>Prodotto non trovato.</p>;
 
-    /* Declare cartItem */
-    const cartItem = {
-        id: product.id,
-        name: product.name,
-        color: product.color,
-        image: product.image.main_image_url,
-        price: product.price,
-        size: selectedSize,
-    };
-
+  
 
     const selectedStock = selectedSize
         ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
@@ -152,6 +146,16 @@ export default function DetailPage() {
             >
                 <i className="bi bi-arrow-left"></i>
             </button>
+            {/* Home button */}
+                
+                <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+                    <i className="bi bi-house-door-fill" style={{ padding: "0.5rem" }}></i>
+                </Link>
+            {/* Search button */}
+
+            <Link to="/shoes" style={{ textDecoration: "none", color: "black" }}>
+                <i className="bi bi-search" style={{ padding: "0.5rem" }}></i>
+            </Link>    
         <div className="product-page">
             
             {/* LEFT: IMMAGINI */}
@@ -166,7 +170,7 @@ export default function DetailPage() {
                         product.image.model_image_url
                     ]
                         .filter(img => img)
-                        .map((img, i) => (
+                        .map((img, i) => (//renderizza solo le immagini che esistono, alcune potrebbero essere null
                             <img
                                 key={i}
                                 src={img}
@@ -175,7 +179,8 @@ export default function DetailPage() {
                                 style={{
                                     border: mainImage === img ? "2px solid black" : "1px solid #ccc"
                                 }}
-                                onClick={() => setMainImage(img)}
+                                onMouseEnter={() => setMainImage(img)}//al passaggio del mouse cambia l'immagine principale
+                                onClick={() => setMainImage(img)}//al click cambia l'immagine principale
                             />
                         ))}
                 </div>
@@ -211,7 +216,7 @@ export default function DetailPage() {
                 {/* TAGLIE */}
                 <h3>Taglie disponibili</h3>
                 <div className="sizesRow">
-                    {product.quantity.map(q => (
+                    {product.quantity.map(q => (//renderizza un pulsante per ogni taglia esistente nel db, disabilitandolo se la stock è 0
                         <button
                             key={q.id}
                             disabled={q.stock === 0}
@@ -232,9 +237,10 @@ export default function DetailPage() {
                 </div>
 
                 {/* QUANTITÀ */}
-                {selectedSize && (
+                
+                    {selectedSize && (// Mostra selettore quantità solo se è stata selezionata una taglia
                     <div style={{ marginTop: "1rem" }}>
-                        <label style={{ fontWeight: "bold" }}>Quantità:</label>
+                        <label style={{ fontWeight: 550 }}>Quantità:</label>
                         <select
                             value={quantity}
                             onChange={(e) => setQuantity(Number(e.target.value))}
@@ -245,7 +251,7 @@ export default function DetailPage() {
                                 border: "1px solid #ccc"
                             }}
                         >
-                            {Array.from({ length: selectedStock }, (_, i) => i + 1).map(num => (
+                            {Array.from({ length: selectedStock }, (_, i) => i + 1).map(num => (// Crea un array con n elementi dove n=selectedStock e renderizza un'opzione per ogni elemento dell'array
                                 <option key={num} value={num}>{num}</option>
                             ))}
                         </select>
