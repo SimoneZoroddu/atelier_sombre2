@@ -1,43 +1,60 @@
 /* Import hooks */
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 /* Import context */
 import { useShop } from "../contexts/GlobalContext";
 
 export default function AppCart() {
   const { cartList, setCartList } = useShop();
-  const [cartTotal, setCartTotal] = useState(0); /* ⚠️ static, to be implemented */
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  let cartTotal;
+  let cartCheckoutInfo;
+  let productsInfo;
+  const navigate = useNavigate();
 
   /* get data from localStorage */
   useEffect(() => {
     let storedCartList = localStorage.getItem('cart');
 
     if (storedCartList) {
-      /* check the parsing */
-      setCartList(JSON.parse(storedCartList)) /* ⚠️ should be checked if no parsing error */
+      /* get and parse data */
+      setCartList(JSON.parse(storedCartList)); /* ⚠️ should be checked if no parsing error */
+
     } else {
       setCartList([])
     }
     setIsInitialLoading(false);
+
   }, []);
-  console.log(cartList);
+  //console.log(cartList);
 
   /* keep update data in localStorage */
   useEffect(() => {
+
     if (!isInitialLoading) {
-      localStorage.setItem('cart', JSON.stringify(cartList))
+      localStorage.setItem('cart', JSON.stringify(cartList));
     }
   }, [cartList, isInitialLoading]);
+  
+  /* get cart total */
+  /* ⚠️ to be implemented, add if discount */
+  cartTotal = cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0);
+  console.log(cartTotal);
+  
+  /* handle checkout */
+  function handleCheckout() {
+    /* set checkout info */
+    cartCheckoutInfo = (`total: ${cartTotal}`, productsInfo);
+    console.log(cartCheckoutInfo);
+    /* send data to back-end */
+    /* ⚠️ call here */
 
-  /* get and update cart total */
-  useEffect(() => {
-    /* ⚠️ to be implemented, add if discount */
-    setCartTotal(cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0))
-  }, [cartList]);
+    /* redirect to checkout */
+    navigate('/checkout')
+  }
 
+  /* render products list */
   function renderCart() {
-    /* Declare support variables */
-    //const { cartList, setCartList } = useShop();
 
     if (cartList.length === 0) {
       return (
@@ -113,7 +130,7 @@ export default function AppCart() {
           </div>
           <div className="cart_checkout">
             <button type="button" className="btn btn-dark"
-              onClick={() => { /* ⚠️ to be implemented */ }}>
+              onClick={handleCheckout}>
               Procedi all'acquisto
             </button>
           </div >
