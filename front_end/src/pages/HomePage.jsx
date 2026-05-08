@@ -7,7 +7,7 @@ import { useShop } from "../contexts/GlobalContext"
 
 
 export default function HomePage() {
-    const { setGenre } = useShop()
+    const { setGenre, setSearchValue } = useShop()
 
     const url = import.meta.env.VITE_API_ADDRESS + "index";
 
@@ -42,7 +42,7 @@ export default function HomePage() {
 
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Donna")
-
+        setSearchValue("")
 
     }
 
@@ -50,7 +50,7 @@ export default function HomePage() {
 
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Uomo")
-
+        setSearchValue("")
 
     }
 

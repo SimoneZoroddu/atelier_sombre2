@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom"
 import img_logo from "../img/logo_basic_ateliere_sombre.png"
-
-
 import { useShop } from "../contexts/GlobalContext"
 import { useNavigate } from "react-router";
 
 export default function AppHeader() {
-    const { searchValue, setSearchValue, category } = useShop()
+    const { searchValue, setSearchValue, category, setGenre } = useShop()
     let navigate = useNavigate();
 
     return (
@@ -59,7 +57,7 @@ export default function AppHeader() {
                     {
                         category?.map((item, index) => (
                             <div className=" ms-1 mb-2" data-bs-dismiss="offcanvas" key={index}>
-                                <Link to="/shoes" className="text-black underline_hover " onClick={() => { setSearchValue(item) }} >
+                                <Link to="/shoes" className="text-black underline_hover " onClick={() => { setSearchValue(item), setGenre("") }} >
                                     {item}
                                 </Link>
                             </div>
