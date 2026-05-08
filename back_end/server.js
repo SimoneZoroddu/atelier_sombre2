@@ -10,7 +10,7 @@ app.listen(port, () => {
 
 //cors middleware (see env file for FRONTENDED_URL)
 app.use(cors({origin: process.env.FRONTENDED_URL,
-    methods: ['GET']}
+    methods: ['GET', 'POST']}
 ));
 
 //json middleware
