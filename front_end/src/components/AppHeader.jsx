@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
 import { useShop } from "../contexts/GlobalContext"
+import { useNavigate } from "react-router";
 
 export default function AppHeader() {
     const { searchValue, setSearchValue, category } = useShop()
-
+    let navigate = useNavigate();
 
     return (
         <div>
@@ -47,11 +48,17 @@ export default function AppHeader() {
                 </div>
 
                 <div className="offcanvas-body">
-                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                    <input className="form-control mb-3" type="search" placeholder="What are you looking for?" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyDown={(e) => {
+                        if (e.key === "Enter")
+                            navigate("/shoes")
+                    }} />
+
                     {
                         category?.map((item, index) => (
-                            <div className="p-1" data-bs-dismiss="offcanvas" key={index} onClick={() => setSearchValue(item)} style={{ cursor: "pointer" }} >
-                                {item}
+                            <div className=" ms-1 mb-2" data-bs-dismiss="offcanvas" key={index}>
+                                <Link to="/shoes" className="text-black underline_hover " onClick={() => setSearchValue(item)} >
+                                    {item}
+                                </Link>
                             </div>
                         ))
                     }
