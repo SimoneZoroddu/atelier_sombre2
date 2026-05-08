@@ -71,7 +71,7 @@ export default function AppSearch() {
                 <div className="row g-0 row-cols-2 row-cols-md-4">
 
                     {filteredShoes?.map((shoe) => (
-                        <div className="col position-relative" key={shoe.id}>
+                        <div className="col position-relative gx-2" key={shoe.id}>
 
                             <div className="image-container">
                                 <Link to={`/products/${shoe.name}/${shoe.color}`}>

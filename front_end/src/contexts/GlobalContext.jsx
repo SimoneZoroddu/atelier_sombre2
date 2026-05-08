@@ -6,7 +6,6 @@ function ShopProvider({ children }) {
 
   const [loader, setLoader] = useState(false);
 
-
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
     const saved = localStorage.getItem('cartList');

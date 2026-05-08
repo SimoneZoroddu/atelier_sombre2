@@ -11,7 +11,8 @@
 }
 
 .image-container {
-    height: 30rem;
+    background-color: #f8f7f5;
+    aspect-ratio: 1/1;
 }
 
 .image-container img {
@@ -19,5 +20,8 @@
     height: 100%;
     object-fit: cover;
     object-position: bottom;
+}
 
+.image-container img[src="https://saint-laurent.dam.kering.com/asset/14101576-10ae-44a0-bf9f-32e1279078d3/Medium2/843730AAE901000_A.jpg?v=3"] {
+    object-fit: contain;
 }
