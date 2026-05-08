@@ -38,10 +38,10 @@ const show = (req, res) => {
 
         const queryProductsDetail = `
             SELECT 
-            shoes.name, shoes.color, shoes.genre, shoes.category, shoes.on_sale,
-            image.main_image_url, 
             orders.id AS order_id,
-            order_shoes_variant.quantity, order_shoes_variant.price AS cart_price,
+            shoes.name, shoes.category, shoes.color, shoes.genre, 
+            image.main_image_url, 
+            shoes_variant.size, order_shoes_variant.quantity, order_shoes_variant.price AS cart_price, shoes.on_sale,
             shoes.price AS system_price
             FROM orders
             JOIN order_shoes_variant ON orders.id = order_shoes_variant.order_id
