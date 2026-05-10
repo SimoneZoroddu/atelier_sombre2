@@ -91,11 +91,21 @@ export default function AppCart() {
 
                     {/* QUANTITÀ */}
                     <div className="item_quantity">
+                      {/* Decrement quantity or delete item */}
                       <button className="qty_btn"
-                        onClick={() => item.quantity > 0 && setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity - 1 } : i))}>
+                        onClick={() => {
+                          /* Delete if quantity = 1 */
+                          if(item.quantity === 1) {
+                            setCartList(cartList.filter(i =>
+                              !(i.name === item.name && i.color === item.color)))
+                          } else { /* Decrement quantity if >= 2 */
+                            setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity - 1 } : i))}
+                        }}>
                         {item.quantity === 1 ? <i className="bi bi-trash3"></i> : "−"}
                         </button>
+                      {/* Show quantity */}
                       <span>{item.quantity}</span>
+                      {/* Increment quantity */}
                       <button className="qty_btn"
                       onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? {...i, quantity: i.quantity + 1} : i))}>
                         +
