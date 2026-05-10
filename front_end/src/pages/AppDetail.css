@@ -24,6 +24,7 @@ img {
     max-width: 1200px;
     margin: 3rem auto;
     padding: 0 2rem;
+    width: 100%;
 }
 
 /* ─── SEZIONE IMMAGINI ─── */
@@ -34,7 +35,12 @@ img {
     align-items: flex-start;
     min-width: 0;
 }
-
+.mainImageWrapper {
+    position: relative;
+    display: inline-block;
+    grid-area: images;
+    min-width: 0;
+}
 .thumbnailsColumn {
     display: flex;
     flex-direction: column;
@@ -58,7 +64,7 @@ img {
 .mainImage {
     flex: 1;
     min-width: 0;
-    max-width: 600px;
+    max-width: 100%;
     width: 100%;
     object-fit: cover;
 }

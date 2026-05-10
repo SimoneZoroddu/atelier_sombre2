@@ -198,16 +198,7 @@ export default function DetailPage() {
             >
                 <i className="bi bi-arrow-left"></i>
             </button>
-            {/* Home button */}
-
-            <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-                <i className="bi bi-house-door-fill" style={{ padding: "0.5rem" }}></i>
-            </Link>
-            {/* Search button */}
-
-            <Link to="/shoes" style={{ textDecoration: "none", color: "black" }}>
-                <i className="bi bi-search" style={{ padding: "0.5rem" }}></i>
-            </Link>
+           
             <div className="product-page">
 
                 {/* LEFT: IMMAGINI */}
