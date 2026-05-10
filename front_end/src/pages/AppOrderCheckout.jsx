@@ -2,10 +2,16 @@
 import { useState, useEffect } from "react";
 /* Import context */
 import { useShop } from "../contexts/GlobalContext";
+import axios from "axios";
 
 export default function AppOrderCheckout() {
 
-  const [userData, setUserData] = useState({
+  //console.log(localStorage);
+  const total_price = localStorage.getItem("total_price");
+  const storedCartList = JSON.parse(localStorage.getItem('cart'));
+  const [cartList, setCartList] = useState(storedCartList);
+
+  const [order, setOrder] = useState({
     firstname: "",
     lastname: "",
     email: "",
@@ -15,47 +21,92 @@ export default function AppOrderCheckout() {
     region: "",
     city: "",
     street: "",
-    zip_code: ""
+    zip_code: "",
+    total_price: `${total_price}`,
   });
+  const [productsData, setProductsData] = useState([]);
 
+  const { loading, setLoading } = useShop();
+
+  const orderUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
+  const productsDataUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
+
+  useEffect(() => {
+    setProductsData(
+      cartList.map(item => (
+        {
+          variant_id: Number(item.id),
+          quantity: Number(item.quantity),
+          price: Number(item.price),
+        }
+      )
+      )
+    )
+  }, [cartList])
+  //console.log(productsData);
+
+
+
+  /* get user data from localStorage (if any) */
+  useEffect(() => {
+    const savedOrderData = localStorage.getItem('order');
+    if (savedOrderData) {
+      /* keep total price updated */
+      setOrder(JSON.parse(savedOrderData));
+      //console.log(order);
+    }
+  }, [total_price])
+
+  /* update user data */
   function handleInputChange(e) {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-
+    setOrder({ ...order, [name]: value });
+    //console.log(order);
   }
+  /* save updated user data to localStorage */
+  useEffect(() => {
+    localStorage.setItem('order', JSON.stringify(order));
+  }, [order]);
 
-  function handleUserDataSubmit(e) {
-    e.preventDefault();
-    console.log(userData);
-  }
 
-  /*   useEffect(() => {
-      
-      
-    }, [userFormData])
-    console.log(userData); */
-
-  function HandleFinalSubmit(e) {
+  function handleOrderSubmit(e) {
     e.preventDefault();
 
-    /* send data to backend */
-    /* get
-    - vat_number
-    - is_billing
-    - status
-    */
-
-    /* ⚠️ call here */
-
-    /* redirect to order details page */ /* ⚠️ todo */
-
+    /* Validate required fields */
+    //here field-specific validation
+    //handle empty fields
+    /* Collect data */
+    const body = {
+      order: { ...order, total_price: Number(order.total_price) },
+      items: productsData
+    };
+    console.log(body);
+    /* Set loader */
+    setLoading(true);
+    /* Send data */
+    axios.post(orderUrl, body)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        console.log("Order request completed");
+        //clear cart and total price from local Storage
+        //clear form
+        //navigate to confirmation/order page
+      });
+    /* Handle success */
+    /* Handle error */
   }
 
   return (
     <>
       <div className="container">
         {/* Get user data */} {/* ⚠️ todo: ?? visibility on/off or collapse or tabs to navigate between forms, ?? componentize */}
-        <form className="user_data" onSubmit={handleUserDataSubmit}>
+        <form className="user_data" onSubmit={handleOrderSubmit}>
           <div className="m-3">
             <h2>Dati personali</h2>
           </div>
@@ -63,61 +114,61 @@ export default function AppOrderCheckout() {
             <div className="mb-3">
               <label htmlFor="firstname_field" className="form-label">Nome</label>
               <input type="text" className="form-control" id="firstname_field"
-                name="firstname" value={userData.name}
+                name="firstname" value={order.firstname}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="lastname_field" className="form-label">Cognome</label>
               <input type="text" className="form-control" id="lastname_field"
-                name="lastname" value={userData.name}
+                name="lastname" value={order.lastname}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="email_field" className="form-label">Email</label>
               <input type="email" className="form-control" id="email_field" aria-describedby="emailHelp"
-                name="email" value={userData.name}
+                name="email" value={order.email}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="telephone_number_field" className="form-label">Telefono</label>
               <input type="text" className="form-control" id="telephone_number_field"
-                name="telephone_number" value={userData.name}
+                name="telephone_number" value={order.telephone_number}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="fiscal_code_field" className="form-label">Codice Fiscale</label>
               <input type="text" className="form-control" id="fiscal_code_field"
-                name="fiscal_code" value={userData.name}
+                name="fiscal_code" value={order.fiscal_code}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="country_field" className="form-label">Paese</label>
               <input type="text" className="form-control" id="country_field"
-                name="country" value={userData.name}
+                name="country" value={order.country}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="region_field" className="form-label">Regione</label>
               <input type="text" className="form-control" id="region_field"
-                name="region" value={userData.name}
+                name="region" value={order.region}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="city_field" className="form-label">Città</label>
               <input type="text" className="form-control" id="city_field"
-                name="city" value={userData.name}
+                name="city" value={order.city}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="street_field" className="form-label">Indirizzo</label>
               <input type="text" className="form-control" id="street_field"
-                name="street" value={userData.name}
+                name="street" value={order.street}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
               <label htmlFor="zip_code_field" className="form-label">CAP</label>
               <input type="text" className="form-control" id="zip_code_field"
-                name="zip_code" value={userData.name}
+                name="zip_code" value={order.zip_code}
                 onChange={handleInputChange} />
             </div>
           </div>
@@ -130,18 +181,21 @@ export default function AppOrderCheckout() {
         <div className="m-3">
           <h3>Seleziona il metodo di pagamento</h3>
           <div className="m-3">
+            {/* credit card option */}
             <div className="form-check">
               <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault1" />
               <label className="form-check-label" htmlFor="radioDefault1">
                 <i className="bi bi-credit-card-fill"></i> Carta di credito
               </label>
             </div>
+            {/* apple pay option */}
             <div className="form-check">
               <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault2" />
               <label className="form-check-label" htmlFor="radioDefault2">
                 <i className="bi bi-apple"></i> Apple Pay
               </label>
             </div>
+            {/* google pay option */}
             <div className="form-check">
               <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault2" />
               <label className="form-check-label" htmlFor="radioDefault2">
@@ -150,6 +204,7 @@ export default function AppOrderCheckout() {
                 </svg></i> Google Pay
               </label>
             </div>
+            {/* paypal option */}
             <div className="form-check">
               <input className="form-check-input" type="radio" name="radioDefault" id="radioDefault2" />
               <label className="form-check-label" htmlFor="radioDefault2">
@@ -158,8 +213,8 @@ export default function AppOrderCheckout() {
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </>
   )
 
