@@ -70,12 +70,11 @@ export default function AppOrderCheckout() {
 
 
   function handleOrderSubmit(e) {
+    /* prevent default */
     e.preventDefault();
-
-    /* Validate required fields */
-    //here field-specific validation
-    //handle empty fields
-    /* Collect data */
+    /* Validate data */
+    // ⚠️ todo
+    /* Build req body */
     const body = {
       order: { ...order, total_price: Number(order.total_price) },
       items: productsData
@@ -83,11 +82,12 @@ export default function AppOrderCheckout() {
     console.log(body);
     /* Set loader */
     setLoading(true);
-    /* Send data */
+    /* Submit data */
     axios.post(orderUrl, body)
       .then(res => {
         console.log(res.data);
       })
+      /* Handle server error */
       .catch(err => {
         console.error(err);
       })
@@ -95,11 +95,16 @@ export default function AppOrderCheckout() {
         setLoading(false);
         console.log("Order request completed");
         //clear cart and total price from local Storage
+        // ⚠️ todo
         //clear form
+        // ⚠️ todo
         //navigate to confirmation/order page
+        // ⚠️ todo
       });
-    /* Handle success */
-    /* Handle error */
+      /* Handle success */
+      // ⚠️ todo
+      /* Handle error */
+      // ⚠️ todo
   }
 
   return (
