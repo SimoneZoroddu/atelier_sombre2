@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useShop } from "../contexts/GlobalContext";
 
 
@@ -19,7 +19,54 @@ export default function DetailPage() {
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
     const location = useLocation();
+//zoom references
+    const lensRef = useRef(null);
+    const resultRef = useRef(null);
+    const imgRef = useRef(null);
+    const wrapperRef = useRef(null);
+    
+    const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
+        const wrapper = e.currentTarget;
+        const img = imgRef.current;
+        const lens = lensRef.current;
+        const result = resultRef.current;
 
+        if (!img) return; // evita errori se l'immagine non è ancora pronta
+
+        
+        result.style.display = "block";//mostra il risultato dello zoom
+
+        const x = e.nativeEvent.offsetX; //salva le coordinate del mouse rispetto all'immagine
+        const y = e.nativeEvent.offsetY;
+
+        const lensSize = 100;
+        //centra la lente sul mouse
+        lens.style.left = `${x - lensSize / 2}px`;
+        lens.style.top = `${y - lensSize / 2}px`;
+        //definiamo uno zoom
+        const zoomLevel = 2.5;
+        //zoomma l'immagine che è lo sfondo del div result
+        const imgWidth = img.width * zoomLevel;
+        const imgHeight = img.height * zoomLevel;
+        
+        const resultWidth = result.offsetWidth;
+        const resultHeight = result.offsetHeight;
+        // sposta lo sfondo in modo che corrisponda alla posizione della lente
+        const bgX = -(x * zoomLevel - resultWidth / 2);
+        const bgY = -(y * zoomLevel - resultHeight); 
+        result.style.backgroundImage = `url(${mainImage})`;
+        result.style.backgroundSize = `${imgWidth}px ${imgHeight}px`;
+        result.style.backgroundPosition = `${bgX}px ${bgY}px`;
+    };
+
+
+
+    console.log(lensRef.current);
+    const handleLeave = () => {//funzione che nasconde il risultato dello zoom quando il mouse esce dall'immagine
+        
+        resultRef.current.style.display = "none";
+    };
+    
     const shippingInfo = [
         {
             id: "standard",
@@ -191,7 +238,18 @@ export default function DetailPage() {
                     </div>
 
                     {/* IMMAGINE PRINCIPALE */}
-                    <img src={mainImage} alt={product.name} className="mainImage" />
+                    <div className="mainImageWrapper">
+                        <img
+                            ref={imgRef}
+                            src={mainImage}
+                            alt={product.name}
+                            className="mainImage"
+                            onMouseMove={handleZoom}
+                            onMouseLeave={handleLeave}
+                        />
+                        <div className="zoomLens" ref={lensRef}></div>
+                        <div className="zoomResult" ref={resultRef}></div>
+                    </div>
                 </div>
 
                 {/* RIGHT: INFO PRODOTTO */}
