@@ -70,19 +70,60 @@ const show = (req, res) => {
 }
 
 //Post routes orders
+
+/* INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, status, total_price) VALUES
+-- SCENARIO A: Mario Rossi (Ordine singolo con più articoli)
+('Mario', 'Rossi', 'mario.rossi@email.com', '3331234567', 'RSSMRA80A01F205X', NULL, 'Italia', 'Lombardia', 'Milano', 'Via Montenapoleone 8', '20121', 1, 'PAID', 1900.00);
+
+INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES
+-- Dettagli Ordine 1 (Mario Rossi: 2 articoli diversi in un solo ordine)
+(1, 2, 1, 1100.00), -- Mario compra 1 Derby Helios
+(1, 4, 1, 800.00),  -- Mario compra 1 Stringata (Totale carrello: 1900.00) */
+
 const post = (req, res) => {
     // waiting for cart data
-    const { order } = req.body;
+    const { 
+        firstname, 
+        lastname, 
+        email, 
+        telephone_number, 
+        fiscal_code, 
+        vat_number, 
+        country, 
+        region, 
+        city, 
+        street, 
+        zip_code, 
+        is_billing, 
+        status, 
+        total_price 
+    } = req.body;
     //query to add order on table db
-    const queryOrders = 'INSERT INTO orders (order) VALUES (?)';
+    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, status, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
-    connection.query(queryOrders, [order], (err, ordersResults) => {
+    connection.query(queryOrders, 
+        [
+            firstname, 
+            lastname, 
+            email, 
+            telephone_number, 
+            fiscal_code, 
+            vat_number, 
+            country, 
+            region, 
+            city, 
+            street, 
+            zip_code, 
+            is_billing, 
+            status, 
+            total_price
+        ], (err, ordersResults) => {
         if (err) {
             console.error('Errore nella query shoes:', err);
             return res.status(500).json({ error: 'Errore interno' });
         }
 
-        if (!shoesResults) {
+        if (!ordersResults) {
             return res.json([]);
         }
 

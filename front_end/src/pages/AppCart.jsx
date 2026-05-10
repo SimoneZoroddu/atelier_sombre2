@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 /* Import context */
 import { useShop } from "../contexts/GlobalContext";
-
+/* Import css */
+import "./AppCart.css";
 export default function AppCart() {
   /* declare support variables */
   const { cartList, setCartList } = useShop();
@@ -49,92 +50,108 @@ export default function AppCart() {
     /* redirect to checkout */
     navigate('/checkout')
   }
-
-  /* render products list */
-  function renderCart() {
-
-    if (cartList.length === 0) {
-      return (
-        <>
-          <div>La tua Shopping bag è vuota</div>
-          <div>Continua lo shopping</div>
-        </>
-      )
-    } else {
-      return (
-        <div className="container cart_list_container">
-          <div className="cart_list">
-
-            {cartList.map((item) => (
-              <div className="row row-cols-2 d-flex justify-content-between bg-light my-1 gx-0 cart_list_item" key={item.name + item.color}>
-                <div className="col-6 d-flex item_info">
-                  <img src={item.image} alt={item.name} className="item_image" height="200px" />
-                  <div className="mx-3">
-                    <div className="fs-5 my-2 item_name">{item.name}</div>
-                    <div className="item_details">
-                      <div className="item_size">
-                        Taglia
-                        <span className="fw-semibold"> {item.size}</span>
-                      </div>
-                      <div className="item_color">
-                        Color
-                        <span className="fw-semibold"> {item.color}</span>
-                      </div>
-                      <div className="my-2 item_price">
-                        € {item.price}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col item_amount">
-                  <ul className="list-group list-group-horizontal small">
-                    <li className="list-group-item p-2 bg-light">+</li>
-                    <li className="list-group-item p-2">{item.quantity}</li>
-                    <li className="list-group-item p-2 bg-light">-</li>
-                  </ul>
-                </div>
-                <div className="col ">Rimuovi</div>
-              </div>
-            ))}
-
-          </div>
-        </div>
-      )
-    }
-  }
   return (
-    <>
-      <div className="container cart_container d-flex flex-column">
+    <div className="cart_container">
 
-        <div className="cart_header ">
-          <h2>
-            Shopping bag
-          </h2>
-          <div>
-            {(cartList.length === 0) ? <span>(0)</span> : <span>({cartList.length}) </span>}
-            prodotti
-          </div>
+      {/* HEADER */}
+      <header className="cart_header">
+        <h2>Shopping bag</h2>
+        <span className="cart_count">({cartList.length}) prodotti</span>
+      </header>
+
+      {cartList.length === 0 ? (
+        <div className="cart_empty">
+          <p>La tua Shopping bag è vuota</p>
+          <button className="btn_continue">Continua lo shopping</button>
         </div>
+      ) : (
+        <div className="cart_content">
 
-        <div className="cart_body">
-          {renderCart()}
-        </div >
+          {/* ── SINISTRA: lista prodotti ── */}
+          <section className="cart_body">
+            <ul className="cart_list">
+              {cartList.map((item) => (
+                <li className="cart_item" key={item.name + item.color}>
 
-        <div className="cart_footer text-end my-3">
-          <div className="d-flex justify-content-between fs-5 my-3 cart_total">
-            <div className="fw-semibold">Subtotale:</div>
-            <div> € {cartTotal}</div>
-          </div>
-          <div className="cart_checkout">
-            <button type="button" className="btn btn-dark"
-              onClick={handleCheckout}>
+                  {/* IMMAGINE — nascosta su mobile via CSS */}
+                  <div className="item_image_wrapper">
+                    <img src={item.image} alt={item.name} className="item_image" />
+                  </div>
+
+                  {/* INFO */}
+                  <div className="item_info">
+                    <h3 className="item_name">{item.name}</h3>
+
+                    <div className="item_meta">
+                      <p>Taglia: <strong>{item.size}</strong></p>
+                      <p>Colore: <strong>{item.color}</strong></p>
+                    </div>
+
+                    <p className="item_price">€ {item.price}</p>
+
+                    {/* QUANTITÀ */}
+                    <div className="item_quantity">
+                      <button className="qty_btn">−</button>
+                      <span>{item.quantity}</span>
+                      <button className="qty_btn">+</button>
+                    </div>
+
+                    {/* RIMUOVI */}
+                    <button className="remove_btn">Rimuovi</button>
+                  </div>
+
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* ── DESTRA: riepilogo ordine ── */}
+          <aside className="cart_sidebar">
+
+            <h3 className="sidebar_title">Riepilogo ordine</h3>
+
+            <div className="sidebar_row">
+              <span>Subtotale</span>
+              <strong>€ {cartTotal}</strong>
+            </div>
+
+            <div className="sidebar_row">
+              <span>Spedizione</span>
+              <span className="shipping_placeholder">Calcolata al checkout</span>
+            </div>
+
+            <div className="sidebar_divider" />
+
+            <div className="sidebar_row sidebar_total">
+              <span>Totale stimato</span>
+              <strong>€ {cartTotal}</strong>
+            </div>
+
+            <button className="btn_checkout" onClick={handleCheckout}>
               Procedi all'acquisto
             </button>
-          </div >
-        </div >
 
-      </div >
-    </>
+            {/* ECO BOX */}
+            <div className="eco-box">
+              <span className="eco-icon"><i className="bi bi-leaf"></i></span>
+              <div className="eco-text">
+                <p className="eco-title">Il nostro impegno per il pianeta</p>
+                <p className="eco-body">
+                  Ogni scelta che facciamo è guidata dal rispetto per l'ambiente.
+                  Utilizziamo materiali certificati e confezioni in carta riciclata,
+                  e lavoriamo con corrieri che adottano pratiche di consegna a basse emissioni.
+                  Perché il lusso non dovrebbe avere un costo per la terra.
+                </p>
+              </div>
+            </div>
+
+          </aside>
+
+        </div>
+      )}
+
+    </div>
+
   )
 }
 
