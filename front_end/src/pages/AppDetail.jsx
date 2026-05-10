@@ -4,7 +4,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 
 
-import "./DetailPage.css";
+import "./AppDetail.css";
 
 export default function DetailPage() {
     const { name, color } = useParams();

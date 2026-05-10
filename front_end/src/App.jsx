@@ -5,9 +5,9 @@ import { ShopProvider } from "./contexts/GlobalContext";
 /* Import default layout */
 import DefaultLayout from "./layout/DefaultLayout";
 /* Import pages */
-import HomePage from "./pages/HomePage";
+import AppHome from "./pages/AppHome";
 import AppSearch from "./pages/AppSearch";
-import DetailPage from "./pages/DetailPage";
+import AppDetail from "./pages/AppDetail";
 import AppCart from "./pages/AppCart";
 import AppOrderCheckout from "./pages/AppOrderCheckout";
 
@@ -20,9 +20,9 @@ function App() {
       <ShopProvider>
         <Routes>
           <Route element={<DefaultLayout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<AppHome />} />
             <Route path="/shoes" element={<AppSearch />} />
-            <Route path="/products/:name/:color" element={<DetailPage />} />
+            <Route path="/products/:name/:color" element={<AppDetail />} />
             <Route path="/cart" element={<AppCart />} />
             <Route path="/checkout" element={<AppOrderCheckout />} />
 
