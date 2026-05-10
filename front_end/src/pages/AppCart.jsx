@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useShop } from "../contexts/GlobalContext";
 
 export default function AppCart() {
+  /* declare support variables */
   const { cartList, setCartList } = useShop();
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  let cartTotal;
-  let cartCheckoutInfo;
-  let productsInfo;
+  const [ isInitialLoading, setIsInitialLoading ] = useState(true);
+  const [ cartTotal, setCartTotal ] = useState(0);
   const navigate = useNavigate();
 
   /* get data from localStorage */
@@ -25,7 +24,7 @@ export default function AppCart() {
     }
     setIsInitialLoading(false);
 
-  }, []);
+  }, [setCartList]);
   //console.log(cartList);
 
   /* keep update data in localStorage */
@@ -35,19 +34,17 @@ export default function AppCart() {
       localStorage.setItem('cart', JSON.stringify(cartList));
     }
   }, [cartList, isInitialLoading]);
-  
+
   /* get cart total */
   /* ⚠️ to be implemented, add if discount */
-  cartTotal = cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0);
-  console.log(cartTotal);
-  
+  useEffect(() => {
+    setCartTotal(cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0));
+  }, [cartList]);
+
   /* handle checkout */
   function handleCheckout() {
-    /* set checkout info */
-    cartCheckoutInfo = (`total: ${cartTotal}`, productsInfo);
-    console.log(cartCheckoutInfo);
-    /* send data to back-end */
-    /* ⚠️ call here */
+    /* save data to localStorage */
+    localStorage.setItem('total_price', String(cartTotal));
 
     /* redirect to checkout */
     navigate('/checkout')
