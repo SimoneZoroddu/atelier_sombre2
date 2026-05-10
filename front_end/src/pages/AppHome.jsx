@@ -1,71 +1,56 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
-
+/* assets */
 import hero_img from "../img/hero_space.jpg"
 import shop_shoes from "../img/shop_shoes2.png"
-
+/* context */
 import { useShop } from "../contexts/GlobalContext"
 
 
 
 export default function HomePage() {
-    const { setGenre, setSearchValue } = useShop()
-
-    const url = import.meta.env.VITE_API_ADDRESS + "index";
-
-    const [shoes, setShoes] = useState([])
-
-    useEffect(() => {
-
-        axios.get(url)
-            .then(datas =>
-                setShoes(datas.data)
-            )
-
-    }, [])
-
+    const { setGenre, setSearchValue, shoes, setShoes } = useShop()
 
     const today = new Date();
-
     const newArrivals = shoes.filter(shoe => {
         const shoe_created_at = new Date(shoe.created_at);
         const expiry = new Date(shoe_created_at);
         expiry.setMonth(expiry.getMonth() + 3);
 
         return today <= expiry;
-
     })
-
 
     const newArrivalsWoman = newArrivals.filter(shoe => shoe.genre == "Donna")
     const newArrivalsMan = newArrivals.filter(shoe => shoe.genre == "Uomo")
 
-    function filterSet() {
+    function FilterWoman() {
         window.scrollTo({ top: 0 })
-        // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Donna")
         setSearchValue("")
-
     }
 
-    function FilterUomo() {
+    function FilterMan() {
         window.scrollTo({ top: 0 })
-        // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
         setGenre("Uomo")
         setSearchValue("")
+    }
 
+    function ResetFilter() {
+        window.scrollTo({ top: 0 })
+        setGenre("")
+        setSearchValue("")
     }
 
     return (
         <>
             <div className="container-fluid">
-                <Link className="nav-link active" aria-current="page" to="/shoes">
+                <Link className="nav-link active" aria-current="page" to="/shoes" onClick={ResetFilter}>
                     <img src={hero_img} alt="tods-hp-summerselection" className="img-fluid w-100" />
                 </Link>
                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                 <div className="text-center mb-5">
-                    <Link to="/shoes" className="fs-5 text-black underline_hover">
+                    <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={ResetFilter}>
                         Acquista ora
                     </Link>
                 </div>
@@ -75,24 +60,24 @@ export default function HomePage() {
                         <div className="col px-0">
                             {
                                 <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsWoman[0]?.ID}  >
-                                    <Link to="/shoes" onClick={filterSet}>
+                                    <Link to="/shoes" onClick={FilterWoman}>
                                         <img src={newArrivalsWoman[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
                                     </Link>
                                 </div>
                             }
-                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={filterSet}>
+                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterWoman}>
                                 New Arrivals Woman
                             </Link>
                         </div>
                         <div className="col px-0">
                             {
                                 <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsMan[0]?.ID}  >
-                                    <Link to="/shoes" onClick={FilterUomo}>
+                                    <Link to="/shoes" onClick={FilterMan}>
                                         <img src={newArrivalsMan[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
                                     </Link>
                                 </div>
                             }
-                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterUomo}>
+                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterMan}>
                                 New Arrivals Man
                             </Link>
                         </div>
