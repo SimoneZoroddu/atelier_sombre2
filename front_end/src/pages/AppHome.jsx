@@ -70,31 +70,32 @@ export default function HomePage() {
                     </Link>
                 </div>
 
-                <div className="d-flex gap-4">
-                    <div className="text-center">
-                        {
-                            <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsWoman[0]?.ID}  >
-                                <Link to="/shoes" onClick={filterSet}>
-                                    <img src={newArrivalsWoman[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
-
-                                </Link>
-                            </div>
-                        }
-                        <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={filterSet}>
-                            New Arrivals Woman
-                        </Link>
-                    </div>
-                    <div className="text-center">
-                        {
-                            <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsMan[0]?.ID}  >
-                                <Link to="/shoes" onClick={FilterUomo}>
-                                    <img src={newArrivalsMan[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
-                                </Link>
-                            </div>
-                        }
-                        <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterUomo}>
-                            New Arrivals Man
-                        </Link>
+                <div className="container-fluid">
+                    <div className="row row-cols-1 row-cols-md-2 g-4 text-center">
+                        <div className="col px-0">
+                            {
+                                <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsWoman[0]?.ID}  >
+                                    <Link to="/shoes" onClick={filterSet}>
+                                        <img src={newArrivalsWoman[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
+                                    </Link>
+                                </div>
+                            }
+                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={filterSet}>
+                                New Arrivals Woman
+                            </Link>
+                        </div>
+                        <div className="col px-0">
+                            {
+                                <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsMan[0]?.ID}  >
+                                    <Link to="/shoes" onClick={FilterUomo}>
+                                        <img src={newArrivalsMan[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
+                                    </Link>
+                                </div>
+                            }
+                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterUomo}>
+                                New Arrivals Man
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div >
@@ -103,7 +104,7 @@ export default function HomePage() {
                     <div className="col-12 col-lg-6">
                         <img src={shop_shoes} alt="Boutique" className="img-fluid w-100 h-100 object-fit-cover" style={{ minHeight: "650px", objectFit: "cover" }} />
                     </div>
-                    <div className="col-12 col-lg-6 d-flex align-items-center" style={{ backgroundColor: "#eef3f2" }}  >
+                    <div className="col-12 col-lg-6 d-flex align-items-center background_color_basic" >
                         <div className="px-5 px-lg-7 py-5 w-100">
                             <p className="text-uppercase mb-3" style={{ letterSpacing: "3px", fontSize: "0.8rem", color: "#7a7a7a" }} >
                                 Boutique
