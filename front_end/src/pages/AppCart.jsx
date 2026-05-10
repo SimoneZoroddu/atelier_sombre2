@@ -91,9 +91,15 @@ export default function AppCart() {
 
                     {/* QUANTITÀ */}
                     <div className="item_quantity">
-                      <button className="qty_btn">−</button>
+                      <button className="qty_btn"
+                        onClick={() => item.quantity > 0 && setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity - 1 } : i))}>
+                        {item.quantity === 1 ? <i className="bi bi-trash3"></i> : "−"}
+                        </button>
                       <span>{item.quantity}</span>
-                      <button className="qty_btn">+</button>
+                      <button className="qty_btn"
+                      onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? {...i, quantity: i.quantity + 1} : i))}>
+                        +
+                        </button>
                     </div>
 
                     {/* RIMUOVI */}
