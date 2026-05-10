@@ -44,7 +44,7 @@ export default function HomePage() {
     function filterSet() {
         window.scrollTo({ top: 0 })
         // function for set the search page with NEW ARRIVALS and WOMAN if we dont have a path for the search
-        setGenre("Donna d-flex flex-column justify-content-center align-items-center flex-grow-1 d-flex flex-column justify-content-center align-items-center flex-grow-1")
+        setGenre("Donna")
         setSearchValue("")
 
     }
