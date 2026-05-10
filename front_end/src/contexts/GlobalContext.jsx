@@ -5,7 +5,7 @@ const GlobalContext = createContext();
 
 function ShopProvider({ children }) {
 
-  const [loader, setLoader] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
@@ -47,8 +47,8 @@ function ShopProvider({ children }) {
   return (
     <GlobalContext.Provider
       value={{
-        loader,
-        setLoader,
+        loading,
+        setLoading,
         cartList,
         setCartList,
         genre,
