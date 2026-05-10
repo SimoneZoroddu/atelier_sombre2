@@ -25,3 +25,7 @@
 .image-container img[src="https://saint-laurent.dam.kering.com/asset/14101576-10ae-44a0-bf9f-32e1279078d3/Medium2/843730AAE901000_A.jpg?v=3"] {
     object-fit: contain;
 }
+
+.background_color_basic {
+    background-color: #eef3f2;
+}
