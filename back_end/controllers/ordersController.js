@@ -71,15 +71,6 @@ const show = (req, res) => {
 
 //Post routes orders
 
-/* INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, status, total_price) VALUES
--- SCENARIO A: Mario Rossi (Ordine singolo con più articoli)
-('Mario', 'Rossi', 'mario.rossi@email.com', '3331234567', 'RSSMRA80A01F205X', NULL, 'Italia', 'Lombardia', 'Milano', 'Via Montenapoleone 8', '20121', 1, 'PAID', 1900.00);
-
-INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES
--- Dettagli Ordine 1 (Mario Rossi: 2 articoli diversi in un solo ordine)
-(1, 2, 1, 1100.00), -- Mario compra 1 Derby Helios
-(1, 4, 1, 800.00),  -- Mario compra 1 Stringata (Totale carrello: 1900.00) */
-
 const post = (req, res) => {
     // waiting for cart data
     const { 
@@ -88,18 +79,15 @@ const post = (req, res) => {
         email, 
         telephone_number, 
         fiscal_code, 
-        vat_number, 
         country, 
         region, 
         city, 
         street, 
         zip_code, 
-        is_billing, 
-        status, 
         total_price 
-    } = req.body;
+    } = req.body.order;
     //query to add order on table db
-    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, status, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, country, region, city, street, zip_code, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
     connection.query(queryOrders, 
         [
@@ -108,14 +96,11 @@ const post = (req, res) => {
             email, 
             telephone_number, 
             fiscal_code, 
-            vat_number, 
             country, 
             region, 
             city, 
             street, 
             zip_code, 
-            is_billing, 
-            status, 
             total_price
         ], (err, ordersResults) => {
         if (err) {
@@ -127,7 +112,32 @@ const post = (req, res) => {
             return res.json([]);
         }
 
-        return res.status(201).json({ message: 'Ordine inserito con successo' });
+        const order_idQuery = `SELECT LAST_INSERT_ID()`;
+        connection.query(order_idQuery, (err, idResult) => {
+            if (err) {
+                console.error('Errore nella query shoes:', err);
+                return res.status(500).json({ error: 'Errore interno' });
+            }
+            const order_id = idResult[0]['LAST_INSERT_ID()'];
+            console.log(order_id);
+
+            req.body.items.forEach(element => { 
+                const queryOrderShoes = 'INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES (?, ?, ?, ?)';
+                connection.query(queryOrderShoes, [order_id, element.variant_id, element.quantity, element.price], (err, orderShoesResults) => {
+                    if (err) {
+                        console.error('Errore nella query shoes:', err);
+                        return res.status(500).json({ error: 'Errore interno' });
+                    }
+                    
+                    if (!orderShoesResults) {
+                        return res.json([]);
+                    }
+                })
+            })
+
+            return res.json(ordersResults)
+        })
+
     });
 }
 
