@@ -62,7 +62,9 @@ export default function AppCart() {
       {cartList.length === 0 ? (
         <div className="cart_empty">
           <p>La tua Shopping bag è vuota</p>
-          <button className="btn_continue">Continua lo shopping</button>
+          <Link to="/shoes" >
+            <button className="btn_continue">Continua lo shopping</button>
+          </Link>
         </div>
       ) : (
         <div className="cart_content">
@@ -175,8 +177,7 @@ export default function AppCart() {
 }
 
 
-
-
-{/* nella card mostra quantità (modificabile) e cestino */ }
-{/* mostra totale */ }
-{/* OPZIONALE: mostra in basso wishlist con possibilità di aggiunta diretta */ }
+{/* ⚠️ ToDo:
+  - OPZIONALE: mostra in basso wishlist con possibilità di aggiunta diretta al carrello
+  - 
+  */ }
