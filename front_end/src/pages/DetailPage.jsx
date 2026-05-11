@@ -19,12 +19,15 @@ export default function DetailPage() {
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
     const location = useLocation();
-//zoom references
+    //zoom references
     const lensRef = useRef(null);
     const resultRef = useRef(null);
     const imgRef = useRef(null);
     const wrapperRef = useRef(null);
-    
+    //stati per gestione ovelay
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
         const wrapper = e.currentTarget;
         const img = imgRef.current;
@@ -33,7 +36,7 @@ export default function DetailPage() {
 
         if (!img) return; // evita errori se l'immagine non è ancora pronta
 
-        
+
         result.style.display = "block";//mostra il risultato dello zoom
 
         const x = e.nativeEvent.offsetX; //salva le coordinate del mouse rispetto all'immagine
@@ -48,12 +51,12 @@ export default function DetailPage() {
         //zoomma l'immagine che è lo sfondo del div result
         const imgWidth = img.width * zoomLevel;
         const imgHeight = img.height * zoomLevel;
-        
+
         const resultWidth = result.offsetWidth;
         const resultHeight = result.offsetHeight;
         // sposta lo sfondo in modo che corrisponda alla posizione della lente
         const bgX = -(x * zoomLevel - resultWidth / 2);
-        const bgY = -(y * zoomLevel - resultHeight); 
+        const bgY = -(y * zoomLevel - resultHeight);
         result.style.backgroundImage = `url(${mainImage})`;
         result.style.backgroundSize = `${imgWidth}px ${imgHeight}px`;
         result.style.backgroundPosition = `${bgX}px ${bgY}px`;
@@ -63,10 +66,10 @@ export default function DetailPage() {
 
     console.log(lensRef.current);
     const handleLeave = () => {//funzione che nasconde il risultato dello zoom quando il mouse esce dall'immagine
-        
+
         resultRef.current.style.display = "none";
     };
-    
+
     const shippingInfo = [
         {
             id: "standard",
@@ -183,6 +186,15 @@ export default function DetailPage() {
         ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
         : 0;
 
+
+    const images = [
+        product.image.main_image_url,
+        product.image.top_view_url,
+        product.image.secondary_image_url,
+        product.image.model_image_url
+    ].filter(img => img);
+
+
     return (
         <>
             {/* Back button */}
@@ -198,16 +210,7 @@ export default function DetailPage() {
             >
                 <i className="bi bi-arrow-left"></i>
             </button>
-            {/* Home button */}
 
-            <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-                <i className="bi bi-house-door-fill" style={{ padding: "0.5rem" }}></i>
-            </Link>
-            {/* Search button */}
-
-            <Link to="/shoes" style={{ textDecoration: "none", color: "black" }}>
-                <i className="bi bi-search" style={{ padding: "0.5rem" }}></i>
-            </Link>
             <div className="product-page">
 
                 {/* LEFT: IMMAGINI */}
@@ -246,6 +249,7 @@ export default function DetailPage() {
                             className="mainImage"
                             onMouseMove={handleZoom}
                             onMouseLeave={handleLeave}
+                            onClick={() => setIsFullscreen(true)}
                         />
                         <div className="zoomLens" ref={lensRef}></div>
                         <div className="zoomResult" ref={resultRef}></div>
@@ -273,7 +277,7 @@ export default function DetailPage() {
                                 <div key={index}>{detail}</div>
                             ))}
                             <p>
-                                <span style={{ color: "#000", fontWeight: 550, paddingTop : "1rem" }}>Colore:</span>
+                                <span style={{ color: "#000", fontWeight: 550, paddingTop: "1rem" }}>Colore:</span>
                                 {" "}{capitalizeWords(product.color)}
                             </p>
                         </div>
@@ -335,7 +339,9 @@ export default function DetailPage() {
                         <button className="wishlistButton">
                             <i className="bi bi-heart"></i>
                         </button>
+
                     </div>
+                    <Link to='/cart' style={{ textDecoration: "none", color: "black", fontFamily: 'Jost', fontWeight: 300, textAlign: "center" }}>Vai al tuo carrello</Link>
                 </div>
 
                 {/* PRODOTTI CONSIGLIATI */}
@@ -403,6 +409,44 @@ export default function DetailPage() {
                 </div>
 
             </div>
+            {isFullscreen && (
+                <div className="fullscreenOverlay" onClick={() => setIsFullscreen(false)}>
+
+                    <button
+                        className="arrow left"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) =>
+                                prev === 0 ? images.length - 1 : prev - 1
+                            );
+                            setMainImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]);
+                        }}
+                    >
+                        ‹
+                    </button>
+
+                    <img
+                        src={images[currentIndex]}
+                        alt="fullscreen"
+                        className="fullscreenImage"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+
+                    <button
+                        className="arrow right"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) =>
+                                prev === images.length - 1 ? 0 : prev + 1
+                            );
+                            setMainImage(images[currentIndex === images.length - 1 ? 0 : currentIndex + 1]);
+                        }}
+                    >
+                        ›
+                    </button>
+                </div>
+            )}
+
         </>
     );
 }
