@@ -10,7 +10,7 @@ export default function AppOrderCheckout() {
   const total_price = localStorage.getItem("total_price");
   const storedCartList = JSON.parse(localStorage.getItem('cart'));
   const [cartList, setCartList] = useState(storedCartList);
-let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 10)).join('')}`
+//let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 10)).join('')}`
 
   const [order, setOrder] = useState({
     firstname: "",
@@ -18,7 +18,7 @@ let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 1
     email: "",
     telephone_number: "",
     fiscal_code: "",
-    vat_number: vatNumb,
+    vat_number: "",
     country: "",
     region: "",
     city: "",
@@ -147,6 +147,12 @@ let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 1
               <label htmlFor="fiscal_code_field" className="form-label">Codice Fiscale</label>
               <input type="text" className="form-control" id="fiscal_code_field"
                 name="fiscal_code" value={order.fiscal_code}
+                onChange={handleInputChange} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="vat_number_field" className="form-label">P. IVA</label>
+              <input type="text" className="form-control" id="vat_number_field"
+                name="fiscal_code" value={order.vat_number}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
