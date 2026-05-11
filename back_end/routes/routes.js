@@ -12,12 +12,12 @@ router.get('/index', productControllers.index);
 router.get('/product/:name/:color', productControllers.show);
 
 // index route for all orders
-router.get('/orders/index', orderControllers.index);
+router.get('/orders', orderControllers.index);
 
 // show route for orders by email
 router.get('/orders/:email', orderControllers.show);
 
 // post route for add a new order
-router.post('order/add-order', checkQty, checkPrices, orderControllers.post);
+router.post('/order/add-order', checkQty, checkPrices, orderControllers.post);
 
 module.exports = router;
