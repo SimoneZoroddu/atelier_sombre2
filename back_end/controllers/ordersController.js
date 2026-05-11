@@ -71,19 +71,19 @@ const show = (req, res) => {
 
 //Post routes new order
 const post = (req, res) => {
-    
+
     //get data from front
-    const { 
-        firstname, 
-        lastname, 
-        email, 
-        telephone_number, 
-        fiscal_code, 
-        country, 
-        region, 
-        city, 
-        street, 
-        zip_code, 
+    const {
+        firstname,
+        lastname,
+        email,
+        telephone_number,
+        fiscal_code,
+        country,
+        region,
+        city,
+        street,
+        zip_code,
         total_price,
         vat_number,
         is_billing
@@ -97,58 +97,65 @@ const post = (req, res) => {
     //insert data in DB
     const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
-    connection.query(queryOrders, 
+    connection.query(queryOrders,
         [
-            firstname, 
-            lastname, 
-            email, 
-            telephone_number, 
-            fiscal_code, 
+            firstname,
+            lastname,
+            email,
+            telephone_number,
+            fiscal_code,
             vat_number,
-            country, 
-            region, 
-            city, 
-            street, 
-            zip_code, 
+            country,
+            region,
+            city,
+            street,
+            zip_code,
             is_billing,
             total_price
         ], (err, ordersResults) => {
 
-        if (err) {
-            console.error('Errore nella query orders:', err);
-            return res.status(500).json({ error: 'Errore orders' });
-        }
-
-        //insert data in DB in order_shoes_variant
-        const order_idQuery = `SELECT LAST_INSERT_ID()`;
-        connection.query(order_idQuery, (err, idResult) => {
             if (err) {
-                console.error('Errore nella query shoes:', err);
+                console.error('Errore nella query orders:', err);
                 return res.status(500).json({ error: 'Errore orders' });
             }
 
-            const order_id = idResult[0]['LAST_INSERT_ID()'];
-
-            //add order_shoes_variant every product object
-            req.body.items.forEach(element => { 
-                const queryOrderShoes = 'INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES (?, ?, ?, ?)';
-                connection.query(queryOrderShoes, [order_id, element.variant_id, element.quantity, element.price], (err, orderShoesResults) => {
-                    if (err) {
-                        console.error('Errore nella query order shoes variant:', err);
-                        return res.status(500).json({ error: 'Errore order shoes variant' });
-                    }
-                })
-            })
-            const orderQuery = 'SELECT * FROM orders WHERE id = ?';
-            connection.query(orderQuery, [order_id], (err, orderResults) => {
+            //insert data in DB in order_shoes_variant
+            const order_idQuery = `SELECT LAST_INSERT_ID()`;
+            connection.query(order_idQuery, (err, idResult) => {
                 if (err) {
-                    console.error('Errore nella query order:', err);
+                    console.error('Errore nella query shoes:', err);
                     return res.status(500).json({ error: 'Errore orders' });
                 }
-                return res.status(200).json(orderResults)
+
+                const order_id = idResult[0]['LAST_INSERT_ID()'];
+
+                //add order_shoes_variant every product object
+                req.body.items.forEach(element => {
+                    const queryOrderShoes = 'INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES (?, ?, ?, ?)';
+                    connection.query(queryOrderShoes, [order_id, element.variant_id, element.quantity, element.price], (err, orderShoesResults) => {
+                        if (err) {
+                            console.error('Errore nella query order shoes variant:', err);
+                            return res.status(500).json({ error: 'Errore order shoes variant' });
+                        }
+                        const queryChangeStock = 'UPDATE shoes_variant SET stock = stock - ? WHERE id = ?';
+                        connection.query(queryChangeStock, [element.quantity, element.variant_id], (err, stockResults) => {
+                            if (err) {
+                                console.error('Errore nella query change stock:', err);
+                                return res.status(500).json({ error: 'Errore change stock' });
+                            }
+                        })
+                    })
+                })
+                const orderQuery = 'SELECT * FROM orders WHERE id = ?';
+                connection.query(orderQuery, [order_id], (err, orderResults) => {
+                    if (err) {
+                        console.error('Errore nella query order:', err);
+                        return res.status(500).json({ error: 'Errore orders' });
+                    }
+                    return res.status(200).json(orderResults)
+                })
             })
         })
-    })
 }
 
 module.exports = { index, show, post };
