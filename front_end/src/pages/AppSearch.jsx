@@ -1,24 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // 👈 aggiungi useState
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useShop } from "../contexts/GlobalContext";
 
 export default function AppSearch() {
     const {
         genre,
         searchValue,
-        category,
-        setCategory,
         shoes,
         filteredShoes,
         setFilteredShoes,
+        setSearchValue,
     } = useShop();
 
-    const url = import.meta.env.VITE_API_ADDRESS + "index";
+    const [sortBy, setSortBy] = useState("default");
 
-    /* useEffect for filtering by genre */
     useEffect(() => {
-        const filtered = shoes
+        /* useEffect for filtering by genre */
+        let filtered = shoes
             .filter((s) =>
                 s.genre.toLowerCase().includes(genre.toLowerCase())
             )
@@ -26,12 +24,44 @@ export default function AppSearch() {
                 s.name.toLowerCase().includes(searchValue.toLowerCase())
             );
 
+        /* ordinary according to choice */
+        if (sortBy === "price_asc") {
+            filtered = [...filtered].sort((a, b) => a.price - b.price);
+        } else if (sortBy === "price_desc") {
+            filtered = [...filtered].sort((a, b) => b.price - a.price);
+        } else if (sortBy === "name_asc") {
+            filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+        } else if (sortBy === "name_desc") {
+            filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+        } else if (sortBy === "newest") {
+            filtered = [...filtered].sort((a, b) => b.id - a.id);
+        }
+
         setFilteredShoes(filtered);
-    }, [shoes, genre, searchValue]);
+    }, [shoes, genre, searchValue, sortBy]);
 
     return (
         <>
-            {/* list shoes */}
+            {/* Select for the choice*/}
+            <div className="container-fluid px-3 py-2">
+                <div className="d-flex justify-content-end">
+                    <select
+                        className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent"
+                        style={{ width: "200px" }}
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="default">Ordina per</option>
+                        <option value="newest">Ultimi arrivi</option>
+                        <option value="price_asc">Prezzo: crescente</option>
+                        <option value="price_desc">Prezzo: decrescente</option>
+                        <option value="name_asc">Nome: A → Z</option>
+                        <option value="name_desc">Nome: Z → A</option>
+                    </select>
+                </div>
+            </div>
+
+            {/* List Shoes */}
             <div className="container-fluid px-0">
                 <div className="row g-0 row-cols-2 row-cols-md-4">
                     {filteredShoes.length > 0 ? (
@@ -59,7 +89,6 @@ export default function AppSearch() {
                                             <p className="mb-0 fw-semibold">
                                                 {shoe.name}
                                             </p>
-
                                             <button
                                                 className="btn btn-sm bg-transparent border-0 p-0"
                                                 style={{
@@ -71,11 +100,9 @@ export default function AppSearch() {
                                                 ♡
                                             </button>
                                         </div>
-
                                         <p className="mb-0 text-muted">
                                             {shoe.color}
                                         </p>
-
                                         <p className="mb-0 mt-1">
                                             €{shoe.price}
                                         </p>
@@ -88,7 +115,6 @@ export default function AppSearch() {
                             <h4 className="fw-semibold mb-2">
                                 Nessuna scarpa trovata
                             </h4>
-
                             <p
                                 className="text-muted mb-4"
                                 style={{ maxWidth: "340px" }}
@@ -97,12 +123,10 @@ export default function AppSearch() {
                                 <span className="fw-semibold text-dark">
                                     "{searchValue}"
                                 </span>
-                                .
-                                <br />
+                                .<br />
                                 Prova con un termine diverso o sfoglia tutte le
                                 categorie.
                             </p>
-
                             <button
                                 className="btn btn-dark rounded-pill px-4"
                                 onClick={() => setSearchValue("")}
