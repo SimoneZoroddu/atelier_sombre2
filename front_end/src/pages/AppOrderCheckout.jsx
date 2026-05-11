@@ -18,7 +18,7 @@ let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 1
     email: "",
     telephone_number: "",
     fiscal_code: "",
-    vat_number: "vatNumb",
+    vat_number: vatNumb,
     country: "",
     region: "",
     city: "",
