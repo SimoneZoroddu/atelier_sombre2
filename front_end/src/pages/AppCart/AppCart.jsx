@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 /* Import context */
-import { useShop } from "../contexts/GlobalContext";
+import { useShop } from "../../contexts/GlobalContext";
 /* Import css */
 import "./AppCart.css";
 export default function AppCart() {

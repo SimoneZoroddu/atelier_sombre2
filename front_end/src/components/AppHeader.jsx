@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import img_logo from "../img/logo_basic_atelier_sombre.png"
-import AppSideBarSearch from "../pages/AppSideBarSearch";
+import AppSideBarSearch from "./AppSideBarSearch";
 
 
 export default function AppHeader() {
