@@ -118,7 +118,8 @@ export default function AppCart() {
                     </div>
 
                     {/* RIMUOVI */}
-                    <button className="remove_btn">Rimuovi</button>
+                    <button className="remove_btn" onClick={() => setCartList(cartList.filter(i =>
+                      !(i.name === item.name && i.color === item.color)))}>Rimuovi</button>
                   </div>
 
                 </li>
