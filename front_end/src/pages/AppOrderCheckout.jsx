@@ -10,6 +10,7 @@ export default function AppOrderCheckout() {
   const total_price = localStorage.getItem("total_price");
   const storedCartList = JSON.parse(localStorage.getItem('cart'));
   const [cartList, setCartList] = useState(storedCartList);
+let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 10)).join('')}`
 
   const [order, setOrder] = useState({
     firstname: "",
@@ -17,6 +18,7 @@ export default function AppOrderCheckout() {
     email: "",
     telephone_number: "",
     fiscal_code: "",
+    vat_number: "vatNumb",
     country: "",
     region: "",
     city: "",
@@ -24,12 +26,15 @@ export default function AppOrderCheckout() {
     zip_code: "",
     total_price: `${total_price}`,
   });
+   
   const [productsData, setProductsData] = useState([]);
 
   const { loading, setLoading } = useShop();
 
   const orderUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
   const productsDataUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
+
+
 
   useEffect(() => {
     setProductsData(
@@ -44,8 +49,6 @@ export default function AppOrderCheckout() {
     )
   }, [cartList])
   //console.log(productsData);
-
-
 
   /* get user data from localStorage (if any) */
   useEffect(() => {
