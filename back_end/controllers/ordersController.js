@@ -84,7 +84,9 @@ const post = (req, res) => {
         city, 
         street, 
         zip_code, 
-        total_price 
+        total_price,
+        vat_number,
+        is_billing
     } = req.body.order;
 
     //check if inputs are valid
@@ -93,7 +95,7 @@ const post = (req, res) => {
     }
 
     //insert data in DB
-    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, country, region, city, street, zip_code, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, country, region, city, street, zip_code, total_price, vat_number, is_billing) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
     connection.query(queryOrders, 
         [
@@ -107,7 +109,9 @@ const post = (req, res) => {
             city, 
             street, 
             zip_code, 
-            total_price
+            total_price,
+            vat_number,
+            is_billing
         ], (err, ordersResults) => {
 
         if (err) {
