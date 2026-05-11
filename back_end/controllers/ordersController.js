@@ -90,12 +90,12 @@ const post = (req, res) => {
     } = req.body.order;
 
     //check if inputs are valid
-    if (!firstname || !lastname || !email || !telephone_number || !fiscal_code || !country || !region || !city || !street || !zip_code || !total_price) {
+    if (!firstname || !lastname || !email || !telephone_number || !country || !region || !city || !street || !zip_code || !total_price) {
         return res.status(400).json({ error: 'Ordine non valido' });
     }
 
     //insert data in DB
-    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, country, region, city, street, zip_code, total_price, vat_number, is_billing) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, vat_number, country, region, city, street, zip_code, is_billing, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
     connection.query(queryOrders, 
         [
@@ -104,14 +104,14 @@ const post = (req, res) => {
             email, 
             telephone_number, 
             fiscal_code, 
+            vat_number,
             country, 
             region, 
             city, 
             street, 
             zip_code, 
-            total_price,
-            vat_number,
-            is_billing
+            is_billing,
+            total_price
         ], (err, ordersResults) => {
 
         if (err) {
