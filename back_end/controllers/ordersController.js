@@ -30,7 +30,7 @@ const show = (req, res) => {
             return res.status(500).json({ error: 'Errore interno orders' })
         }
 
-        if (!ordersResults) {
+        if (!ordersResults || ordersResults.length === 0) {
             return res.json(['nessun risultato'])
         }
 
@@ -111,8 +111,8 @@ const post = (req, res) => {
         ], (err, ordersResults) => {
 
         if (err) {
-            console.error('Errore nella query shoes:', err);
-            return res.status(500).json({ error: 'Errore interno' });
+            console.error('Errore nella query orders:', err);
+            return res.status(500).json({ error: 'Errore orders' });
         }
 
         //insert data in DB in order_shoes_variant
@@ -120,7 +120,7 @@ const post = (req, res) => {
         connection.query(order_idQuery, (err, idResult) => {
             if (err) {
                 console.error('Errore nella query shoes:', err);
-                return res.status(500).json({ error: 'Errore interno' });
+                return res.status(500).json({ error: 'Errore orders' });
             }
 
             const order_id = idResult[0]['LAST_INSERT_ID()'];
@@ -130,21 +130,21 @@ const post = (req, res) => {
                 const queryOrderShoes = 'INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES (?, ?, ?, ?)';
                 connection.query(queryOrderShoes, [order_id, element.variant_id, element.quantity, element.price], (err, orderShoesResults) => {
                     if (err) {
-                        console.error('Errore nella query shoes:', err);
-                        return res.status(500).json({ error: 'Errore interno' });
+                        console.error('Errore nella query order shoes variant:', err);
+                        return res.status(500).json({ error: 'Errore order shoes variant' });
                     }
                 })
             })
             const orderQuery = 'SELECT * FROM orders WHERE id = ?';
             connection.query(orderQuery, [order_id], (err, orderResults) => {
                 if (err) {
-                    console.error('Errore nella query shoes:', err);
-                    return res.status(500).json({ error: 'Errore interno' });
+                    console.error('Errore nella query order:', err);
+                    return res.status(500).json({ error: 'Errore orders' });
                 }
                 return res.status(200).json(orderResults)
             })
         })
-    });
+    })
 }
 
 module.exports = { index, show, post };
