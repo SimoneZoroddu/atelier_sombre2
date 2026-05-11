@@ -69,10 +69,10 @@ const show = (req, res) => {
     })
 }
 
-//Post routes orders
-
+//Post routes new order
 const post = (req, res) => {
-    // waiting for cart data
+    
+    //get data from front
     const { 
         firstname, 
         lastname, 
@@ -86,7 +86,13 @@ const post = (req, res) => {
         zip_code, 
         total_price 
     } = req.body.order;
-    //query to add order on table db
+
+    //check if inputs are valid
+    if (!firstname || !lastname || !email || !telephone_number || !fiscal_code || !country || !region || !city || !street || !zip_code || !total_price) {
+        return res.status(400).json({ error: 'Ordine non valido' });
+    }
+
+    //insert data in DB
     const queryOrders = 'INSERT INTO orders (firstname, lastname, email, telephone_number, fiscal_code, country, region, city, street, zip_code, total_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     // Get from DB all shoes
     connection.query(queryOrders, 
@@ -103,24 +109,23 @@ const post = (req, res) => {
             zip_code, 
             total_price
         ], (err, ordersResults) => {
+
         if (err) {
             console.error('Errore nella query shoes:', err);
             return res.status(500).json({ error: 'Errore interno' });
         }
 
-        if (!ordersResults) {
-            return res.json([]);
-        }
-
+        //insert data in DB in order_shoes_variant
         const order_idQuery = `SELECT LAST_INSERT_ID()`;
         connection.query(order_idQuery, (err, idResult) => {
             if (err) {
                 console.error('Errore nella query shoes:', err);
                 return res.status(500).json({ error: 'Errore interno' });
             }
-            const order_id = idResult[0]['LAST_INSERT_ID()'];
-            console.log(order_id);
 
+            const order_id = idResult[0]['LAST_INSERT_ID()'];
+
+            //add order_shoes_variant every product object
             req.body.items.forEach(element => { 
                 const queryOrderShoes = 'INSERT INTO order_shoes_variant (order_id, variant_id, quantity, price) VALUES (?, ?, ?, ?)';
                 connection.query(queryOrderShoes, [order_id, element.variant_id, element.quantity, element.price], (err, orderShoesResults) => {
@@ -128,16 +133,17 @@ const post = (req, res) => {
                         console.error('Errore nella query shoes:', err);
                         return res.status(500).json({ error: 'Errore interno' });
                     }
-                    
-                    if (!orderShoesResults) {
-                        return res.json([]);
-                    }
                 })
             })
-
-            return res.json(ordersResults)
+            const orderQuery = 'SELECT * FROM orders WHERE id = ?';
+            connection.query(orderQuery, [order_id], (err, orderResults) => {
+                if (err) {
+                    console.error('Errore nella query shoes:', err);
+                    return res.status(500).json({ error: 'Errore interno' });
+                }
+                return res.status(200).json(orderResults)
+            })
         })
-
     });
 }
 
