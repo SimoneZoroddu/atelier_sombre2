@@ -66,7 +66,7 @@ export default function HomePage() {
                                 </div>
                             }
                             <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterWoman}>
-                                New Arrivals Woman
+                                Nuovi Arrivi Donna
                             </Link>
                         </div>
                         <div className="col px-0">
@@ -78,7 +78,7 @@ export default function HomePage() {
                                 </div>
                             }
                             <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterMan}>
-                                New Arrivals Man
+                                Nuova Arrivi Uomo
                             </Link>
                         </div>
                     </div>

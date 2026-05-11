@@ -7,8 +7,8 @@ import DefaultLayout from "./layout/DefaultLayout";
 /* Import pages */
 import AppHome from "./pages/AppHome";
 import AppSearch from "./pages/AppSearch";
-import AppDetail from "./pages/AppDetail";
-import AppCart from "./pages/AppCart";
+import AppDetail from "./pages/AppDetail/AppDetail";
+import AppCart from "./pages/AppCart/AppCart";
 import AppOrderCheckout from "./pages/AppOrderCheckout";
 
 
