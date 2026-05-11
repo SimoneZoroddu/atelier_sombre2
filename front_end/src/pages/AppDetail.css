@@ -35,12 +35,14 @@ img {
     align-items: flex-start;
     min-width: 0;
 }
+
 .mainImageWrapper {
     position: relative;
     display: inline-block;
     grid-area: images;
     min-width: 0;
 }
+
 .thumbnailsColumn {
     display: flex;
     flex-direction: column;
@@ -48,6 +50,7 @@ img {
     flex-shrink: 0;
     width: 70px;
 }
+
 .thumbnailVertical {
     width: 70px;
     height: 70px;
@@ -126,13 +129,17 @@ img {
     overflow-wrap: break-word;
     overflow: hidden;
     transition: max-height 0.5s ease, opacity 0.25s ease;
-    opacity: 0; /* inizialmente nascosto */
+    opacity: 0;
+    /* inizialmente nascosto */
     max-height: 0;
 }
-.accordionContent.open { /* viene mostrato quando ottiene la classe open */
-    max-height: 500px; 
+
+.accordionContent.open {
+    /* viene mostrato quando ottiene la classe open */
+    max-height: 500px;
     opacity: 1;
 }
+
 /* ─── TAGLIE ─── */
 .infoColumn h3 {
     font-size: 0.8rem;
@@ -427,6 +434,7 @@ h3 {
     font-family: 'Playfair Display', serif;
     font-weight: 500;
 }
+
 /* zoom immagine principale */
 .mainImageWrapper {
     position: relative;
@@ -449,7 +457,7 @@ h3 {
     pointer-events: none;
     display: none;
     border-radius: 50%;
-    
+
 }
 
 /* RISULTATO ZOOM */
@@ -459,10 +467,63 @@ h3 {
     top: 0;
     width: 550px;
     height: 350px;
-    border:none;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-repeat: no-repeat;
     z-index: 1000;
     display: none;
     pointer-events: none;
+    background-color: #f8f7f5;
+}
+
+/* overlay per il prodotto a schermo intero */
+.fullscreenOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.fullscreenImage {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 32px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 60px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.arrow.left {
+    left: 30px;
+}
+
+.arrow.right {
+    right: 30px;
+}
+
+.arrow:hover {
+    opacity: 0.7;
 }
