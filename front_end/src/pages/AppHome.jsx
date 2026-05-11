@@ -102,11 +102,11 @@ export default function HomePage() {
                             <div className="row gy-5">
                                 <div className="col-12 col-md-6">
                                     <p className="fw-semibold mb-2">
-                                        Milano Cortina 2026
+                                        Collegiove 02020
                                     </p>
                                     <p className="mb-4 text-secondary">
-                                        Via Vattelapesca 45<br />
-                                        666, Milano Cortina 2026
+                                        Via Umberto I<br />
+                                        135, Collegiove
                                     </p>
                                     <p className="fw-semibold mb-2">
                                         Contatti

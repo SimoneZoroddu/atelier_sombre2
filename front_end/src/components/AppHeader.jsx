@@ -21,9 +21,13 @@ export default function AppHeader() {
                             <li className="nav-item underline_hover">
                                 <Link className="nav-link" to="/shoes" >Vedi le nostre collezioni</Link>
                             </li>
+                            {
+                            /* 
                             <li className="nav-item underline_hover">
                                 <Link className="nav-link" >Informazioni</Link>
-                            </li>
+                            </li> 
+                            */
+                            }
                         </ul>
                     </div>
                     <Link className="nav-link" to="/cart">
