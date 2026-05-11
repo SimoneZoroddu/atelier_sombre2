@@ -10,7 +10,6 @@ export default function AppOrderCheckout() {
   const total_price = localStorage.getItem("total_price");
   const storedCartList = JSON.parse(localStorage.getItem('cart'));
   const [cartList, setCartList] = useState(storedCartList);
-//let vatNumb = `IT${Array.from({ length: 11 }, () => Math.floor(Math.random() * 10)).join('')}`
 
   const [order, setOrder] = useState({
     firstname: "",
@@ -152,7 +151,7 @@ export default function AppOrderCheckout() {
             <div className="mb-3">
               <label htmlFor="vat_number_field" className="form-label">P. IVA</label>
               <input type="text" className="form-control" id="vat_number_field"
-                name="fiscal_code" value={order.vat_number}
+                name="vat_number" value={order.vat_number}
                 onChange={handleInputChange} />
             </div>
             <div className="mb-3">
