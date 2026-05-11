@@ -7,11 +7,11 @@ const index = (req, res) => {
     connection.query(queryOrders, (err, ordersResults) => {
         if (err) {
             console.error('Errore nella query orders', err)
-            return res.status(500).json({ error: 'Errore interno orders' })
+            res.status(500).json({ error: 'Errore interno orders' })
         }
 
-        if (!ordersResults) {
-            return res.json(['nessun risultato'])
+        if (!ordersResults || ordersResults.length === 0) {
+            res.json(['nessun risultato'])
         }
 
         res.json(ordersResults)

@@ -18,6 +18,6 @@ router.get('/orders/index', orderControllers.index);
 router.get('/orders/:email', orderControllers.show);
 
 // post route for add a new order
-router.post('/add-order', checkQty, checkPrices, orderControllers.post);
+router.post('order/add-order', checkQty, checkPrices, orderControllers.post);
 
 module.exports = router;

@@ -1,5 +1,8 @@
 const e = require("express");
 
-const pageNotFound = (err, req, res) => res.status(404).json({ error: 'Page not found' });
+const pageNotFound = (req, res, next) => {
+    res.status(404).json({ err: 'Page not found' });
+    next();
+}
 
 module.exports = pageNotFound
