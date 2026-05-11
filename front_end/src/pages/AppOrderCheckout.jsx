@@ -1,16 +1,17 @@
-/* Import hooks */
+/* Import HOOKS */
 import { useState, useEffect } from "react";
-/* Import context */
+/* Import CONTEXT */
 import { useShop } from "../contexts/GlobalContext";
+/* Import DEPENDENCIES */
 import axios from "axios";
 
 export default function AppOrderCheckout() {
-
-  //console.log(localStorage);
+  /* Declare or destructure SUPPORT VARIABLES */
   const total_price = localStorage.getItem("total_price");
   const storedCartList = JSON.parse(localStorage.getItem('cart'));
+  const orderUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
   const [cartList, setCartList] = useState(storedCartList);
-
+  const [productsData, setProductsData] = useState([]);
   const [order, setOrder] = useState({
     firstname: "",
     lastname: "",
@@ -25,16 +26,10 @@ export default function AppOrderCheckout() {
     zip_code: "",
     total_price: `${total_price}`,
   });
-   
-  const [productsData, setProductsData] = useState([]);
-
   const { loading, setLoading } = useShop();
 
-  const orderUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
-  const productsDataUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
-
-
-
+  /* HANDLE cart ITEMS */
+  /* SET and keep ITEMS updated */
   useEffect(() => {
     setProductsData(
       cartList.map(item => (
@@ -43,76 +38,72 @@ export default function AppOrderCheckout() {
           quantity: Number(item.quantity),
           price: Number(item.price),
         }
-      )
-      )
+      ))
     )
   }, [cartList])
-  //console.log(productsData);
 
-  /* get user data from localStorage (if any) */
+  /* HANDLE ORDER DATA */
+  /* GET ORDER DATA from localStorage (if any) */
   useEffect(() => {
     const savedOrderData = localStorage.getItem('order');
     if (savedOrderData) {
-      /* keep total price updated */
+      /* keep total PRICE updated */
       setOrder(JSON.parse(savedOrderData));
-      //console.log(order);
     }
   }, [total_price])
-
-  /* update user data */
+  /* UPDATE ORDER DATA */
   function handleInputChange(e) {
     const { name, value } = e.target;
     setOrder({ ...order, [name]: value });
-    //console.log(order);
   }
-  /* save updated user data to localStorage */
+  /* SAVE updated ORDER DATA to localStorage */
   useEffect(() => {
     localStorage.setItem('order', JSON.stringify(order));
   }, [order]);
 
-
+  /* HANDLE SUBMIT */
   function handleOrderSubmit(e) {
     /* prevent default */
     e.preventDefault();
-    /* Validate data */
+    /* VALIDATE data */
     // ⚠️ todo
-    /* Build req body */
+    /* Build REQ BODY */
     const body = {
       order: { ...order, total_price: Number(order.total_price) },
       items: productsData
     };
-    console.log(body);
-    /* Set loader */
+    console.log(body); // ⚠️ To B removed
+    /* Set LOADER */
     setLoading(true);
-    /* Submit data */
+    /* SUBMIT DATA */
     axios.post(orderUrl, body)
       .then(res => {
         console.log(res.data);
       })
-      /* Handle server error */
+      /* Handle server ERROR */
       .catch(err => {
-        console.error(err);
+        console.error(err); // ⚠️ To B implemented with visual alert/feedback UX
       })
       .finally(() => {
         setLoading(false);
         console.log("Order request completed");
-        //clear cart and total price from local Storage
+        /* clear cart and total price from local Storage */
         // ⚠️ todo
-        //clear form
+        /* clear form */
         // ⚠️ todo
-        //navigate to confirmation/order page
+        /* navigate to confirmation/order page */
         // ⚠️ todo
       });
-      /* Handle success */
-      // ⚠️ todo
-      /* Handle error */
-      // ⚠️ todo
+    /* Handle success */
+    // ⚠️ todo
+    /* Handle error */
+    // ⚠️ todo
   }
 
   return (
     <>
       <div className="container">
-        {/* Get user data */} {/* ⚠️ todo: ?? visibility on/off or collapse or tabs to navigate between forms, ?? componentize */}
+        {/* Get order data */} {/* ⚠️ todo: ?? visibility on/off or collapse or tabs to navigate between forms, ?? componentize */}
         <form className="user_data" onSubmit={handleOrderSubmit}>
           <div className="m-3">
             <h2>Dati personali</h2>
