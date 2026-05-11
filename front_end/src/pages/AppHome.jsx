@@ -1,9 +1,14 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
+
 /* assets */
-import hero_img from "../img/hero_space.jpg"
 import shop_shoes from "../img/shop_shoes2.png"
+import hero_img from "../img/hero_space.jpg"
+import hero_img2 from "../img/hero_space2.webp"
+import hero_img3 from "../img/hero_space3.webp"
+const image = [hero_img, hero_img2, hero_img3];
+
 /* context */
 import { useShop } from "../contexts/GlobalContext"
 
@@ -11,6 +16,18 @@ import { useShop } from "../contexts/GlobalContext"
 
 export default function HomePage() {
     const { setGenre, setSearchValue, shoes, setShoes } = useShop()
+
+    //creazione indice per ciclare le immagini
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIndex((prev) => (prev + 1) % image.length);
+        }, 10000);
+
+        return () => clearTimeout(timeout);
+    }, [index]);
+
 
     const today = new Date();
     const newArrivals = shoes.filter(shoe => {
@@ -42,11 +59,12 @@ export default function HomePage() {
         setSearchValue("")
     }
 
+
     return (
         <>
             <div className="container-fluid">
                 <Link className="nav-link active" aria-current="page" to="/shoes" onClick={ResetFilter}>
-                    <img src={hero_img} alt="tods-hp-summerselection" className="img-fluid w-100" />
+                    <img src={image[index]} alt="tods-hp-summerselection" className="img-fluid w-100" />
                 </Link>
                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                 <div className="text-center mb-5">
