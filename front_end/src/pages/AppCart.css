@@ -95,6 +95,11 @@ img {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 }
 
 .item_name {

@@ -1,6 +1,6 @@
-/* Import hooks */
+/* Import hooks and functionalities */
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 /* Import context */
 import { useShop } from "../contexts/GlobalContext";
 /* Import css */
@@ -8,8 +8,8 @@ import "./AppCart.css";
 export default function AppCart() {
   /* declare support variables */
   const { cartList, setCartList } = useShop();
-  const [ isInitialLoading, setIsInitialLoading ] = useState(true);
-  const [ cartTotal, setCartTotal ] = useState(0);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [cartTotal, setCartTotal] = useState(0);
   const navigate = useNavigate();
 
   /* get data from localStorage */
@@ -80,7 +80,9 @@ export default function AppCart() {
 
                   {/* INFO */}
                   <div className="item_info">
-                    <h3 className="item_name">{item.name}</h3>
+                    <Link to={`/products/${item.name}/${item.color}`}>
+                      <h3 className="item_name">{item.name}</h3>
+                    </Link>
 
                     <div className="item_meta">
                       <p>Taglia: <strong>{item.size}</strong></p>
@@ -95,21 +97,22 @@ export default function AppCart() {
                       <button className="qty_btn"
                         onClick={() => {
                           /* Delete if quantity = 1 */
-                          if(item.quantity === 1) {
+                          if (item.quantity === 1) {
                             setCartList(cartList.filter(i =>
                               !(i.name === item.name && i.color === item.color)))
                           } else { /* Decrement quantity if >= 2 */
-                            setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity - 1 } : i))}
+                            setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity - 1 } : i))
+                          }
                         }}>
                         {item.quantity === 1 ? <i className="bi bi-trash3"></i> : "−"}
-                        </button>
+                      </button>
                       {/* Show quantity */}
                       <span>{item.quantity}</span>
                       {/* Increment quantity */}
                       <button className="qty_btn"
-                      onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? {...i, quantity: i.quantity + 1} : i))}>
+                        onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color ? { ...i, quantity: i.quantity + 1 } : i))}>
                         +
-                        </button>
+                      </button>
                     </div>
 
                     {/* RIMUOVI */}
