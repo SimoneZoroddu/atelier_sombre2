@@ -30,19 +30,28 @@ function ShopProvider({ children }) {
   const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
-  const url = import.meta.env.VITE_API_ADDRESS + "index";
+  const url = import.meta.env.VITE_API_ADDRESS + "products/index?page=1&limit=100";
   const [shoes, setShoes] = useState([]);
   const [filteredShoes, setFilteredShoes] = useState([]);
 
   useEffect(() => {
     axios.get(url)
       .then(datas => {
-        setShoes(datas.data);
-        setFilteredShoes(datas.data);
-        setCategory([...new Set(datas.data.map(shoe => shoe.category))])
+        setShoes(datas.data.results);
+        setFilteredShoes(datas.data.results);
+        setCategory([...new Set(datas.data.results.map(shoe => shoe.category))])
       });
   }, []);
 
+  /* slugify url function */
+  function slugify(str) {
+    return str
+      .toLowerCase()                 // convert to lowercase
+      .trim()                        // remove leading/trailing spaces  
+      .replace(/[^\w\s-]/g, '')      // remove special chars that are not alphanumeric, spaces, or hyphens
+      .replace(/[\s_]+/g, '-')       // convert spaces to hyphens
+      .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
+  }
 
   return (
     <GlobalContext.Provider
@@ -61,7 +70,7 @@ function ShopProvider({ children }) {
         setShoes,
         filteredShoes,
         setFilteredShoes,
-
+        slugify
       }}>
       {children}
     </GlobalContext.Provider>

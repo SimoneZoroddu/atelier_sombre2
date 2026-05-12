@@ -14,7 +14,7 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList, genre, setGenre } = useShop();
+    const { cartList, setCartList, genre, setGenre, slugify } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
@@ -64,7 +64,7 @@ export default function DetailPage() {
 
 
 
-    console.log(lensRef.current);
+    //console.log(lensRef.current);
     const handleLeave = () => {//funzione che nasconde il risultato dello zoom quando il mouse esce dall'immagine
 
         resultRef.current.style.display = "none";
@@ -124,6 +124,7 @@ export default function DetailPage() {
             price: product.price,
             size: selectedSize,
             quantity: quantity,
+            finalPrice: finalPrice
         };
         //recupera il carrello esistente dal localStorage o inizzializza un carrello vuoto
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -148,7 +149,7 @@ export default function DetailPage() {
 
     // Fetch prodotto
     useEffect(() => {
-        fetch(`http://127.0.0.1:3000/product/${name}/${color}`)
+        fetch(`http://127.0.0.1:3000/products/${name}/${color}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
@@ -161,10 +162,11 @@ export default function DetailPage() {
     useEffect(() => {
         if (!product) return;
 
-        fetch("http://127.0.0.1:3000/index")
+        fetch("http://127.0.0.1:3000/products/index/")
             .then(res => res.json())
             .then(allProducts => {
-                const filtered = allProducts
+
+                const filtered = allProducts.results
                     .filter(p => p.category === product.category)
                     .filter(p => p.genre === product.genre)
                     .filter(p => p.id !== product.id)
@@ -193,6 +195,12 @@ export default function DetailPage() {
         product.image.secondary_image_url,
         product.image.model_image_url
     ].filter(img => img);
+    // gestione sconto
+    const originalPrice = Number(product.price);
+    const discount = product.on_sale; // percentuale
+    const finalPrice = discount !== 0
+        ? (originalPrice * (1 - discount / 100)).toFixed(2)
+        : originalPrice.toFixed(2);
 
 
     return (
@@ -259,7 +267,21 @@ export default function DetailPage() {
                 <div className="infoColumn">
                     <h1>{product.name}</h1>
                     <p className="category">{product.category} · {product.genre}</p>
-                    <p className="price">{product.price} €</p>
+                    {product.on_sale !== 0 ? (
+                        <p className="price">
+                            <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
+                                {originalPrice.toFixed(2)} €
+                            </span>
+                            <span style={{ fontWeight: 600, }}>
+                                {finalPrice} €
+                            </span>
+
+                        </p>
+                    ) : (
+                        <p className="price">{originalPrice.toFixed(2)} €</p>
+                    )}
+
+
 
                     {/* ACCORDION */}
                     <div className="accordion">
@@ -356,7 +378,7 @@ export default function DetailPage() {
                                     className="recommendedItem"
                                 >
                                     <img
-                                        src={item.image.main_image_url}
+                                        src={item.images.main_image_url}
                                         alt={item.name}
                                         className="recommendedImage"
                                     />

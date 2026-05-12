@@ -76,7 +76,7 @@ export default function AppSearch() {
                                     >
                                         <img
                                             className="w-100 d-flex align-items-center justify-content-center p-1"
-                                            src={shoe.image.main_image_url}
+                                            src={shoe.images.main_image_url}
                                             alt={shoe.name}
                                             style={{ width: "18rem" }}
                                         />
