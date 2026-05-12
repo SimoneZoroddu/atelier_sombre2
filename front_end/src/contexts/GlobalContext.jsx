@@ -33,6 +33,7 @@ function ShopProvider({ children }) {
   const url = import.meta.env.VITE_API_ADDRESS + "products/index?page=1&limit=100";
   const [shoes, setShoes] = useState([]);
   const [filteredShoes, setFilteredShoes] = useState([]);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   useEffect(() => {
     axios.get(url)
@@ -53,6 +54,38 @@ function ShopProvider({ children }) {
       .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
   }
 
+  /* keep update data in localStorage */
+  useEffect(() => {
+
+    if (!isInitialLoading) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
+    }
+  }, [cartList, isInitialLoading]);
+
+  /* get data from localStorage */
+
+  useEffect(() => {
+    let storedCartList = localStorage.getItem('cart');
+
+    if (storedCartList) {
+      /* get and parse data */
+      setCartList(JSON.parse(storedCartList)); /* ⚠️ should be checked if no parsing error */
+
+    } else {
+      setCartList([])
+    }
+    setIsInitialLoading(false);
+
+  }, [setCartList]);
+
+  const [cartTotal, setCartTotal] = useState(0);
+
+  /* get cart total */
+  /* ⚠️ to be implemented, add if discount */
+  useEffect(() => {
+    setCartTotal(cartList.map(item => item.finalPrice * item.quantity).reduce((a, b) => a + b, 0));
+  }, [cartList]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -70,7 +103,11 @@ function ShopProvider({ children }) {
         setShoes,
         filteredShoes,
         setFilteredShoes,
-        slugify
+        slugify,
+        isInitialLoading,
+        setIsInitialLoading,
+        cartTotal,
+        setCartTotal
       }}>
       {children}
     </GlobalContext.Provider>

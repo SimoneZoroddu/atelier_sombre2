@@ -8,41 +8,12 @@ import "./AppCart.css";
 
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList } = useShop();
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [cartTotal, setCartTotal] = useState(0);
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal } = useShop();
   const navigate = useNavigate();
-
-  /* get data from localStorage */
-  useEffect(() => {
-    let storedCartList = localStorage.getItem('cart');
-
-    if (storedCartList) {
-      /* get and parse data */
-      setCartList(JSON.parse(storedCartList)); /* ⚠️ should be checked if no parsing error */
-
-    } else {
-      setCartList([])
-    }
-    setIsInitialLoading(false);
-
-  }, [setCartList]);
+  
   
   //console.log(cartList);
-
-  /* keep update data in localStorage */
-  useEffect(() => {
-
-    if (!isInitialLoading) {
-      localStorage.setItem('cart', JSON.stringify(cartList));
-    }
-  }, [cartList, isInitialLoading]);
-
-  /* get cart total */
-  /* ⚠️ to be implemented, add if discount */
-  useEffect(() => {
-    setCartTotal(cartList.map(item => item.finalPrice * item.quantity).reduce((a, b) => a + b, 0));
-  }, [cartList]);
+  
 
   /* handle checkout */
   function handleCheckout() {
@@ -55,7 +26,7 @@ export default function AppCart() {
 
 
 
-  console.log(cartList);
+  //console.log(cartList);
 
 
 
