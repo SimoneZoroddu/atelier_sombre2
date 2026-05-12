@@ -154,14 +154,15 @@ const showDiscounted = (req, res, next) => {
 // Show Routes single item
 const show = (req, res, next) => {
     //use params :NAME and : COLOR instead of ID in url
-    const shoeName = req.params.name;
-    const color = req.params.color;
+    const slugShoeName = req.params.name;
+    const slugColor = req.params.color;
 
-    console.log(shoeName, color);
-
-    const queryShoes = 'SELECT * FROM shoes WHERE name = ? AND color = ?';
+    const queryShoes = `
+        SELECT * FROM shoes 
+        WHERE LOWER(REPLACE(name, ' ', '-')) = ? 
+        AND LOWER(REPLACE(color, ' ', '-')) = ?`;
     //get single item
-    connection.query(queryShoes, [shoeName, color], (err, shoesResults) => {
+    connection.query(queryShoes, [slugShoeName, slugColor], (err, shoesResults) => {
         if (err) {
             console.error('Errore nella query shoes:', err);
             return res.status(500).json({ error: 'Errore interno' });
