@@ -124,6 +124,7 @@ export default function DetailPage() {
             price: product.price,
             size: selectedSize,
             quantity: quantity,
+            finalPrice: finalPrice
         };
         //recupera il carrello esistente dal localStorage o inizzializza un carrello vuoto
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -164,7 +165,7 @@ export default function DetailPage() {
         fetch("http://127.0.0.1:3000/products/index/")
             .then(res => res.json())
             .then(allProducts => {
-                
+
                 const filtered = allProducts.results
                     .filter(p => p.category === product.category)
                     .filter(p => p.genre === product.genre)
@@ -194,7 +195,7 @@ export default function DetailPage() {
         product.image.secondary_image_url,
         product.image.model_image_url
     ].filter(img => img);
-// gestione sconto
+    // gestione sconto
     const originalPrice = Number(product.price);
     const discount = product.on_sale; // percentuale
     const finalPrice = discount !== 0
@@ -274,7 +275,7 @@ export default function DetailPage() {
                             <span style={{ fontWeight: 600, }}>
                                 {finalPrice} €
                             </span>
-                            
+
                         </p>
                     ) : (
                         <p className="price">{originalPrice.toFixed(2)} €</p>
