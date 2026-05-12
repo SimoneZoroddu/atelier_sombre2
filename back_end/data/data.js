@@ -3,6 +3,8 @@ const sql = require('mysql2');
 // Load DB credentials from .env
 require('dotenv').config();
 
+
+ 
 // Create a connection using environment variables or defaults
 const connection = sql.createConnection({
   host: process.env.DB_HOST || 'localhost:3006',
@@ -19,6 +21,7 @@ connection.connect((err) => {
     return;
   }
   console.log('Connected to the database');
+  
 });
 
 module.exports = connection;
