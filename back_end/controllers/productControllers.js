@@ -27,7 +27,7 @@ const index = (req, res, next) => {
                 console.error('Errore nella query pages:', err);
                 return res.status(500).json({ error: 'Errore interno (Pages)' });
             }
-
+            
             finalResults.current_page = page;
             finalResults.limit = limit;
             finalResults.total_pages = Math.ceil(pagesResults[0].total / limit);
@@ -44,23 +44,11 @@ const index = (req, res, next) => {
                 return res.status(500).json({ error: 'Errore interno' });
             }
             //merge shoes and images
-            const imgResults = shoesResults.map(shoe => {
-
-                const shoeImage = imagesResults.find(img => img.shoe_id === shoe.id);
-
-                const imageData = shoeImage ? {
-                    main_image_url: shoeImage.main_image_url,
-                    top_view_url: shoeImage.top_view_url,
-                    secondary_image_url: shoeImage.secondary_image_url,
-                    model_image_url: shoeImage.model_image_url
-                } : null;
-
-                return {
-                    ...shoe,
-                    image: imageData
-                };
+            finalResults.results.forEach(shoe => {
+                shoe.images = imagesResults.filter(image => image.shoe_id === shoe.id);
             });
-            res.json(finalResults,{ results: imgResults });
+
+            res.json(finalResults);
         });
     });
 };

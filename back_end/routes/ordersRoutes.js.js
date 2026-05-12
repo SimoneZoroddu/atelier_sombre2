@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const orderControllers = require('../controllers/ordersController');
+const orderControllers = require('../controllers/ordersControllers');
 const checkQty = require('../middlewares/checkQty');
 const checkPrices = require('../middlewares/checkPrices');
 
