@@ -1,9 +1,14 @@
 const connection = require('../data/data');
 //Index Routes Shoes
 const index = (req, res, next) => {
-    const queryShoes = 'SELECT * FROM shoes';
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || req.query.limit || 12;
+    const offset = (page - 1) * limit;
+
+    const queryShoes = 'SELECT * FROM shoes ORDER BY created_at DESC LIMIT ? OFFSET ?';
     // Get from DB all shoes
-    connection.query(queryShoes, (err, shoesResults) => {
+    connection.query(queryShoes, [limit, offset], (err, shoesResults) => {
         if (err) {
             console.error('Errore nella query shoes:', err);
             return res.status(500).json({ error: 'Errore interno (Shoes)' });
@@ -12,6 +17,24 @@ const index = (req, res, next) => {
         if (!shoesResults) {
             return res.json(['nessun risultato']);
         }
+
+        const finalResults = { results: shoesResults, };
+
+        const queryPages = 'SELECT COUNT(*) AS total FROM shoes';
+
+        connection.query(queryPages, (err, pagesResults) => {
+            if (err) {
+                console.error('Errore nella query pages:', err);
+                return res.status(500).json({ error: 'Errore interno (Pages)' });
+            }
+
+            finalResults.current_page = page;
+            finalResults.limit = limit;
+            finalResults.total_pages = Math.ceil(pagesResults[0].total / limit);
+            finalResults.total_results = pagesResults[0].total;
+        });
+
+
         //get all images
         const queryImages = 'SELECT * FROM image';
 
@@ -21,21 +44,23 @@ const index = (req, res, next) => {
                 return res.status(500).json({ error: 'Errore interno' });
             }
             //merge shoes and images
-            const finalResults = shoesResults.map(shoe => {
+            const imgResults = shoesResults.map(shoe => {
+
                 const shoeImage = imagesResults.find(img => img.shoe_id === shoe.id);
+
+                const imageData = shoeImage ? {
+                    main_image_url: shoeImage.main_image_url,
+                    top_view_url: shoeImage.top_view_url,
+                    secondary_image_url: shoeImage.secondary_image_url,
+                    model_image_url: shoeImage.model_image_url
+                } : null;
 
                 return {
                     ...shoe,
-                    image: {
-                        main_image_url: shoeImage.main_image_url,
-                        top_view_url: shoeImage.top_view_url,
-                        secondary_image_url: shoeImage.secondary_image_url,
-                        model_image_url: shoeImage.model_image_url
-                    }
+                    image: imageData
                 };
             });
-
-            res.json(finalResults);
+            res.json(finalResults,{ results: imgResults });
         });
     });
 };
