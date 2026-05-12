@@ -194,6 +194,12 @@ export default function DetailPage() {
         product.image.secondary_image_url,
         product.image.model_image_url
     ].filter(img => img);
+// gestione sconto
+    const originalPrice = Number(product.price);
+    const discount = product.on_sale; // percentuale
+    const finalPrice = discount !== 0
+        ? (originalPrice * (1 - discount / 100)).toFixed(2)
+        : originalPrice.toFixed(2);
 
 
     return (
@@ -260,7 +266,21 @@ export default function DetailPage() {
                 <div className="infoColumn">
                     <h1>{product.name}</h1>
                     <p className="category">{product.category} · {product.genre}</p>
-                    <p className="price">{product.price} €</p>
+                    {product.on_sale !== 0 ? (
+                        <p className="price">
+                            <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
+                                {originalPrice.toFixed(2)} €
+                            </span>
+                            <span style={{ fontWeight: 600, }}>
+                                {finalPrice} €
+                            </span>
+                            
+                        </p>
+                    ) : (
+                        <p className="price">{originalPrice.toFixed(2)} €</p>
+                    )}
+
+
 
                     {/* ACCORDION */}
                     <div className="accordion">
