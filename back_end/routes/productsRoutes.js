@@ -5,6 +5,9 @@ const productControllers = require('../controllers/productControllers');
 // index route for all shoes
 router.get('/index', productControllers.index);
 
+// show route for shoes by genre
+router.get('/:genre', productControllers.showByGenre);
+
 // show route for a single product by name and color
 router.get('/:name/:color', productControllers.show);
 

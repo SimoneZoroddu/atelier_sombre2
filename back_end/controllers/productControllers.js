@@ -27,7 +27,7 @@ const index = (req, res, next) => {
                 console.error('Errore nella query pages:', err);
                 return res.status(500).json({ error: 'Errore interno (Pages)' });
             }
-            
+
             finalResults.current_page = page;
             finalResults.limit = limit;
             finalResults.total_pages = Math.ceil(pagesResults[0].total / limit);
@@ -45,13 +45,50 @@ const index = (req, res, next) => {
             }
             //merge shoes and images
             finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.filter(image => image.shoe_id === shoe.id);
+                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
             });
 
             res.json(finalResults);
         });
     });
 };
+
+//Show Routes items by genre
+const showByGenre = (req, res, next) => {
+    const genre = req.params.genre;
+    const queryShoes = 'SELECT * FROM shoes WHERE genre = ?';
+    //get shoes by genre
+    connection.query(queryShoes, [genre], (err, shoesResults) => {
+        if (err) {
+            console.error('Errore nella query shoes:', err);
+            return res.status(500).json({ error: 'Errore interno' });
+        }
+
+        if (!shoesResults) {
+            return res.json(['nessun risultato']);
+        }
+
+        const finalResults = { results: shoesResults, };
+        console.log(finalResults);
+        //get all images
+        const queryImages = 'SELECT * FROM image';
+
+        connection.query(queryImages, (err, imagesResults) => {
+            if (err) {
+                console.error('Errore nella query images:', err);
+                return res.status(500).json({ error: 'Errore interno' });
+            }
+            //merge shoes and images
+            finalResults.results.forEach(shoe => {
+                shoe.images = imagesResults.filter(image => image.shoe_id === shoe.id);
+            });
+
+            res.json(finalResults);
+        });
+    });
+}
+
+
 
 // Show Routes single item
 const show = (req, res, next) => {
@@ -109,4 +146,4 @@ const show = (req, res, next) => {
     });
 }
 
-module.exports = { index, show };
+module.exports = { index, showByGenre, show };
