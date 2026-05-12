@@ -149,7 +149,7 @@ export default function DetailPage() {
 
     // Fetch prodotto
     useEffect(() => {
-        fetch(`http://127.0.0.1:3000/products/${slugify(name)}/${slugify(color)}`)
+        fetch(`http://127.0.0.1:3000/products/${name}/${color}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
