@@ -56,38 +56,47 @@ const index = (req, res, next) => {
 //Show Routes items by genre
 const showByGenre = (req, res, next) => {
     const genre = req.params.genre;
-    const queryShoes = 'SELECT * FROM shoes WHERE genre = ?';
-    //get shoes by genre
-    connection.query(queryShoes, [genre], (err, shoesResults) => {
-        if (err) {
-            console.error('Errore nella query shoes:', err);
-            return res.status(500).json({ error: 'Errore interno' });
-        }
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = (page - 1) * limit;
 
-        if (!shoesResults) {
-            return res.json(['nessun risultato']);
-        }
+    const queryCount = 'SELECT COUNT(*) AS total FROM shoes WHERE genre = ?';
+    
+    connection.query(queryCount, [genre], (err, countResults) => {
+        if (err) return res.status(500).json({ error: 'Errore nel conteggio' });
 
-        const finalResults = { results: shoesResults, };
-        console.log(finalResults);
-        //get all images
-        const queryImages = 'SELECT * FROM image';
+        const totalResults = countResults[0].total;
 
-        connection.query(queryImages, (err, imagesResults) => {
-            if (err) {
-                console.error('Errore nella query images:', err);
-                return res.status(500).json({ error: 'Errore interno' });
+        const queryShoes = 'SELECT * FROM shoes WHERE genre = ? ORDER BY created_at DESC LIMIT ? OFFSET ?';
+        
+        connection.query(queryShoes, [genre, limit, offset], (err, shoesResults) => {
+            if (err) return res.status(500).json({ error: 'Errore nel recupero scarpe' });
+
+            if (shoesResults.length === 0) {
+                return res.json({ results: [], total_results: 0 });
             }
-            //merge shoes and images
-            finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.filter(image => image.shoe_id === shoe.id);
-            });
 
-            res.json(finalResults);
+            const shoeIds = shoesResults.map(shoe => shoe.id);
+            const queryImages = 'SELECT * FROM image WHERE shoe_id IN (?)';
+
+            connection.query(queryImages, [shoeIds], (err, imagesResults) => {
+                if (err) return res.status(500).json({ error: 'Errore immagini' });
+
+                shoesResults.forEach(shoe => {
+                    shoe.image = imagesResults.find(img => img.shoe_id === shoe.id) || null;
+                });
+
+                res.json({
+                    current_page: page,
+                    limit: limit,
+                    total_pages: Math.ceil(totalResults / limit),
+                    total_results: totalResults, 
+                    results: shoesResults
+                });
+            });
         });
     });
 }
-
 
 
 // Show Routes single item
