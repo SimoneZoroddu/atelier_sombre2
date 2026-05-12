@@ -156,6 +156,9 @@ const show = (req, res, next) => {
     //use params :NAME and : COLOR instead of ID in url
     const shoeName = req.params.name;
     const color = req.params.color;
+
+    console.log(shoeName, color);
+
     const queryShoes = 'SELECT * FROM shoes WHERE name = ? AND color = ?';
     //get single item
     connection.query(queryShoes, [shoeName, color], (err, shoesResults) => {

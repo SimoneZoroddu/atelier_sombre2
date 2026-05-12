@@ -4,6 +4,7 @@ const port = 3000;
 const cors = require("cors");
 const productsRoutes = require("./routes/productsRoutes.js");
 const ordersRoutes = require("./routes/ordersRoutes.js");
+const newsletterRoutes = require("./routes/newsletterRoutes.js");
 const pageNotFound = require("./middlewares/pageNotFound");
 const serverError = require("./middlewares/serverError");
 
@@ -22,6 +23,7 @@ app.use(express.json());
 //routes
 app.use("/products", productsRoutes); 
 app.use("/orders", ordersRoutes);
+app.use("/newsletter", newsletterRoutes);
 
 app.use(pageNotFound);
 app.use(serverError);
