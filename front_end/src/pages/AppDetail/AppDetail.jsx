@@ -14,7 +14,7 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList, genre, setGenre, slugify } = useShop();
+    const { cartList, setCartList, genre, setGenre, slugify, } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
@@ -145,6 +145,17 @@ export default function DetailPage() {
 
         alert("Prodotto aggiunto al carrello!");
         console.log("Aggiunto al carrello:", cartItem);
+
+        let storedCartList = localStorage.getItem('cart');
+
+        if (storedCartList) {
+            /* get and parse data */
+            setCartList(JSON.parse(storedCartList)); /* ⚠️ should be checked if no parsing error */
+
+        } else {
+            setCartList([])
+        }
+
     }
 
     // Fetch prodotto

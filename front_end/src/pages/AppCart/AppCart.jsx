@@ -27,6 +27,7 @@ export default function AppCart() {
     setIsInitialLoading(false);
 
   }, [setCartList]);
+  
   //console.log(cartList);
 
   /* keep update data in localStorage */
@@ -51,7 +52,13 @@ export default function AppCart() {
     /* redirect to checkout */
     navigate('/checkout')
   }
+
+
+
   console.log(cartList);
+
+
+
   return (
     <div className="cart_container">
 
