@@ -63,13 +63,6 @@ export default function DetailPage() {
     };
 
 
-
-    //console.log(lensRef.current);
-    const handleLeave = () => {//funzione che nasconde il risultato dello zoom quando il mouse esce dall'immagine
-
-        resultRef.current.style.display = "none";
-    };
-
     const shippingInfo = [
         {
             id: "standard",
