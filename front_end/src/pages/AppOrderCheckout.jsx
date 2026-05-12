@@ -9,7 +9,7 @@ export default function AppOrderCheckout() {
   /* Declare or destructure SUPPORT VARIABLES */
   const total_price = localStorage.getItem("total_price");
   const storedCartList = JSON.parse(localStorage.getItem('cart'));
-  const orderUrl = import.meta.env.VITE_API_ADDRESS + 'add-order';
+  const orderUrl = import.meta.env.VITE_API_ADDRESS + 'orders/add-order';
   const [cartList, setCartList] = useState(storedCartList);
   const [productsData, setProductsData] = useState([]);
   const [order, setOrder] = useState({
