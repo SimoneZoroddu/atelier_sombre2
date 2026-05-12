@@ -71,7 +71,6 @@ const show = (req, res) => {
 
 //Post routes new order
 const post = (req, res) => {
-    console.log(req.body);
     //get data from front
     const {
         firstname,
