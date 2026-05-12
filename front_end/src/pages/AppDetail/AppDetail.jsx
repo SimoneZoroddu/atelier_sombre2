@@ -64,7 +64,7 @@ export default function DetailPage() {
 
 
 
-    console.log(lensRef.current);
+    //console.log(lensRef.current);
     const handleLeave = () => {//funzione che nasconde il risultato dello zoom quando il mouse esce dall'immagine
 
         resultRef.current.style.display = "none";
@@ -148,7 +148,7 @@ export default function DetailPage() {
 
     // Fetch prodotto
     useEffect(() => {
-        fetch(`http://127.0.0.1:3000/product/${name}/${color}`)
+        fetch(`http://127.0.0.1:3000/products/${name}/${color}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
@@ -161,10 +161,11 @@ export default function DetailPage() {
     useEffect(() => {
         if (!product) return;
 
-        fetch("http://127.0.0.1:3000/index")
+        fetch("http://127.0.0.1:3000/products/index/")
             .then(res => res.json())
             .then(allProducts => {
-                const filtered = allProducts
+                
+                const filtered = allProducts.results
                     .filter(p => p.category === product.category)
                     .filter(p => p.genre === product.genre)
                     .filter(p => p.id !== product.id)
@@ -356,7 +357,7 @@ export default function DetailPage() {
                                     className="recommendedItem"
                                 >
                                     <img
-                                        src={item.image.main_image_url}
+                                        src={item.images.main_image_url}
                                         alt={item.name}
                                         className="recommendedImage"
                                     />

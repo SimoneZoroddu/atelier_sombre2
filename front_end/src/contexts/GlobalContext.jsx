@@ -30,16 +30,16 @@ function ShopProvider({ children }) {
   const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
-  const url = import.meta.env.VITE_API_ADDRESS + "index";
+  const url = import.meta.env.VITE_API_ADDRESS + "products/index?page=1&limit=100";
   const [shoes, setShoes] = useState([]);
   const [filteredShoes, setFilteredShoes] = useState([]);
 
   useEffect(() => {
     axios.get(url)
       .then(datas => {
-        setShoes(datas.data);
-        setFilteredShoes(datas.data);
-        setCategory([...new Set(datas.data.map(shoe => shoe.category))])
+        setShoes(datas.data.results);
+        setFilteredShoes(datas.data.results);
+        setCategory([...new Set(datas.data.results.map(shoe => shoe.category))])
       });
   }, []);
 

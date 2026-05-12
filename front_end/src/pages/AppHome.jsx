@@ -40,7 +40,7 @@ export default function HomePage() {
 
     const newArrivalsWoman = newArrivals.filter(shoe => shoe.genre == "Donna")
     const newArrivalsMan = newArrivals.filter(shoe => shoe.genre == "Uomo")
-
+    
     function FilterWoman() {
         window.scrollTo({ top: 0 })
         setGenre("Donna")
@@ -79,7 +79,7 @@ export default function HomePage() {
                             {
                                 <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsWoman[0]?.ID}  >
                                     <Link to="/shoes" onClick={FilterWoman}>
-                                        <img src={newArrivalsWoman[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
+                                        <img src={newArrivalsWoman[0]?.images.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
                                     </Link>
                                 </div>
                             }
@@ -91,7 +91,7 @@ export default function HomePage() {
                             {
                                 <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsMan[0]?.ID}  >
                                     <Link to="/shoes" onClick={FilterMan}>
-                                        <img src={newArrivalsMan[0]?.image.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
+                                        <img src={newArrivalsMan[0]?.images.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
                                     </Link>
                                 </div>
                             }
