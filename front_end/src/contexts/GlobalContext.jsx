@@ -43,6 +43,15 @@ function ShopProvider({ children }) {
       });
   }, []);
 
+  /* slugify url function */
+  function slugify(str) {
+    return str
+      .toLowerCase()                 // convert to lowercase
+      .trim()                        // remove leading/trailing spaces  
+      .replace(/[^\w\s-]/g, '')      // remove special chars that are not alphanumeric, spaces, or hyphens
+      .replace(/[\s_]+/g, '-')       // convert spaces to hyphens
+      .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
+  }
 
   return (
     <GlobalContext.Provider
