@@ -27,7 +27,8 @@ export default function DetailPage() {
     //stati per gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    // gestione messaggio di conferma ordine
+    const [toastMessage, setToastMessage] = useState("");
     const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
         const wrapper = e.currentTarget;
         const img = imgRef.current;
@@ -143,7 +144,9 @@ export default function DetailPage() {
         // Salva il carrello aggiornato nel localStorage
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
-        alert("Prodotto aggiunto al carrello!");
+        setToastMessage("Prodotto aggiunto al carrello!");
+        setTimeout(() => setToastMessage(""), 3000);
+
         console.log("Aggiunto al carrello:", cartItem);
 
         let storedCartList = localStorage.getItem('cart');
@@ -476,6 +479,11 @@ export default function DetailPage() {
                     >
                         ›
                     </button>
+                </div>
+            )}
+            {toastMessage && (
+                <div className="toastNotification">
+                    {toastMessage}
                 </div>
             )}
 
