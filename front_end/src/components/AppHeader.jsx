@@ -5,6 +5,8 @@ import AppSideBarSearch from "./AppSideBarSearch";
 
 export default function AppHeader() {
 
+
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg background_color_basic mb-2">
@@ -22,11 +24,11 @@ export default function AppHeader() {
                                 <Link className="nav-link" to="/shoes" >Vedi le nostre collezioni</Link>
                             </li>
                             {
-                            /* 
-                            <li className="nav-item underline_hover">
-                                <Link className="nav-link" >Informazioni</Link>
-                            </li> 
-                            */
+                                /* 
+                                <li className="nav-item underline_hover">
+                                    <Link className="nav-link" >Informazioni</Link>
+                                </li> 
+                                */
                             }
                         </ul>
                     </div>

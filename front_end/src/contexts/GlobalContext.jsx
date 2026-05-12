@@ -34,6 +34,7 @@ function ShopProvider({ children }) {
   const [shoes, setShoes] = useState([]);
   const [filteredShoes, setFilteredShoes] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     axios.get(url)
@@ -86,6 +87,46 @@ function ShopProvider({ children }) {
     setCartTotal(cartList.map(item => item.finalPrice * item.quantity).reduce((a, b) => a + b, 0));
   }, [cartList]);
 
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  const STORAGE_KEY = "newsletter_popup_seen";
+
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!email.trim()) {
+      setError("Inserisci la tua email.");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Indirizzo email non valida.");
+      return;
+    }
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:3000/newsletter/add-newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Errore del server");
+
+      setSubmitted(true);
+      localStorage.setItem(STORAGE_KEY, "true");
+    } catch (err) {
+      setError("Qualcosa è andato storto. Riprova.");
+    }
+  };
+
+
+
+
   return (
     <GlobalContext.Provider
       value={{
@@ -107,7 +148,16 @@ function ShopProvider({ children }) {
         isInitialLoading,
         setIsInitialLoading,
         cartTotal,
-        setCartTotal
+        setCartTotal,
+        handleSubmit,
+        STORAGE_KEY,
+        email,
+        setEmail,
+        error,
+        setError,
+        submitted,
+        setSubmitted,
+
       }}>
       {children}
     </GlobalContext.Provider>
