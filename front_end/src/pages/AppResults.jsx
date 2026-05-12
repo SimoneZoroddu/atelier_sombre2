@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useShop } from "../contexts/GlobalContext";
 import AppSideBarCart from "../components/AppSideBarCart";
 //normalize name and color for url params
-const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
-const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
+
+
 export default function AppSearch() {
     const {
         genre,
@@ -13,7 +13,9 @@ export default function AppSearch() {
         filteredShoes,
         setFilteredShoes,
         setSearchValue,
-        cartList
+        cartList,
+        normalizedName,
+        normalizedColor
     } = useShop();
 
     const [sortBy, setSortBy] = useState("default");

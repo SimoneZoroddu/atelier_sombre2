@@ -6,7 +6,7 @@ import { useShop } from "../contexts/GlobalContext"
 
 export default function AppSideBarCart() {
 
-    const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal } = useShop()
+    const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop()
 
 
     return (
@@ -21,7 +21,7 @@ export default function AppSideBarCart() {
 
                         {/* INFO */}
                         <div className="item_info">
-                            <Link to={`/products/${item.name}/${item.color}`}>
+                            <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}>
                                 <h3 className="item_name">{item.name}</h3>
                             </Link>
                             {item.price !== item.finalPrice ? (

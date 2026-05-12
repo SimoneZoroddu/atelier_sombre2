@@ -125,7 +125,8 @@ function ShopProvider({ children }) {
   };
 
 
-
+  const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
+  const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
 
   return (
     <GlobalContext.Provider
@@ -157,7 +158,8 @@ function ShopProvider({ children }) {
         setError,
         submitted,
         setSubmitted,
-
+        normalizedName,
+        normalizedColor
       }}>
       {children}
     </GlobalContext.Provider>

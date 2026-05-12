@@ -8,7 +8,7 @@ import "./AppCart.css";
 
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal } = useShop();
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop();
   const navigate = useNavigate();
   
   
@@ -62,7 +62,7 @@ export default function AppCart() {
 
                   {/* INFO */}
                   <div className="item_info">
-                    <Link to={`/products/${item.name}/${item.color}`}>
+                    <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}>
                       <h3 className="item_name">{item.name}</h3>
                     </Link>
 
