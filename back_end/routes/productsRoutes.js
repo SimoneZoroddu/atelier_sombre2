@@ -8,6 +8,9 @@ router.get('/index', productControllers.index);
 // show route for shoes by genre
 router.get('/genre/:genre', productControllers.showByGenre);
 
+// show route for discounted shoes
+router.get('/discounted', productControllers.showDiscounted);
+
 // show route for a single product by name and color
 router.get('/:name/:color', productControllers.show);
 

@@ -61,14 +61,14 @@ const showByGenre = (req, res, next) => {
     const offset = (page - 1) * limit;
 
     const queryCount = 'SELECT COUNT(*) AS total FROM shoes WHERE genre = ?';
-    
+
     connection.query(queryCount, [genre], (err, countResults) => {
         if (err) return res.status(500).json({ error: 'Errore nel conteggio' });
 
         const totalResults = countResults[0].total;
 
         const queryShoes = 'SELECT * FROM shoes WHERE genre = ? ORDER BY created_at DESC LIMIT ? OFFSET ?';
-        
+
         connection.query(queryShoes, [genre, limit, offset], (err, shoesResults) => {
             if (err) return res.status(500).json({ error: 'Errore nel recupero scarpe' });
 
@@ -90,13 +90,65 @@ const showByGenre = (req, res, next) => {
                     current_page: page,
                     limit: limit,
                     total_pages: Math.ceil(totalResults / limit),
-                    total_results: totalResults, 
+                    total_results: totalResults,
                     results: shoesResults
                 });
             });
         });
     });
 }
+
+// Show discouted shoes
+const showDiscounted = (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = (page - 1) * limit;
+
+    const queryShoes = 'SELECT * FROM shoes WHERE on_sale > 0 ORDER BY on_sale DESC LIMIT ? OFFSET ?';
+    // Get from DB all shoes
+    connection.query(queryShoes, [limit, offset], (err, shoesResults) => {
+        if (err) {
+            console.error('Errore nella query shoes:', err);
+            return res.status(500).json({ error: 'Errore interno (Shoes)' });
+        }
+
+        if (!shoesResults) {
+            return res.json(['nessun risultato']);
+        }
+
+        const finalResults = { results: shoesResults, };
+
+        const queryPages = 'SELECT COUNT(*) AS total FROM shoes WHERE on_sale > 0';
+
+        connection.query(queryPages, (err, pagesResults) => {
+            if (err) {
+                console.error('Errore nella query pages:', err);
+                return res.status(500).json({ error: 'Errore interno (Pages)' });
+            }
+
+            finalResults.current_page = page;
+            finalResults.limit = limit;
+            finalResults.total_pages = Math.ceil(pagesResults[0].total / limit);
+            finalResults.total_results = pagesResults[0].total;
+        });
+
+        //get all images
+        const queryImages = 'SELECT * FROM image';
+
+        connection.query(queryImages, (err, imagesResults) => {
+            if (err) {
+                console.error('Errore nella query images:', err);
+                return res.status(500).json({ error: 'Errore interno' });
+            }
+            //merge shoes and images
+            finalResults.results.forEach(shoe => {
+                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
+            });
+
+            res.json(finalResults);
+        });
+    });
+};
 
 
 // Show Routes single item
@@ -155,4 +207,4 @@ const show = (req, res, next) => {
     });
 }
 
-module.exports = { index, showByGenre, show };
+module.exports = { index, showByGenre, showDiscounted, show };
