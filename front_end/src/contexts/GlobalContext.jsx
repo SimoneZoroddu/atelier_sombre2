@@ -70,7 +70,7 @@ function ShopProvider({ children }) {
         setShoes,
         filteredShoes,
         setFilteredShoes,
-
+        slugify
       }}>
       {children}
     </GlobalContext.Provider>
