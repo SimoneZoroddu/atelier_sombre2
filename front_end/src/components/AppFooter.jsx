@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
-
+import { useShop } from "../contexts/GlobalContext";
 
 
 
 export default function AppFooter() {
 
+    const { handleSubmit, email, setEmail, error, setError } = useShop()
 
     return (
         <footer className="container-fluid p-4 mt-4 background_color_basic"  >
@@ -13,8 +14,20 @@ export default function AppFooter() {
                     <h4 className="pb-4">Resta aggiornato!</h4>
                     <form action="">
                         <div>
-                            <input className="rounded-pill border-1 p-1 px-2" name="emailNewsletter" type="email" placeholder="Inserisci l'email" required />
-                            <button className="border-0 background_color_basic ms-3">Invia</button>
+                            <input
+                                className="rounded-pill border-1 p-1 px-2"
+                                name="emailNewsletter"
+                                required
+                                type="email"
+                                placeholder="La tua email"
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (error) setError("");
+                                }}
+                                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                                autoFocus />
+                            <button className="border-0 background_color_basic ms-3" onClick={handleSubmit}>Invia</button>
                         </div>
                     </form>
                 </div>

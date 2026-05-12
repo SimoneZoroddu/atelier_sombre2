@@ -2,7 +2,9 @@ import { useEffect, useState } from "react"; // 👈 aggiungi useState
 import { Link } from "react-router-dom";
 import { useShop } from "../contexts/GlobalContext";
 import AppSideBarCart from "../components/AppSideBarCart";
-
+//normalize name and color for url params
+const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
+const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
 export default function AppSearch() {
     const {
         genre,
@@ -77,7 +79,7 @@ export default function AppSearch() {
                                         >
                                             <div className="image-container">
                                                 <Link
-                                                    to={`/products/${shoe.name}/${shoe.color}`}
+                                                    to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`}
                                                 >
                                                     <img
                                                         className="w-100 d-flex align-items-center justify-content-center p-1"

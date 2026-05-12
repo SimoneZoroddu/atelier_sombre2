@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-const STORAGE_KEY = "newsletter_popup_seen";
+import { useShop } from "../contexts/GlobalContext"
 
 const styles = {
     overlay: {
@@ -163,15 +162,16 @@ const globalCss = `
   }
 `;
 
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+
 
 export default function NewsletterPopup() {
     const [visible, setVisible] = useState(false);
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
-    const [submitted, setSubmitted] = useState(false);
+
+
+    const { handleSubmit, submitted, STORAGE_KEY, email, setEmail, error, setError } = useShop()
+
+
+
 
     useEffect(() => {
         const alreadySeen = localStorage.getItem(STORAGE_KEY);
@@ -187,22 +187,6 @@ export default function NewsletterPopup() {
         setVisible(false);
     };
 
-    const handleSubmit = () => {
-        if (!email.trim()) {
-            setError("Inserisci la tua email.");
-            return;
-        }
-        if (!isValidEmail(email)) {
-            setError("Indirizzo email non valido.");
-            return;
-        }
-        setError("");
-        setSubmitted(true);
-        localStorage.setItem(STORAGE_KEY, "true");
-
-        // TODO: collegare alla chiamata API backend per salvare la mail
-        // await fetch('/api/newsletter', { method: 'POST', body: JSON.stringify({ email }) });
-    };
 
     if (!visible) return null;
 
