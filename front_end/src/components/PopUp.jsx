@@ -187,21 +187,31 @@ export default function NewsletterPopup() {
         setVisible(false);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!email.trim()) {
             setError("Inserisci la tua email.");
             return;
         }
         if (!isValidEmail(email)) {
-            setError("Indirizzo email non valido.");
+            setError("Indirizzo email non valida.");
             return;
         }
         setError("");
-        setSubmitted(true);
-        localStorage.setItem(STORAGE_KEY, "true");
 
-        // TODO: collegare alla chiamata API backend per salvare la mail
-        // await fetch('/api/newsletter', { method: 'POST', body: JSON.stringify({ email }) });
+        try {
+            const res = await fetch("http://localhost:3000/newsletter/add-newsletter", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+
+            if (!res.ok) throw new Error("Errore del server");
+
+            setSubmitted(true);
+            localStorage.setItem(STORAGE_KEY, "true");
+        } catch (err) {
+            setError("Qualcosa è andato storto. Riprova.");
+        }
     };
 
     if (!visible) return null;
