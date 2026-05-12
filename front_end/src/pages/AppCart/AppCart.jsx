@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useShop } from "../../contexts/GlobalContext";
 /* Import css */
 import "./AppCart.css";
+
 export default function AppCart() {
   /* declare support variables */
   const { cartList, setCartList } = useShop();
@@ -39,7 +40,7 @@ export default function AppCart() {
   /* get cart total */
   /* ⚠️ to be implemented, add if discount */
   useEffect(() => {
-    setCartTotal(cartList.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0));
+    setCartTotal(cartList.map(item => item.finalPrice * item.quantity).reduce((a, b) => a + b, 0));
   }, [cartList]);
 
   /* handle checkout */
@@ -50,6 +51,7 @@ export default function AppCart() {
     /* redirect to checkout */
     navigate('/checkout')
   }
+  console.log(cartList);
   return (
     <div className="cart_container">
 
@@ -72,8 +74,8 @@ export default function AppCart() {
           {/* ── SINISTRA: lista prodotti ── */}
           <section className="cart_body">
             <ul className="cart_list">
-              {cartList.map((item) => (
-                <li className="cart_item" key={item.name + item.color}>
+              {cartList.map((item, index) => (
+                <li className="cart_item" key={index}>
 
                   {/* IMMAGINE — nascosta su mobile via CSS */}
                   <div className="item_image_wrapper">
@@ -91,7 +93,19 @@ export default function AppCart() {
                       <p>Colore: <strong>{item.color}</strong></p>
                     </div>
 
-                    <p className="item_price">€ {item.price}</p>
+                    {item.price !== item.finalPrice ? (
+                      <p className="price">
+                        <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
+                          {item.price} €
+                        </span>
+                        <span style={{ fontWeight: 550, }}>
+                          {item.finalPrice} €
+                        </span>
+
+                      </p>
+                    ) : (
+                      <p className="price">{item.price} €</p>
+                    )}
 
                     {/* QUANTITÀ */}
                     <div className="item_quantity">
