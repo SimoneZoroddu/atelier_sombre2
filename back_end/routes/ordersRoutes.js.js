@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const orderControllers = require('../controllers/ordersControllers');
+const ordersControllers = require('../controllers/ordersControllers');
 const checkQty = require('../middlewares/checkQty');
 const checkPrices = require('../middlewares/checkPrices');
 
 // index route for all orders
-router.get('/index', orderControllers.index);
+router.get('/index', ordersControllers.index);
 
 // show route for orders by email
-router.get('/:email', orderControllers.show);
+router.get('/:email', ordersControllers.show);
 
 // post route for add a new order
-router.post('/add-order', checkQty, checkPrices, orderControllers.post);
+router.post('/add-order', checkQty, checkPrices, ordersControllers.post);
 
 module.exports = router;

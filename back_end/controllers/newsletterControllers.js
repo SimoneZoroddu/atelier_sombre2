@@ -1,6 +1,6 @@
 const connection = require('../data/data');
 
-const post = (req, res) => {
+const post = (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
@@ -16,6 +16,7 @@ const post = (req, res) => {
         }
 
         res.json({ message: 'Email registrata con successo' });
+        next();
     });
 };
 
