@@ -27,6 +27,11 @@ export default function DetailPage() {
     //stati per gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    //gestione zoom
+    const handleLeave = () => {
+        if (lensRef.current) lensRef.current.style.display = "none";
+        if (resultRef.current) resultRef.current.style.display = "none";
+    };
 
     const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
         const wrapper = e.currentTarget;
