@@ -99,7 +99,7 @@ export default function AppCart() {
                       <button className="qty_btn" disabled={item.quantity === 1}
                         onClick={() => {
                           /* Decrement quantity if >= 2 */
-                          setCartList(cartList.map(i => i.name === item.name && i.color === item.color
+                          setCartList(cartList.map(i => i.name === item.name && i.color === item.color && i.size === item.size
                             ?
                             { ...i, quantity: i.quantity - 1 }
                             :
@@ -119,7 +119,7 @@ export default function AppCart() {
 
                     {/* RIMUOVI */}
                     <button className="remove_btn" onClick={() => setCartList(cartList.filter(i =>
-                      !(i.name === item.name && i.color === item.color)))}>Rimuovi</button>
+                      !(i.name === item.name && i.color === item.color && i.size === item.size)))}>Rimuovi</button>
                   </div>
 
                 </li>
