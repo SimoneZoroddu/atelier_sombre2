@@ -14,7 +14,7 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList, genre, setGenre } = useShop();
+    const { cartList, setCartList, genre, setGenre, slugify } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
