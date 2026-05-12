@@ -33,6 +33,10 @@ export default function DetailPage() {
         if (resultRef.current) resultRef.current.style.display = "none";
     };
 
+    //gestione quantità e carrello
+    const [stockMap, setStockMap] = useState({});
+    // gestione messaggio di conferma ordine
+    const [toastMessage, setToastMessage] = useState("");
     const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
         const wrapper = e.currentTarget;
         const img = imgRef.current;
@@ -109,12 +113,19 @@ export default function DetailPage() {
 
 
     function addToCart() {
-        if (!selectedSize) {//controlla se è stata selezionata una taglia
+        if (!selectedSize) {
             alert("Seleziona una taglia prima di aggiungere al carrello.");
             return;
         }
 
-        const cartItem = {// crea l'oggetto da aggiungere al carrello
+        // Controlla disponibilità residua
+        const availableStock = stockMap[selectedSize] ?? 0;
+        if (quantity > availableStock) {
+            alert(`Disponibilità insufficiente. Stock rimanente per questa taglia: ${availableStock}`);
+            return;
+        }
+
+        const cartItem = {
             id: product.id,
             name: product.name,
             color: product.color,
@@ -124,36 +135,36 @@ export default function DetailPage() {
             quantity: quantity,
             finalPrice: finalPrice
         };
-        //recupera il carrello esistente dal localStorage o inizzializza un carrello vuoto
-        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Controlla se lo stesso prodotto con la stessa taglia è già nel carrello
+        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
         );
 
-        if (existingItem) {//Se il prodotto esiste già aggiorna la quantità
+        if (existingItem) {
             existingItem.quantity += quantity;
-        } else {// Altrimenti aggiungi il nuovo prodotto al carrello
+        } else {
             existingCart.push(cartItem);
         }
 
-        // Salva il carrello aggiornato nel localStorage
         localStorage.setItem("cart", JSON.stringify(existingCart));
 
-        alert("Prodotto aggiunto al carrello!");
-        console.log("Aggiunto al carrello:", cartItem);
+        // Aggiorna stockMap sottraendo la quantità appena aggiunta
+        setStockMap(prev => ({
+            ...prev,
+            [selectedSize]: prev[selectedSize] - quantity
+        }));
 
-        let storedCartList = localStorage.getItem('cart');
-
-        if (storedCartList) {
-            /* get and parse data */
-            setCartList(JSON.parse(storedCartList)); /* ⚠️ should be checked if no parsing error */
-
-        } else {
-            setCartList([])
+        // Se lo stock residuo diventa 0, deseleziona la taglia
+        if (availableStock - quantity === 0) {
+            setSelectedSize(null);
         }
 
+        setQuantity(1);
+        setToastMessage("Prodotto aggiunto al carrello!");
+        setTimeout(() => setToastMessage(""), 3000);
+
+        setCartList(JSON.parse(localStorage.getItem("cart")));
     }
 
     // Fetch prodotto
@@ -164,6 +175,22 @@ export default function DetailPage() {
                 setProduct(data);
                 setMainImage(data.image.main_image_url);
                 setLoading(false);
+                const map = {};
+                data.quantity.forEach(q => {
+                    map[q.size] = q.stock;
+                });
+
+                // Sottrae le quantità già nel carrello per questo prodotto
+                const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+                existingCart
+                    .filter(item => item.id === data.id)
+                    .forEach(item => {
+                        if (map[item.size] !== undefined) {
+                            map[item.size] = Math.max(0, map[item.size] - item.quantity);
+                        }
+                    });
+
+                setStockMap(map);
             });
     }, [name, color]);
 
@@ -193,9 +220,7 @@ export default function DetailPage() {
         .map(item => item.trim())
         .filter(item => item.length > 0);
 
-    const selectedStock = selectedSize
-        ? product.quantity.find(q => q.size === selectedSize)?.stock || 0
-        : 0;
+    const selectedStock = selectedSize ? (stockMap[selectedSize] ?? 0) : 0;
 
 
     const images = [
@@ -323,7 +348,7 @@ export default function DetailPage() {
                                     {product.quantity.map(q => (//renderizza un pulsante per ogni taglia esistente nel db, disabilitandolo se la stock è 0
                                         <button
                                             key={q.id}
-                                            disabled={q.stock === 0}
+                                            disabled={stockMap[q.size] === 0}
                                             onClick={() => {
                                                 setSelectedSize(prev => prev === q.size ? null : q.size);
                                                 setQuantity(1);
@@ -332,7 +357,7 @@ export default function DetailPage() {
                                             style={{
                                                 background: selectedSize === q.size ? "black" : "white",
                                                 color: selectedSize === q.size ? "white" : "black",
-                                                opacity: q.stock === 0 ? 0.4 : 1
+                                                opacity: stockMap[q.size] === 0 ? 0.4 : 1
                                             }}
                                         >
                                             {q.size}
@@ -487,6 +512,48 @@ export default function DetailPage() {
                     }
                 </div>
             </div>
+            {isFullscreen && (
+                <div className="fullscreenOverlay" onClick={() => setIsFullscreen(false)}>
+
+                    <button
+                        className="arrow left"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) =>
+                                prev === 0 ? images.length - 1 : prev - 1
+                            );
+                            setMainImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]);
+                        }}
+                    >
+                        ‹
+                    </button>
+
+                    <img
+                        src={images[currentIndex]}
+                        alt="fullscreen"
+                        className="fullscreenImage"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+
+                    <button
+                        className="arrow right"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) =>
+                                prev === images.length - 1 ? 0 : prev + 1
+                            );
+                            setMainImage(images[currentIndex === images.length - 1 ? 0 : currentIndex + 1]);
+                        }}
+                    >
+                        ›
+                    </button>
+                </div>
+            )}
+            {toastMessage && (
+                <div className="toastNotification">
+                    {toastMessage}
+                </div>
+            )}
 
         </>
     );
