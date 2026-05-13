@@ -2,7 +2,9 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useShop } from "../../contexts/GlobalContext";
 import AppSideBarCart from "../../components/AppSideBarCart"
-
+import ErrorMessage from "../../components/ErrorMessage";
+import AppCart from "../AppCart/AppCart";
+import Loader from "../../components/Loader";
 
 import "./AppDetail.css";
 
@@ -27,6 +29,8 @@ export default function DetailPage() {
     //stati per gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    //gestione errori
+    const [error, setError] = useState(null);
     //gestione zoom
     const handleLeave = () => {
         if (lensRef.current) lensRef.current.style.display = "none";
@@ -41,6 +45,7 @@ export default function DetailPage() {
     const [stockMap, setStockMap] = useState({});
     // gestione messaggio di conferma ordine
     const [toastMessage, setToastMessage] = useState("");
+
     const handleZoom = (e) => { //funzione che parte quanto il mouse si muove sull'immaigine principale
         const wrapper = e.currentTarget;
         const img = imgRef.current;
@@ -178,23 +183,62 @@ export default function DetailPage() {
         setCartList(JSON.parse(localStorage.getItem("cart")));
     }
 
-    // Fetch prodotto
+
+    // Fetch prodotto principale
     useEffect(() => {
-        fetch(`http://127.0.0.1:3000/products/${name}/${color}`)
-            .then(res => res.json())
-            .then(data => {
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const res = await fetch(`http://127.0.0.1:3000/product/${name}/${color}`);
+                if (!res.ok) throw new Error(`Errore ${res.status}`);
+
+                const data = await res.json();
                 setProduct(data);
                 setMainImage(data.image.main_image_url);
-                setLoading(false);
+
                 const map = {};
                 data.quantity.forEach(q => {
                     map[q.size] = q.stock;
                 });
-
                 setStockMap(map);
-            });
-    }, [name, color]);
 
+            } catch (err) {
+                setError("Impossibile caricare il prodotto. Riprova più tardi.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [name, color, error]);
+
+    // Fetch prodotti consigliati
+    useEffect(() => {
+        if (!product) return;
+
+        const fetchRecommended = async () => {
+            try {
+                const res = await fetch("http://127.0.0.1:3000/products/index/?page=1&limit=50");
+                if (!res.ok) throw new Error(`Errore ${res.status}`);
+
+                const allProducts = await res.json();
+                const filtered = allProducts.results
+                    .filter(p => p.category === product.category)
+                    .filter(p => p.genre === product.genre)
+                    .slice(0, 4);
+
+                setRecommended(filtered);
+
+            } catch (err) {
+                // Errore non critico: la pagina funziona lo stesso senza consigliati
+                console.warn("Prodotti consigliati non disponibili:", err.message);
+            }
+        };
+
+        fetchRecommended();
+    }, [product]);
 
     useEffect(() => {
 
@@ -221,27 +265,11 @@ export default function DetailPage() {
             });
 
         setStockMap(map);
-
+        
     }, [cartList, product]);
 
-    // Fetch prodotti consigliati
-    useEffect(() => {
-        if (!product) return;
 
-        fetch("http://127.0.0.1:3000/products/index/?page=1&limit=50")
-            .then(res => res.json())
-            .then(allProducts => {
-
-                const filtered = allProducts.results
-                    .filter(p => p.category === product.category)
-                    .filter(p => p.genre === product.genre)                   
-                    .slice(0, 4);
-                    //console.log(filtered)
-                setRecommended(filtered);
-            });
-    }, [product]);
-
-    if (!product) return <p>Prodotto non trovato.</p>;
+    if (!product) return <ErrorMessage message={error} />;
 
     //normalizza dettagli del prodotto
     const normalizedDetails = product.details
@@ -265,9 +293,17 @@ export default function DetailPage() {
         ? (originalPrice * (1 - discount / 100)).toFixed(2)
         : originalPrice.toFixed(2);
 
-
-    return (
-        <>
+        if (error) {
+            return <ErrorMessage message={error} />;
+        }
+        if (loading) {
+            return <Loader />;
+        }
+    
+    
+    
+        return (
+            <>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
@@ -587,6 +623,7 @@ export default function DetailPage() {
             )}
 
 
+        
         </>
     );
 }
