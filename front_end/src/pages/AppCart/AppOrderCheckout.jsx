@@ -235,8 +235,8 @@ export default function AppOrderCheckout() {
                 </div>
               </div>
               <div>
-                {(showPaymentLoader) && (<Loader />)}
-                {(showPaymentSuccess) && (<p>Pagamento eseguito con successo</p>)}
+{/*                 {(showPaymentLoader) && (<Loader />)}
+                {(showPaymentSuccess) && (<p>Pagamento eseguito con successo</p>)} */}
               </div>
             </div>
           </div>
@@ -261,18 +261,18 @@ export default function AppOrderCheckout() {
                     { /* Order overview header */}
                     <div className="d-flex order_info order_header">
                       <div>
-                        <p><span>Ordine</span>  {'AS-IT000' + orderResponse[0].id}</p>
-                        <p><span>Intestato a</span> {capitalize(orderResponse[0].firstname)} {capitalize(orderResponse[0].lastname)}</p>
-                        <p><span>Stato</span> {orderResponse[0].status}</p>
+                        <p><span>Ordine</span>  {'AS-IT000' + orderResponse[0]?.id}</p>
+                        <p><span>Intestato a</span> {capitalize(orderResponse[0]?.firstname)} {capitalize(orderResponse[0]?.lastname)}</p>
+                        <p><span>Stato</span> {orderResponse[0]?.status}</p>
                         <p><span>Metodo di pagamento</span> {selectedPayment}</p>
                       </div>
                       <div className="text-end ms-auto">
                         <div>
                           {console.log(orderResponse)}
-                          <p>{(orderResponse[0].fiscal_code) ? `C.F. ${orderResponse[0].fiscal_code.toUpperCase()}` : `P.IVA ${orderResponse[0].vat_number}`}</p>
-                          <p>{orderResponse[0].email.toLowerCase()}</p>
-                          <p>{orderResponse[0].telephone_number}</p>
-                          <p>{orderResponse[0].street} — {orderResponse[0].zip_code}, {orderResponse[0].city} &#40;{orderResponse[0].region.toUpperCase()}&#41;, {capitalize(orderResponse[0].country)}</p>
+                          <p>{(orderResponse[0]?.fiscal_code) ? `C.F. ${orderResponse[0]?.fiscal_code.toUpperCase()}` : `P.IVA ${orderResponse[0]?.vat_number}`}</p>
+                          <p>{orderResponse[0]?.email.toLowerCase()}</p>
+                          <p>{orderResponse[0]?.telephone_number}</p>
+                          <p>{orderResponse[0]?.street} — {orderResponse[0]?.zip_code}, {orderResponse[0]?.city} &#40;{orderResponse[0]?.region.toUpperCase()}&#41;, {capitalize(orderResponse[0]?.country)}</p>
                         </div>
                       </div>
                     </div>
@@ -290,7 +290,7 @@ export default function AppOrderCheckout() {
                         </tr>
                       </thead>
                       <tbody>
-                        {(orderResponse[0].items).map(item => {
+                        {(orderResponse[0]?.items)?.map(item => {
                           return (
                             <tr key={item.name + item.color + item.size}>
                               <td>{item.name}</td>
@@ -307,7 +307,7 @@ export default function AppOrderCheckout() {
                       <tfoot>
                         <tr>
                           <td colSpan="6" className="text-end">Totale</td>
-                          <td>{orderResponse[0].total_price}</td>
+                          <td>{orderResponse[0]?.total_price}</td>
                         </tr>
                       </tfoot>
                     </table>
