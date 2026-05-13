@@ -1,21 +1,22 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
+import "./home.css";
 
 /* assets */
-import shop_shoes from "../img/shop_shoes2.png"
-import hero_img from "../img/hero_space.jpg"
-import hero_img2 from "../img/hero_space2.webp"
-import hero_img3 from "../img/hero_space3.webp"
-import hero_img4 from "../img/hero_space4.jpg"
-import hero_img5 from "../img/hero_space5.jpg"
-import hero_img6 from "../img/hero_space6.jpg"
+import shop_shoes from "../../img/shop_shoes2.png"
+import hero_img from "../../img/hero_space.jpg"
+import hero_img2 from "../../img/hero_space2.webp"
+import hero_img3 from "../../img/hero_space3.webp"
+import hero_img4 from "../../img/hero_space4.jpg"
+import hero_img5 from "../../img/hero_space5.jpg"
+import hero_img6 from "../../img/hero_space6.jpg"
 
-const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5, hero_img6, hero_img6, hero_img6];
+const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5];
 
 /* context */
-import { useShop } from "../contexts/GlobalContext"
-import AppSideBarCart from "../components/AppSideBarCart"
+import { useShop } from "../../contexts/GlobalContext"
+import AppSideBarCart from "../../components/AppSideBarCart"
 
 
 
@@ -28,7 +29,7 @@ export default function HomePage() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIndex((prev) => (prev + 1) % image.length);
-        }, 10000);
+        }, 3000);
 
         return () => clearTimeout(timeout);
     }, [index]);
@@ -75,7 +76,17 @@ export default function HomePage() {
                         <div>
                             <div className="container-fluid">
                                 <Link className="nav-link active" aria-current="page" to="/shoes" onClick={ResetFilter}>
-                                    <img src={image[index]} alt="tods-hp-summerselection" className="img-fluid w-100" />
+                                    <div className="hero-wrapper">
+                                        <img src={image[0]} alt="placeholder" className="hero-placeholder" />
+                                        {image.map((imgSrc, i) => (
+                                            <img
+                                                key={i}
+                                                src={imgSrc}
+                                                className={`hero-img-crossfade ${i === index ? 'active' : ''}`}
+                                                alt="tods-hp-summerselection"
+                                            />
+                                        ))}
+                                    </div>
                                 </Link>
                                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                                 <div className="text-center mb-5">
