@@ -530,17 +530,12 @@ h3 {
 
 /* messaggio di conferma ordine */
 .toastNotification {
-    position: fixed;
-    bottom: 20px;
-    right: calc(50vw - 100px);
-    background: #000;
+    background: rgb(7, 156, 7);
     color: #fff;
     padding: 14px 20px;
-    border-radius: 8px;
     font-size: 15px;
     opacity: 0;
     animation: fadeInOut 3s forwards;
-    z-index: 9999;
 }
 
 @keyframes fadeInOut {
