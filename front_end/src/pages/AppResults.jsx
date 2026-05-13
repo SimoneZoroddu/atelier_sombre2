@@ -41,12 +41,14 @@ export default function AppSearch() {
             filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
         } else if (sortBy === "newest") {
             filtered = [...filtered].sort((a, b) => b.id - a.id);
+        } else if (sortBy === "on_sale") {
+            filtered = [...filtered].sort((a, b) => b.on_sale - a.on_sale);
         }
 
         setFilteredShoes(filtered);
     }, [shoes, genre, searchValue, sortBy]);
-    
-        
+
+
     return (
         <>
             <div className="container-fluid">
@@ -67,6 +69,7 @@ export default function AppSearch() {
                                     <option value="price_desc">Prezzo: decrescente</option>
                                     <option value="name_asc">Nome: A → Z</option>
                                     <option value="name_desc">Nome: Z → A</option>
+                                    <option value="on_sale">In Saldo</option>
                                 </select>
                             </div>
                         </div>
