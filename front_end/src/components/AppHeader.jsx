@@ -36,7 +36,7 @@ export default function AppHeader() {
                         {
                         cartList.length === 0
                             ?
-                            <i class="bi bi-bag"></i>
+                            <i className="bi bi-bag"></i>
                             :
                             <div className="cart-icon">
                                 <i className="bi bi-bag-fill"></i>

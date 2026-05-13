@@ -236,7 +236,7 @@ export default function DetailPage() {
                     .filter(p => p.category === product.category)
                     .filter(p => p.genre === product.genre)                   
                     .slice(0, 4);
-                    console.log(filtered)
+                    //console.log(filtered)
                 setRecommended(filtered);
             });
     }, [product]);

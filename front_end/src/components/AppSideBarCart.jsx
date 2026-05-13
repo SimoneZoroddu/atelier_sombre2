@@ -58,10 +58,7 @@ export default function AppSideBarCart() {
                                 <button
                                     className="qty_btn"
                                     disabled={item.quantity === 1}
-
                                     onClick={() => {
-
-                                        /* 🔵 NUOVO */
                                         const updatedCart = cartList.map(i =>
                                             i.name === item.name &&
                                                 i.color === item.color &&
@@ -71,7 +68,6 @@ export default function AppSideBarCart() {
                                                 :
                                                 i
                                         );
-
                                         updateCart(updatedCart);
                                     }}
                                 >
@@ -82,13 +78,9 @@ export default function AppSideBarCart() {
                                 {/* Increment quantity */}
                                 <button
                                     className="qty_btn"
-
                                     disabled={item.quantity >= item.maxStock}
-
                                     onClick={() => {
-
                                         if (item.quantity >= item.maxStock) return;
-
                                         const updatedCart = cartList.map(i =>
                                             i.name === item.name &&
                                                 i.color === item.color &&
@@ -109,10 +101,7 @@ export default function AppSideBarCart() {
                             {/* RIMUOVI */}
                             <button
                                 className="remove_btn"
-
                                 onClick={() => {
-
-                                    /* 🔵 NUOVO */
                                     const updatedCart = cartList.filter(i =>
                                         !(
                                             i.name === item.name &&
@@ -120,7 +109,6 @@ export default function AppSideBarCart() {
                                             i.size === item.size
                                         )
                                     );
-
                                     updateCart(updatedCart);
                                 }}
                             >
