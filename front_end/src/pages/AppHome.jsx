@@ -28,7 +28,7 @@ export default function HomePage() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIndex((prev) => (prev + 1) % image.length);
-        }, 2000);
+        }, 10000);
 
         return () => clearTimeout(timeout);
     }, [index]);

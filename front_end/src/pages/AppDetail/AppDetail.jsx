@@ -33,6 +33,10 @@ export default function DetailPage() {
         if (resultRef.current) resultRef.current.style.display = "none";
     };
 
+    const [sizeErrorr, setSizeError] = useState(false);
+    const [saved, setSaved] = useState(false);
+
+
     //gestione quantità e carrello
     const [stockMap, setStockMap] = useState({});
     // gestione messaggio di conferma ordine
@@ -113,8 +117,9 @@ export default function DetailPage() {
 
 
     function addToCart() {
+        setSizeError(false);
         if (!selectedSize) {
-            alert("Seleziona una taglia prima di aggiungere al carrello.");
+            setTimeout(() => setSizeError(true), 1000);
             return;
         }
 
@@ -139,6 +144,8 @@ export default function DetailPage() {
             finalPrice: finalPrice,
             maxStock: originalStock
         };
+
+        
 
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingItem = existingCart.find(
@@ -221,16 +228,15 @@ export default function DetailPage() {
     useEffect(() => {
         if (!product) return;
 
-        fetch("http://127.0.0.1:3000/products/index/")
+        fetch("http://127.0.0.1:3000/products/index/?page=1&limit=50")
             .then(res => res.json())
             .then(allProducts => {
 
                 const filtered = allProducts.results
                     .filter(p => p.category === product.category)
-                    .filter(p => p.genre === product.genre)
-                    .filter(p => p.id !== product.id)
+                    .filter(p => p.genre === product.genre)                   
                     .slice(0, 4);
-
+                    console.log(filtered)
                 setRecommended(filtered);
             });
     }, [product]);
@@ -373,6 +379,7 @@ export default function DetailPage() {
                                             key={q.id}
                                             disabled={stockMap[q.size] === 0}
                                             onClick={() => {
+                                                setSizeError(false);
                                                 setSelectedSize(prev => prev === q.size ? null : q.size);
                                                 setQuantity(1);
                                             }}
@@ -423,6 +430,12 @@ export default function DetailPage() {
 
                                 </div>
                                 <Link to='/cart' style={{ textDecoration: "none", color: "black", fontFamily: 'Jost', fontWeight: 300, textAlign: "center" }}>Vai al tuo carrello</Link>
+                                {sizeErrorr && (<p className="toastNotification bg-danger">Seleziona una taglia</p>)}
+                                {toastMessage && (
+                                    <div className="toastNotification">
+                                        {toastMessage}
+                                    </div>
+                                )}
                             </div>
 
                             {/* PRODOTTI CONSIGLIATI */}
@@ -572,11 +585,7 @@ export default function DetailPage() {
                     </button>
                 </div>
             )}
-            {toastMessage && (
-                <div className="toastNotification">
-                    {toastMessage}
-                </div>
-            )}
+
 
         </>
     );

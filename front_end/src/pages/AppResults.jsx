@@ -122,7 +122,7 @@ export default function AppSearch() {
                                                                 {shoe.price} €
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {(shoe.price * (1 - shoe.on_sale / 100))} €
+                                                                {(shoe.price * (1 - shoe.on_sale / 100)).toFixed(2)} €
                                                             </span>
                                                         </p>
                                                     ) : (
