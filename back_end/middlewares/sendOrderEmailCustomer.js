@@ -1,28 +1,33 @@
 require('dotenv').config();
 const transporter = require("../data/mailer");
 
-const sendOrderEmailCustomer = (req, res, next) => {
+const sendOrderEmailCustomer = async (req, res, next) => {
 
-  const { email } = req.body.order;
   try {
-    const infoCustomer = transporter.sendMail({
+
+    const { email, firstname } = req.body.order;
+
+    await transporter.sendMail({
       from: '"Atelier Sombre" <orders@atelier-sombre.com>',
       to: email,
       subject: "Grazie per l'ordine!",
-      text: "Questa è una email di test",
       html: `
-<body style="margin:0; padding:0; background-color:#f5f4f0;">
-GRAZIE DELL'ORDINE
-</body>
-`});
+        <body style="margin:0; padding:0; background-color:#f5f4f0;">
+          <h1>Grazie dell'ordine ${firstname}</h1>
+        </body>
+      `
+    });
 
-    res.json({ success: true });
+    next();
 
   } catch (error) {
-    console.error("Errore invio email:", error);
-    res.status(500).json({ error: "Errore invio email Customer" });
+
+    console.error("Errore invio email customer:", error);
+
+    return res.status(500).json({
+      error: "Errore invio email customer"
+    });
   }
-  next();
 };
 
 module.exports = sendOrderEmailCustomer;
