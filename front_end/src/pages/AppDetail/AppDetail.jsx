@@ -191,7 +191,7 @@ export default function DetailPage() {
                 setLoading(true);
                 setError(null);
 
-                const res = await fetch(`http://127.0.0.1:3000/product/${name}/${color}`);
+                const res = await fetch(`http://127.0.0.1:3000/products/${name}/${color}`);
                 if (!res.ok) throw new Error(`Errore ${res.status}`);
 
                 const data = await res.json();
