@@ -145,13 +145,24 @@ const post = (req, res, next) => {
                         })
                     })
                 })
-                const orderQuery = 'SELECT * FROM orders WHERE id = ?';
-                connection.query(orderQuery, [order_id], (err, orderResults) => {
+
+                const orderQuery = `SELECT 
+                    orders.*, 
+                    JSON_ARRAYAGG(
+                    JSON_OBJECT( 'name', shoes.name, 'color', shoes.color, 'price', shoes.price, 'size', shoes_variant.size, 'discount', shoes.on_sale, 'quantity', order_shoes_variant.quantity)
+                    ) AS items
+                    FROM orders
+                    INNER JOIN order_shoes_variant ON orders.id = order_id
+                    INNER JOIN shoes_variant ON order_shoes_variant.variant_id = shoes_variant.id
+                    INNER JOIN shoes ON shoes_variant.shoe_id = shoes.id
+                    WHERE orders.id = ?
+                    GROUP BY orders.id`;
+                connection.query(orderQuery, [order_id], (err, result) => {
                     if (err) {
                         console.error('Errore nella query order:', err);
                         return res.status(500).json({ error: 'Errore orders' });
                     }
-                    res.status(200).json(orderResults)
+                    res.status(200).json(result)
                     next();
                 })
             })
