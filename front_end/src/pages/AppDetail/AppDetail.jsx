@@ -120,6 +120,9 @@ export default function DetailPage() {
 
         // Controlla disponibilità residua
         const availableStock = stockMap[selectedSize] ?? 0;
+        const originalStock = product.quantity.find(
+            q => q.size === selectedSize
+        )?.stock || 0;
         if (quantity > availableStock) {
             alert(`Disponibilità insufficiente. Stock rimanente per questa taglia: ${availableStock}`);
             return;
@@ -133,7 +136,8 @@ export default function DetailPage() {
             price: product.price,
             size: selectedSize,
             quantity: quantity,
-            finalPrice: finalPrice
+            finalPrice: finalPrice,
+            maxStock: originalStock
         };
 
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];

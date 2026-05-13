@@ -163,6 +163,10 @@ img {
     border-color: #111;
 }
 
+.qty_btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 /* ─── RIMUOVI ─── */
 .remove_btn {
     align-self: flex-start;

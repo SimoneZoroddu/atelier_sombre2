@@ -10,10 +10,10 @@ export default function AppCart() {
   /* declare support variables */
   const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop();
   const navigate = useNavigate();
-  
-  
+
+
   //console.log(cartList);
-  
+
 
   /* handle checkout */
   function handleCheckout() {
@@ -25,9 +25,13 @@ export default function AppCart() {
   }
 
 
-
   //console.log(cartList);
 
+
+  function updateCart(updatedCart) {
+    setCartList(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  }
 
 
   return (
@@ -90,28 +94,63 @@ export default function AppCart() {
                       {/* Decrement quantity or delete item */}
                       <button className="qty_btn" disabled={item.quantity === 1}
                         onClick={() => {
-                          /* Decrement quantity if >= 2 */
-                          setCartList(cartList.map(i => i.name === item.name && i.color === item.color && i.size === item.size
-                            ?
-                            { ...i, quantity: i.quantity - 1 }
-                            :
-                            i))
-                        }
-                        }>
+                          const updatedCart = cartList.map(i =>
+                            i.name === item.name &&
+                              i.color === item.color &&
+                              i.size === item.size
+                              ?
+                              { ...i, quantity: i.quantity - 1 }
+                              :
+                              i
+                          );
+
+                          updateCart(updatedCart);
+                        }}
+                      >
                         —
                       </button>
                       {/* Show quantity */}
                       <span>{item.quantity}</span>
                       {/* Increment quantity */}
-                      <button className="qty_btn"
-                        onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color && i.size === item.size ? { ...i, quantity: i.quantity + 1 } : i))}>
+                      <button
+                        className="qty_btn"
+                        disabled={item.quantity >= item.maxStock}
+                        onClick={() => {
+                          if (item.quantity >= item.maxStock) return;
+
+                          const updatedCart = cartList.map(i =>
+                            i.name === item.name &&
+                              i.color === item.color &&
+                              i.size === item.size
+                              ?
+                              { ...i, quantity: i.quantity + 1 }
+                              :
+                              i
+                          );
+                          updateCart(updatedCart);
+                        }}
+                      >
                         +
                       </button>
                     </div>
 
                     {/* RIMUOVI */}
-                    <button className="remove_btn" onClick={() => setCartList(cartList.filter(i =>
-                      !(i.name === item.name && i.color === item.color && i.size === item.size)))}>Rimuovi</button>
+                    <button
+                      className="remove_btn"
+                      onClick={() => {
+                        const updatedCart = cartList.filter(i =>
+                          !(
+                            i.name === item.name &&
+                            i.color === item.color &&
+                            i.size === item.size
+                          )
+                        );
+
+                        updateCart(updatedCart);
+                      }}
+                    >
+                      Rimuovi
+                    </button>
                   </div>
 
                 </li>
