@@ -15,6 +15,13 @@ export default function AppSideBarCart() {
 
     return (
         <div className="col-1 border-0 cart_sidebar">
+            <div className="sidebar_row pt-3">
+                <span>Subtotale</span>
+                <strong>€ {cartTotal}</strong>
+            </div>
+            <Link to="/cart" className="fs-5 text-black underline_hover">
+                Procedi al Carrello
+            </Link>
             {
                 cartList.map((item, index) => (
                     <div key={index}>
@@ -120,13 +127,6 @@ export default function AppSideBarCart() {
                     </div>
                 ))
             }
-            <div className="sidebar_row pt-3">
-                <span>Subtotale</span>
-                <strong>€ {cartTotal}</strong>
-            </div>
-            <Link to="/cart" className="fs-5 text-black underline_hover">
-                Procedi al Carrello
-            </Link>
         </div>
     )
 }
