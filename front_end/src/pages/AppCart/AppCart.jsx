@@ -12,7 +12,6 @@ export default function AppCart() {
   const navigate = useNavigate();
 
 
-  //console.log(cartList);
 
 
   /* handle checkout */

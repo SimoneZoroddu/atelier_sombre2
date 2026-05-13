@@ -72,13 +72,13 @@ export default function AppOrderCheckout() {
       order: { ...order, total_price: Number(order.total_price) },
       items: productsData
     };
-    console.log(body); // ⚠️ To B removed
+    /* console.log(body); */ // ⚠️ To B removed
     /* Set LOADER */
     setLoading(true);
     /* SUBMIT DATA */
     axios.post(orderUrl, body)
       .then(res => {
-        console.log(res.data);
+        /*  console.log(res.data); */
       })
       /* Handle server ERROR */
       .catch(err => {
@@ -86,7 +86,7 @@ export default function AppOrderCheckout() {
       })
       .finally(() => {
         setLoading(false);
-        console.log("Order request completed");
+        /*      console.log("Order request completed"); */
         /* clear cart and total price from local Storage */
         // ⚠️ todo
         /* clear form */
