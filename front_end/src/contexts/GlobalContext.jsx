@@ -96,6 +96,7 @@ function ShopProvider({ children }) {
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [storeWishlist, setStoreWishlist] = useState()
 
   const handleSubmit = async () => {
     if (!email.trim()) {
@@ -128,6 +129,59 @@ function ShopProvider({ children }) {
   const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
   const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
 
+  //funzioni per la wishlist aggiunta togliere e cambio cuore e no tgra pieno e no
+  function isInWishlist(id) {
+
+    return storeWishlist.some(
+      item => item.id === id
+    );
+  }
+
+  useEffect(() => {
+
+    const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setStoreWishlist(savedWishlist);
+
+  }, []);
+
+  function addWishlist(shoe) {
+
+    axios.get(`http://127.0.0.1:3000/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`)
+      .then(datas => {
+
+        const product = datas.data;
+
+        // QUI let e non const
+        let currentWishlist =
+          JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        const alreadyExists = currentWishlist.some(
+          item => item.id === product.id
+        );
+
+        if (alreadyExists) {
+
+          // rimuove
+          currentWishlist = currentWishlist.filter(
+            item => item.id !== product.id
+          );
+
+        } else {
+
+          // aggiunge
+          currentWishlist.push(product);
+        }
+
+        localStorage.setItem(
+          'wishlist',
+          JSON.stringify(currentWishlist)
+        );
+
+        setStoreWishlist(currentWishlist);
+
+      })
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -159,7 +213,11 @@ function ShopProvider({ children }) {
         submitted,
         setSubmitted,
         normalizedName,
-        normalizedColor
+        normalizedColor,
+        storeWishlist,
+        setStoreWishlist,
+        addWishlist,
+        isInWishlist
       }}>
       {children}
     </GlobalContext.Provider>

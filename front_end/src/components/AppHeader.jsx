@@ -32,18 +32,21 @@ export default function AppHeader() {
                             }
                         </ul>
                     </div>
+                    <Link to="/wishlist">
+                        🦴
+                    </Link>
                     <Link className="nav-link" to="/cart">
                         {
-                        cartList.length === 0
-                            ?
-                            <i className="bi bi-bag"></i>
-                            :
-                            <div className="cart-icon">
-                                <i className="bi bi-bag-fill"></i>
-                                <div className="cart-badge" >
-                                    {cartList.length}
+                            cartList.length === 0
+                                ?
+                                <i className="bi bi-bag"></i>
+                                :
+                                <div className="cart-icon">
+                                    <i className="bi bi-bag-fill"></i>
+                                    <div className="cart-badge" >
+                                        {cartList.length}
+                                    </div>
                                 </div>
-                            </div>
                         }
                     </Link>
                     <button className="btn" data-bs-toggle="offcanvas" data-bs-target="#searchPanel">
