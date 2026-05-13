@@ -14,8 +14,11 @@ export default function AppSideBarCart() {
     }
 
     return (
-        <div className="col-1 border-0 cart_sidebar">
-            <div className="sidebar_row pt-3">
+        <div className="col-1 border-0 cart_sidebar d-none d-md-inline">
+            <div className="sidebar_row">
+                <span>Spedizione Gratuita sopra i 200€</span>
+            </div>
+            <div className="sidebar_row">
                 <span>Subtotale</span>
                 <strong>€ {cartTotal}</strong>
             </div>

@@ -33,6 +33,22 @@ export default function AppCart() {
   }
 
 
+
+  const [shippingCost, setShippingCost] = useState(60)
+
+  useEffect(() => {
+    if (cartTotal >= 200) {
+      setShippingCost(0)
+      return
+    } else {
+      setShippingCost(60)
+    }
+  }, [shippingCost]);
+
+
+
+
+
   return (
     <div className="cart_container">
 
@@ -150,7 +166,7 @@ export default function AppCart() {
                     >
                       Rimuovi
                     </button>
-                        
+
                   </div>
 
                 </li>
@@ -162,22 +178,32 @@ export default function AppCart() {
           <aside className="cart_sidebar">
 
             <h3 className="sidebar_title">Riepilogo ordine</h3>
-
+            <div className="sidebar_row text-success">
+              <span>Spedizione Gratuita sopra i 200€</span>
+            </div>
             <div className="sidebar_row">
               <span>Subtotale</span>
               <strong>€ {cartTotal}</strong>
             </div>
 
-            <div className="sidebar_row">
-              <span>Spedizione</span>
-              <span className="shipping_placeholder">Calcolata al checkout</span>
-            </div>
+            {(cartTotal >= 200)
+              ?
+              <div className="sidebar_row">
+                <span>Spedizione</span>
+                <span className="shipping_placeholder text-success">Gratis</span>
+              </div>
+              :
+              <div className="sidebar_row">
+                <span>Spedizione</span>
+                <span className="shipping_placeholder">{shippingCost}</span>
+              </div>
+            }
 
-            
+
 
             <div className="sidebar_row sidebar_total">
               <span>Totale stimato</span>
-              <strong>€ {cartTotal}</strong>
+              <strong>€ {cartTotal + shippingCost}</strong>
             </div>
 
             <button className="btn_checkout" onClick={handleCheckout}>
@@ -186,7 +212,7 @@ export default function AppCart() {
 
 
           </aside>
-              
+
         </div>
       )}
 

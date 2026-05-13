@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
 import img_logo from "../img/logo_basic_atelier_sombre.png"
 import AppSideBarSearch from "./AppSideBarSearch";
-
+import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-
+    const { cartList } = useShop()
 
     return (
         <header>
@@ -33,7 +33,18 @@ export default function AppHeader() {
                         </ul>
                     </div>
                     <Link className="nav-link" to="/cart">
-                        <i className="bi bi-bag-fill"></i>
+                        {
+                        cartList.length === 0
+                            ?
+                            <i class="bi bi-bag"></i>
+                            :
+                            <div className="cart-icon">
+                                <i className="bi bi-bag-fill"></i>
+                                <div className="cart-badge" >
+                                    {cartList.length}
+                                </div>
+                            </div>
+                        }
                     </Link>
                     <button className="btn" data-bs-toggle="offcanvas" data-bs-target="#searchPanel">
                         <i className="bi bi-search"></i>
