@@ -45,7 +45,8 @@ export default function AppSearch() {
 
         setFilteredShoes(filtered);
     }, [shoes, genre, searchValue, sortBy]);
-
+    
+        
     return (
         <>
             <div className="container-fluid">
@@ -112,9 +113,18 @@ export default function AppSearch() {
                                                     <p className="mb-0 text-muted">
                                                         {shoe.color}
                                                     </p>
-                                                    <p className="mb-0 mt-1">
-                                                        €{shoe.price}
-                                                    </p>
+                                                    {shoe.on_sale !== 0 ? (
+                                                        <p className="price">
+                                                            <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
+                                                                {shoe.price} €
+                                                            </span>
+                                                            <span style={{ fontWeight: 600, }}>
+                                                                {(shoe.price * (1 - shoe.on_sale / 100))} €
+                                                            </span>
+                                                        </p>
+                                                    ) : (
+                                                        <p className="price">{shoe.price} €</p>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
