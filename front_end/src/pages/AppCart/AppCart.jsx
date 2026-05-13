@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useShop } from "../../contexts/GlobalContext";
 /* Import css */
 import "./AppCart.css";
-
+/* import Loader */
+import Loader from "../../components/Loader";
+/* import ErrorMessage */
+import ErrorMessage from "../../components/ErrorMessage";  
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop();
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor, loading, error } = useShop();
   const navigate = useNavigate();
 
 
@@ -46,7 +49,8 @@ export default function AppCart() {
   }, [shippingCost]);
 
 
-
+  if (error) return <ErrorMessage message={error} />;
+  if (loading) return <Loader />;
 
 
   return (

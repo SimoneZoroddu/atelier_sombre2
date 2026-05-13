@@ -37,12 +37,24 @@ function ShopProvider({ children }) {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    axios.get(url)
-      .then(datas => {
-        setShoes(datas.data.results);
-        setFilteredShoes(datas.data.results);
-        setCategory([...new Set(datas.data.results.map(shoe => shoe.category))])
-      });
+    const fetchShoes = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await axios.get(url);
+        setShoes(res.data.results);
+        setFilteredShoes(res.data.results);
+        setCategory([...new Set(res.data.results.map(shoe => shoe.category))]);
+
+      } catch (err) {
+        setError("Impossibile caricare i prodotti. Riprova più tardi.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShoes();
   }, []);
 
   /* slugify url function */
