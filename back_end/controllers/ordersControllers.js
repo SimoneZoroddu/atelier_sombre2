@@ -70,7 +70,7 @@ const show = (req, res) => {
 }
 
 //Post routes new order
-const post = (req, res) => {
+const post = (req, res, next) => {
     //get data from front
     const {
         firstname,
@@ -152,6 +152,7 @@ const post = (req, res) => {
                         return res.status(500).json({ error: 'Errore orders' });
                     }
                     return res.status(200).json(orderResults)
+                    next();
                 })
             })
         })
