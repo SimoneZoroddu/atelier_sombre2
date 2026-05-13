@@ -133,19 +133,6 @@ export default function AppCart() {
                       </button>
                     </div>
 
-            {/* ECO BOX */}
-            <div className="eco-box">
-              <span className="eco-icon"><i className="bi bi-leaf"></i></span>
-              <div className="eco-text">
-                <p className="eco-title">Il nostro impegno per il pianeta</p>
-                <p className="eco-body">
-                  Ogni scelta che facciamo è guidata dal rispetto per l'ambiente.
-                  Utilizziamo materiali certificati e confezioni in carta riciclata,
-                  e lavoriamo con corrieri che adottano pratiche di consegna a basse emissioni.
-                  Perché il lusso non dovrebbe avere un costo per la terra.
-                </p>
-              </div>
-            </div>
                     {/* RIMUOVI */}
                     <button
                       className="remove_btn"
@@ -163,6 +150,7 @@ export default function AppCart() {
                     >
                       Rimuovi
                     </button>
+                        
                   </div>
 
                 </li>
@@ -185,7 +173,7 @@ export default function AppCart() {
               <span className="shipping_placeholder">Calcolata al checkout</span>
             </div>
 
-            <div className="sidebar_divider" />
+            
 
             <div className="sidebar_row sidebar_total">
               <span>Totale stimato</span>
@@ -198,7 +186,7 @@ export default function AppCart() {
 
 
           </aside>
-
+              
         </div>
       )}
 
