@@ -16,7 +16,7 @@ export default function DetailPage() {
     const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showDetails, setShowDetails] = useState(false);
-    const { cartList, setCartList, genre, setGenre, slugify, } = useShop();
+    const { cartList, setCartList, genre, setGenre, slugify, addWishlist, isInWishlist } = useShop();
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
@@ -150,7 +150,7 @@ export default function DetailPage() {
             maxStock: originalStock
         };
 
-        
+
 
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingItem = existingCart.find(
@@ -265,7 +265,7 @@ export default function DetailPage() {
             });
 
         setStockMap(map);
-        
+
     }, [cartList, product]);
 
 
@@ -293,17 +293,18 @@ export default function DetailPage() {
         ? (originalPrice * (1 - discount / 100)).toFixed(2)
         : originalPrice.toFixed(2);
 
-        if (error) {
-            return <ErrorMessage message={error} />;
-        }
-        if (loading) {
-            return <Loader />;
-        }
-    
-    
-    
-        return (
-            <>
+    if (error) {
+        return <ErrorMessage message={error} />;
+    }
+    if (loading) {
+        return <Loader />;
+    }
+
+
+
+
+    return (
+        <>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
@@ -460,8 +461,16 @@ export default function DetailPage() {
                                         <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
                                     </button>
 
-                                    <button className="wishlistButton">
-                                        <i className="bi bi-heart"></i>
+                                    <button
+                                        onClick={(e) => addWishlist(product)}
+                                        className="btn btn-sm bg-transparent border-0 p-0"
+                                        style={{
+                                            fontSize: "1.5rem",
+                                            lineHeight: 1,
+                                            color: "#555",
+                                        }}
+                                    >
+                                        {isInWishlist(product.id) ? <i className="bi bi-suit-heart-fill"></i> : <i className="bi bi-suit-heart"></i>}
                                     </button>
 
                                 </div>
@@ -623,7 +632,7 @@ export default function DetailPage() {
             )}
 
 
-        
+
         </>
     );
 }

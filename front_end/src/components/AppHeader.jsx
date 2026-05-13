@@ -5,7 +5,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-    const { cartList } = useShop()
+    const { cartList, storeWishlist } = useShop()
 
     return (
         <header>
@@ -32,8 +32,18 @@ export default function AppHeader() {
                             }
                         </ul>
                     </div>
-                    <Link to="/wishlist">
-                        🦴
+                    <Link to="/wishlist" className="nav-link px-3">
+                        {storeWishlist?.length
+                            ?
+                            <div className="cart-icon">
+                                <i className="bi bi-suit-heart-fill"></i>
+                                <div className="cart-badge" >
+                                    {storeWishlist?.length}
+                                </div>
+                            </div>
+                            :
+                            <i className="bi bi-suit-heart"></i>
+                        }
                     </Link>
                     <Link className="nav-link" to="/cart">
                         {
