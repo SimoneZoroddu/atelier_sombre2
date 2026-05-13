@@ -145,6 +145,8 @@ export default function DetailPage() {
             maxStock: originalStock
         };
 
+        
+
         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
