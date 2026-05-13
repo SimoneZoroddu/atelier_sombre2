@@ -344,8 +344,4 @@ img {
         position: static;
     }
 
-    /* immagini nascoste */
-    .item_image_wrapper {
-        display: none;
-    }
 }

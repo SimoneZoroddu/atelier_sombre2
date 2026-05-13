@@ -5,7 +5,7 @@ import { ShopProvider } from "./contexts/GlobalContext";
 /* Import default layout */
 import DefaultLayout from "./layout/DefaultLayout";
 /* Import pages */
-import AppHome from "./pages/AppHome";
+import AppHome from "./pages/AppHome/AppHome";
 import AppResults from "./pages/AppResults";
 import AppDetail from "./pages/AppDetail/AppDetail";
 import AppCart from "./pages/AppCart/AppCart";
