@@ -41,10 +41,13 @@ export default function AppSearch() {
             filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
         } else if (sortBy === "newest") {
             filtered = [...filtered].sort((a, b) => b.id - a.id);
+        } else if (sortBy === "on_sale") {
+            filtered = [...filtered].sort((a, b) => b.on_sale - a.on_sale);
         }
 
         setFilteredShoes(filtered);
     }, [shoes, genre, searchValue, sortBy]);
+
 
     return (
         <>
@@ -66,6 +69,7 @@ export default function AppSearch() {
                                     <option value="price_desc">Prezzo: decrescente</option>
                                     <option value="name_asc">Nome: A → Z</option>
                                     <option value="name_desc">Nome: Z → A</option>
+                                    <option value="on_sale">In Saldo</option>
                                 </select>
                             </div>
                         </div>
@@ -112,9 +116,18 @@ export default function AppSearch() {
                                                     <p className="mb-0 text-muted">
                                                         {shoe.color}
                                                     </p>
-                                                    <p className="mb-0 mt-1">
-                                                        €{shoe.price}
-                                                    </p>
+                                                    {shoe.on_sale !== 0 ? (
+                                                        <p className="price">
+                                                            <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
+                                                                {shoe.price} €
+                                                            </span>
+                                                            <span style={{ fontWeight: 600, }}>
+                                                                {(shoe.price * (1 - shoe.on_sale / 100))} €
+                                                            </span>
+                                                        </p>
+                                                    ) : (
+                                                        <p className="price">{shoe.price} €</p>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
