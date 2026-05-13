@@ -7,7 +7,11 @@ import shop_shoes from "../img/shop_shoes2.png"
 import hero_img from "../img/hero_space.jpg"
 import hero_img2 from "../img/hero_space2.webp"
 import hero_img3 from "../img/hero_space3.webp"
-const image = [hero_img, hero_img2, hero_img3];
+import hero_img4 from "../img/hero_space4.jpg"
+import hero_img5 from "../img/hero_space5.jpg"
+import hero_img6 from "../img/hero_space6.jpg"
+
+const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5, hero_img6, hero_img6, hero_img6];
 
 /* context */
 import { useShop } from "../contexts/GlobalContext"
@@ -24,7 +28,7 @@ export default function HomePage() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setIndex((prev) => (prev + 1) % image.length);
-        }, 10000);
+        }, 2000);
 
         return () => clearTimeout(timeout);
     }, [index]);
