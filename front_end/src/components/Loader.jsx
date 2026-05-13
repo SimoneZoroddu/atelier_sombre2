@@ -3,7 +3,7 @@ import { useShop } from "../contexts/GlobalContext";
 import { DotStream } from 'ldrs/react'
 import 'ldrs/react/DotStream.css'
 
-export default function Loader({ color = '#EEF3F2' }) {
+export default function Loader({ color = '#424649' }) {
 
   const { loading } = useShop();
 
