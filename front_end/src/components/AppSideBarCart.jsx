@@ -10,7 +10,7 @@ export default function AppSideBarCart() {
 
 
     return (
-        <div className="col-1">
+        <div className="col-1 cart_sidebar">
             {
                 cartList.map((item, index) => (
                     <div key={index}>

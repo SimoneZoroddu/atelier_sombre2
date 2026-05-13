@@ -29,3 +29,14 @@
 .background_color_basic {
     background-color: #eef3f2;
 }
+
+.cart_sidebar {
+    height: 100vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    border-left: 0.5px solid #eef3f2;
+    background-color: #fff;
+}
