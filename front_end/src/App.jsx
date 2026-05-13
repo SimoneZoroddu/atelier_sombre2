@@ -10,7 +10,7 @@ import AppResults from "./pages/AppResults";
 import AppDetail from "./pages/AppDetail/AppDetail";
 import AppCart from "./pages/AppCart/AppCart";
 import AppOrderCheckout from "./pages/AppCart/AppOrderCheckout";
-
+import AppWishlist from "./pages/AppWishlist";
 function App() {
 
 
@@ -24,6 +24,7 @@ function App() {
             <Route path="/products/:name/:color" element={<AppDetail />} />
             <Route path="/cart" element={<AppCart />} />
             <Route path="/checkout" element={<AppOrderCheckout />} />
+            <Route path="/wishlist" element={<AppWishlist />} />
           </Route>
         </Routes>
       </ShopProvider>
