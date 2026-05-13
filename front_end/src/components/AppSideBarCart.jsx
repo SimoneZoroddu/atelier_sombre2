@@ -8,9 +8,13 @@ export default function AppSideBarCart() {
 
     const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop()
 
+    function updateCart(updatedCart) {
+        setCartList(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
 
     return (
-        <div className="col-1 cart_sidebar">
+        <div className="col-1 border-0 cart_sidebar">
             {
                 cartList.map((item, index) => (
                     <div key={index}>
@@ -41,30 +45,77 @@ export default function AppSideBarCart() {
                             {/* QUANTITÀ */}
                             <div className="item_quantity">
                                 {/* Decrement quantity or delete item */}
-                                <button className="qty_btn" disabled={item.quantity === 1}
+                                <button
+                                    className="qty_btn"
+                                    disabled={item.quantity === 1}
+
                                     onClick={() => {
-                                        /* Decrement quantity if >= 2 */
-                                        setCartList(cartList.map(i => i.name === item.name && i.color === item.color && i.size === item.size
-                                            ?
-                                            { ...i, quantity: i.quantity - 1 }
-                                            :
-                                            i))
-                                    }
-                                    }>
+
+                                        /* 🔵 NUOVO */
+                                        const updatedCart = cartList.map(i =>
+                                            i.name === item.name &&
+                                                i.color === item.color &&
+                                                i.size === item.size
+                                                ?
+                                                { ...i, quantity: i.quantity - 1 }
+                                                :
+                                                i
+                                        );
+
+                                        updateCart(updatedCart);
+                                    }}
+                                >
                                     —
                                 </button>
                                 {/* Show quantity */}
                                 <span>{item.quantity}</span>
                                 {/* Increment quantity */}
-                                <button className="qty_btn"
-                                    onClick={() => setCartList(cartList.map(i => i.name === item.name && i.color === item.color && i.size === item.size ? { ...i, quantity: i.quantity + 1 } : i))}>
+                                <button
+                                    className="qty_btn"
+
+                                    disabled={item.quantity >= item.maxStock}
+
+                                    onClick={() => {
+
+                                        if (item.quantity >= item.maxStock) return;
+
+                                        const updatedCart = cartList.map(i =>
+                                            i.name === item.name &&
+                                                i.color === item.color &&
+                                                i.size === item.size
+                                                ?
+                                                { ...i, quantity: i.quantity + 1 }
+                                                :
+                                                i
+                                        );
+
+                                        updateCart(updatedCart);
+                                    }}
+                                >
                                     +
                                 </button>
                             </div>
 
                             {/* RIMUOVI */}
-                            <button className="remove_btn" onClick={() => setCartList(cartList.filter(i =>
-                                !(i.name === item.name && i.color === item.color && i.size === item.size)))}>Rimuovi</button>
+                            <button
+                                className="remove_btn"
+
+                                onClick={() => {
+
+                                    /* 🔵 NUOVO */
+                                    const updatedCart = cartList.filter(i =>
+                                        !(
+                                            i.name === item.name &&
+                                            i.color === item.color &&
+                                            i.size === item.size
+                                        )
+                                    );
+
+                                    updateCart(updatedCart);
+                                }}
+                            >
+                                Rimuovi
+                            </button>
                         </div>
                     </div>
                 ))

@@ -184,19 +184,38 @@ export default function DetailPage() {
                     map[q.size] = q.stock;
                 });
 
-                // Sottrae le quantità già nel carrello per questo prodotto
-                const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-                existingCart
-                    .filter(item => item.id === data.id)
-                    .forEach(item => {
-                        if (map[item.size] !== undefined) {
-                            map[item.size] = Math.max(0, map[item.size] - item.quantity);
-                        }
-                    });
-
                 setStockMap(map);
             });
     }, [name, color]);
+
+
+    useEffect(() => {
+
+        if (!product) return;
+
+        const map = {};
+
+        product.quantity.forEach(q => {
+            map[q.size] = q.stock;
+        });
+
+        /* Sottrae quantità presenti nel carrello */
+        cartList
+            .filter(item => item.id === product.id)
+            .forEach(item => {
+
+                if (map[item.size] !== undefined) {
+
+                    map[item.size] = Math.max(
+                        0,
+                        map[item.size] - item.quantity
+                    );
+                }
+            });
+
+        setStockMap(map);
+
+    }, [cartList, product]);
 
     // Fetch prodotti consigliati
     useEffect(() => {
@@ -510,9 +529,9 @@ export default function DetailPage() {
                         )}
                     </div>
                     {
-
-                        cartList.length != 0 && <AppSideBarCart />
-
+                        cartList.length !== 0 &&
+                        location.pathname !== "/cart" &&
+                        <AppSideBarCart />
                     }
                 </div>
             </div>
