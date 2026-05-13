@@ -151,7 +151,7 @@ const post = (req, res, next) => {
                         console.error('Errore nella query order:', err);
                         return res.status(500).json({ error: 'Errore orders' });
                     }
-                    return res.status(200).json(orderResults)
+                    res.status(200).json(orderResults)
                     next();
                 })
             })
