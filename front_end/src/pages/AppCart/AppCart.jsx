@@ -37,7 +37,8 @@ export default function AppCart() {
 
 
 
-  const [shippingCost, setShippingCost] = useState(60)
+  const [shippingCost, setShippingCost] = useState(0)
+
 
   useEffect(() => {
     if (cartTotal >= 200) {

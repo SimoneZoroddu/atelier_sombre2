@@ -5,7 +5,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-    const { cartList } = useShop()
+    const { cartList, storeWishlist } = useShop()
 
     return (
         <header>
@@ -32,18 +32,31 @@ export default function AppHeader() {
                             }
                         </ul>
                     </div>
-                    <Link className="nav-link" to="/cart">
-                        {
-                        cartList.length === 0
+                    <Link to="/wishlist" className="nav-link px-3">
+                        {storeWishlist?.length
                             ?
-                            <i className="bi bi-bag"></i>
-                            :
                             <div className="cart-icon">
-                                <i className="bi bi-bag-fill"></i>
+                                <i className="bi bi-suit-heart-fill"></i>
                                 <div className="cart-badge" >
-                                    {cartList.length}
+                                    {storeWishlist?.length}
                                 </div>
                             </div>
+                            :
+                            <i className="bi bi-suit-heart"></i>
+                        }
+                    </Link>
+                    <Link className="nav-link" to="/cart">
+                        {
+                            cartList.length === 0
+                                ?
+                                <i className="bi bi-bag"></i>
+                                :
+                                <div className="cart-icon">
+                                    <i className="bi bi-bag-fill"></i>
+                                    <div className="cart-badge" >
+                                        {cartList.length}
+                                    </div>
+                                </div>
                         }
                     </Link>
                     <button className="btn" data-bs-toggle="offcanvas" data-bs-target="#searchPanel">
