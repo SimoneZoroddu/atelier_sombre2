@@ -20,7 +20,8 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<AppHome />} />
-            <Route path="/shoes" element={<AppResults />} />
+            <Route path="/shoes/:genre/:page" element={<AppResults />} />
+            <Route path="/shoes/:pages" element={<AppResults />} />
             <Route path="/products/:name/:color" element={<AppDetail />} />
             <Route path="/cart" element={<AppCart />} />
             <Route path="/checkout" element={<AppOrderCheckout />} />

@@ -35,38 +35,15 @@ export default function HomePage() {
     }, [index]);
 
 
-    const today = new Date();
-    const newArrivals = shoes.filter(shoe => {
-        const shoe_created_at = new Date(shoe.created_at);
-        const expiry = new Date(shoe_created_at);
-        expiry.setMonth(expiry.getMonth() + 3);
-
-        return today <= expiry;
-    })
-
-    const newArrivalsWoman = newArrivals.filter(shoe => shoe.genre == "Donna")
-    const newArrivalsMan = newArrivals.filter(shoe => shoe.genre == "Uomo")
-
-    function FilterWoman() {
-        window.scrollTo({ top: 0 })
-        setGenre("Donna")
-        setSearchValue("")
-    }
-
-    function FilterMan() {
-        window.scrollTo({ top: 0 })
-        setGenre("Uomo")
-        setSearchValue("")
-    }
-
-    function ResetFilter() {
-        window.scrollTo({ top: 0 })
-        setGenre("")
-        setSearchValue("")
-    }
-
-
-
+    /*  const today = new Date();
+     const newArrivals = shoes.filter(shoe => {
+         const shoe_created_at = new Date(shoe.created_at);
+         const expiry = new Date(shoe_created_at);
+         expiry.setMonth(expiry.getMonth() + 3);
+ 
+         return today <= expiry;
+     })
+  */
 
     return (
         <>
@@ -75,7 +52,7 @@ export default function HomePage() {
                     <div className="col">
                         <div>
                             <div className="container-fluid">
-                                <Link className="nav-link active" aria-current="page" to="/shoes" onClick={ResetFilter}>
+                                <Link className="nav-link active" aria-current="page" to="/shoes">
                                     <div className="hero-wrapper">
                                         <img src={image[0]} alt="placeholder" className="hero-placeholder" />
                                         {image.map((imgSrc, i) => (
@@ -90,7 +67,7 @@ export default function HomePage() {
                                 </Link>
                                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                                 <div className="text-center mb-5">
-                                    <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={ResetFilter}>
+                                    <Link to="/shoes" className="fs-5 text-black underline_hover">
                                         Acquista ora
                                     </Link>
                                 </div>
