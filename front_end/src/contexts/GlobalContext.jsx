@@ -16,7 +16,7 @@ function ShopProvider({ children }) {
   const [submitted, setSubmitted] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0)
-
+  const [isVisibleCart, setIsVisibleCart] = useState(false)
   const navigate = useNavigate();
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
@@ -241,7 +241,8 @@ function ShopProvider({ children }) {
         setStoreWishlist,
         addWishlist,
         isInWishlist,
-        handleBack
+        handleBack,
+        isVisibleCart, setIsVisibleCart
       }}>
       {children}
     </GlobalContext.Provider>

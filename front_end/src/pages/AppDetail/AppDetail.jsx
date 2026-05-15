@@ -54,11 +54,6 @@ function DetailPageContent() {
                         <ProductShipping />
                         <FullscreenImageOverlay />
                     </div>
-                    {
-                        cartList.length !== 0 &&
-                        location.pathname !== "/cart" &&
-                        <AppSideBarCart />
-                    }
                 </div>
             </div>
         </>

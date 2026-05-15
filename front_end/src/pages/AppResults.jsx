@@ -17,7 +17,7 @@ export default function AppSearch() {
 
     const [totalPages, setTotalPages] = useState(0);
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList } = useShop();
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart } = useShop();
 
     const applySort = (data, sort) => {
         const sorted = [...data];
@@ -176,11 +176,7 @@ export default function AppSearch() {
                             </div>
                         </div>
                     </div>
-                    {
-
-                        cartList.length != 0 && <AppSideBarCart />
-
-                    }
+                    
                 </div>
             </div >
             <div className="pagination-nav">

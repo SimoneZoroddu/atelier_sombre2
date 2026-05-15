@@ -159,11 +159,6 @@ export default function HomePage() {
                             </div>
                         </div>
                     </div>
-                    {
-
-                        cartList.length != 0 && <AppSideBarCart />
-
-                    }
                 </div>
             </div>
         </>
