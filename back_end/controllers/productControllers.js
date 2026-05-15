@@ -195,7 +195,7 @@ const show = (req, res, next) => {
                 };
             })
 
-            const queryQty = 'SELECT id, size, stock FROM shoes_variant WHERE shoe_id = ?';
+            const queryQty = 'SELECT * FROM shoes_variant WHERE shoe_id = ?';
             //get quantity
             connection.query(queryQty, id, (err, qtyResults) => {
                 if (err) {
