@@ -6,27 +6,6 @@ const GlobalContext = createContext();
 function ShopProvider({ children }) {
 
   const [loading, setLoading] = useState(false);
-
-  /* Initialize localStorage */
-  const [cartList, setCartList] = useState(() => {
-    const saved = localStorage.getItem('cartList');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  /* Save changes to localStorage */
-  useEffect(() => {
-    localStorage.setItem('cartList', JSON.stringify(cartList));
-  }, [cartList]);
-
-  /* const addToCart = (item) => {
-    if (!selectedSize) {
-      alert("Seleziona una taglia prima di aggiungere al carrello.")
-      return;
-    }
-    setCartList((prev) => [...prev, CartItem]);
-    console.log(CartItem, CartList);
-  }; */
-
   const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
@@ -35,6 +14,19 @@ function ShopProvider({ children }) {
   const [filteredShoes, setFilteredShoes] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [shippingCost, setShippingCost] = useState(0)
+
+  /* Initialize localStorage */
+  const [cartList, setCartList] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  /* Save changes to localStorage */
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartList));
+  }, [cartList]);
 
   useEffect(() => {
     const fetchShoes = async () => {
@@ -67,16 +59,7 @@ function ShopProvider({ children }) {
       .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
   }
 
-  /* keep update data in localStorage */
-  useEffect(() => {
-
-    if (!isInitialLoading) {
-      localStorage.setItem('cart', JSON.stringify(cartList));
-    }
-  }, [cartList, isInitialLoading]);
-
-  /* get data from localStorage */
-
+  /* get cart data from localStorage */
   useEffect(() => {
     let storedCartList = localStorage.getItem('cart');
 
@@ -91,13 +74,22 @@ function ShopProvider({ children }) {
 
   }, [setCartList]);
 
-  const [cartTotal, setCartTotal] = useState(0);
+  /* keep updated cart data in localStorage */
+  useEffect(() => {
+    if (!isInitialLoading) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
+    }  
+  }, [cartList, isInitialLoading]);  
 
   /* get cart total */
-  /* ⚠️ to be implemented, add if discount */
   useEffect(() => {
-    setCartTotal(cartList.map(item => item.finalPrice * item.quantity).reduce((a, b) => a + b, 0));
+    setCartTotal(cartList.map(item => Number(item.finalPrice ?? item.price) * Number(item.quantity)).reduce((a, b) => a + b, 0));
   }, [cartList]);
+
+  /* Handle free shipping */
+  useEffect(() => {
+    setShippingCost(cartTotal >= 200 ? 0 : 60);
+  }, [cartTotal]);
 
 
   function isValidEmail(email) {
@@ -216,6 +208,8 @@ function ShopProvider({ children }) {
         setIsInitialLoading,
         cartTotal,
         setCartTotal,
+        shippingCost,
+        setShippingCost,
         handleSubmit,
         STORAGE_KEY,
         email,

@@ -8,14 +8,18 @@ import "./AppCart.css";
 /* import Loader */
 import Loader from "../../components/Loader";
 /* import ErrorMessage */
-import ErrorMessage from "../../components/ErrorMessage";  
+import ErrorMessage from "../../components/ErrorMessage";
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor, loading, error } = useShop();
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, shippingCost, setShippingCost, normalizedName, normalizedColor, loading, error } = useShop();
+/*   const [shippingCost, setShippingCost] = useState(0) */
   const navigate = useNavigate();
 
 
-
+  /* Handle free shipping */
+/*   useEffect(() => {
+    setShippingCost(cartTotal >= 200 ? 0 : 60);
+  }, [cartTotal]); */
 
   /* handle checkout */
   function handleCheckout() {
@@ -26,33 +30,11 @@ export default function AppCart() {
     navigate('/checkout')
   }
 
-
-  //console.log(cartList);
-
-
-  function updateCart(updatedCart) {
-    setCartList(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  }
-
-
-
-  const [shippingCost, setShippingCost] = useState(0)
-
-
-  useEffect(() => {
-    if (cartTotal >= 200) {
-      setShippingCost(0)
-      return
-    } else {
-      setShippingCost(60)
-    }
-  }, [shippingCost]);
-
-
+  /* Handle early return if error or no data */
   if (error) return <ErrorMessage message={error} />;
   if (loading) return <Loader />;
 
+  console.log(localStorage);
 
   return (
     <div className="cart_container">
@@ -76,8 +58,8 @@ export default function AppCart() {
           {/* ── SINISTRA: lista prodotti ── */}
           <section className="cart_body">
             <ul className="cart_list">
-              {cartList.map((item, index) => (
-                <li className="cart_item" key={index}>
+              {cartList.map((item) => (
+                <li className="cart_item" key={`${item.name}-${item.color}-${item.size}`}>
 
                   {/* IMMAGINE — nascosta su mobile via CSS */}
                   <div className="item_image_wrapper">
@@ -95,13 +77,13 @@ export default function AppCart() {
                       <p>Colore: <strong>{item.color}</strong></p>
                     </div>
 
-                    {item.price !== item.finalPrice ? (
+                    {Number(item.price) !== Number(item.finalPrice) ? (
                       <p className="price">
                         <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
-                          {item.price} €
+                          {Number(item.price).toFixed(2)} €
                         </span>
                         <span style={{ fontWeight: 550, }}>
-                          {item.finalPrice} €
+                          {Number(item.finalPrice).toFixed(2)} €
                         </span>
 
                       </p>
@@ -114,7 +96,7 @@ export default function AppCart() {
                       {/* Decrement quantity or delete item */}
                       <button className="qty_btn" disabled={item.quantity === 1}
                         onClick={() => {
-                          const updatedCart = cartList.map(i =>
+                          setCartList(cartList.map(i =>
                             i.name === item.name &&
                               i.color === item.color &&
                               i.size === item.size
@@ -122,9 +104,7 @@ export default function AppCart() {
                               { ...i, quantity: i.quantity - 1 }
                               :
                               i
-                          );
-
-                          updateCart(updatedCart);
+                          ));
                         }}
                       >
                         —
@@ -136,9 +116,7 @@ export default function AppCart() {
                         className="qty_btn"
                         disabled={item.quantity >= item.maxStock}
                         onClick={() => {
-                          if (item.quantity >= item.maxStock) return;
-
-                          const updatedCart = cartList.map(i =>
+                          setCartList(cartList.map(i =>
                             i.name === item.name &&
                               i.color === item.color &&
                               i.size === item.size
@@ -146,8 +124,7 @@ export default function AppCart() {
                               { ...i, quantity: i.quantity + 1 }
                               :
                               i
-                          );
-                          updateCart(updatedCart);
+                          ));
                         }}
                       >
                         +
@@ -158,15 +135,13 @@ export default function AppCart() {
                     <button
                       className="remove_btn"
                       onClick={() => {
-                        const updatedCart = cartList.filter(i =>
+                        setCartList(cartList.filter(i =>
                           !(
                             i.name === item.name &&
                             i.color === item.color &&
                             i.size === item.size
                           )
-                        );
-
-                        updateCart(updatedCart);
+                        ));
                       }}
                     >
                       Rimuovi

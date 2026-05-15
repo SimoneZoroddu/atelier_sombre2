@@ -10,10 +10,17 @@ import Loader from "../../components/Loader";
 export default function AppOrderCheckout() {
   /* Declare or destructure SUPPORT VARIABLES */
   const total_price = localStorage.getItem("total_price");
-  const storedCartList = JSON.parse(localStorage.getItem('cart'));
+  const storedCartList = JSON.parse(localStorage.getItem('cart') || '[]');
   const orderUrl = import.meta.env.VITE_API_ADDRESS + 'orders/add-order';
-  const [cartList, setCartList] = useState(storedCartList);
+  /* const [cartList, setCartList] = useState(storedCartList); */
   const [productsData, setProductsData] = useState([]);
+  const { loading, setLoading, cartList, setCartList, cartTotal, shippingCost } = useShop();
+  // const initialTotal = Number(cartTotal) + shippingCost;
+  const [orderResponse, setOrderResponse] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState('');
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const [order, setOrder] = useState({
     firstname: "",
     lastname: "",
@@ -26,13 +33,10 @@ export default function AppOrderCheckout() {
     city: "",
     street: "",
     zip_code: "",
-    total_price: `${total_price}`,
+    total_price: 0
   });
-  const { loading, setLoading } = useShop();
-  const [orderResponse, setOrderResponse] = useState(null);
-  const [selectedPayment, setSelectedPayment] = useState('');
-  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  console.log(localStorage);
 
   /* HANDLE cart ITEMS */
   /* SET and keep ITEMS updated */
@@ -42,7 +46,7 @@ export default function AppOrderCheckout() {
         {
           variant_id: Number(item.id),
           quantity: Number(item.quantity),
-          price: Number(item.price),
+          price: Number(item.finalPrice ?? item.price),
         }
       ))
     )
@@ -52,16 +56,25 @@ export default function AppOrderCheckout() {
   /* GET ORDER DATA from localStorage (if any) */
   useEffect(() => {
     const savedOrderData = localStorage.getItem('order');
-    if (savedOrderData) {
-      /* keep total PRICE updated */
-      setOrder(JSON.parse(savedOrderData));
+    if (!savedOrderData) return;
+    try {
+      const parsedOrderData = JSON.parse(savedOrderData);
+      setOrder(prev => ({ ...prev, ...parsedOrderData }));
     }
-  }, [total_price])
+    catch (err) {
+      console.log('Invalid saved order JSON', err);
+    }
+  }, []);
   /* UPDATE ORDER DATA */
   function handleInputChange(e) {
     const { name, value } = e.target;
     setOrder({ ...order, [name]: value });
   }
+  /* UPDATE total PRICE */
+  useEffect(() => {
+    setOrder(prev => ({ ...prev, total_price: Number(cartTotal || 0) + Number(shippingCost || 0) }));
+  }, [cartTotal, shippingCost]);
+
   /* SAVE updated ORDER DATA to localStorage */
   useEffect(() => {
     localStorage.setItem('order', JSON.stringify(order));
@@ -87,8 +100,9 @@ export default function AppOrderCheckout() {
       setIsSubmitted(true);
 
       /* Build REQ BODY */
+      const computedTotal = Number(cartTotal || 0) + Number(shippingCost || 0);
       const body = {
-        order: { ...order, total_price: Number(order.total_price) },
+        order: { ...order, total_price: computedTotal },
         items: productsData
       };
       console.log('body della post request ', body); // ⚠️ To B removed
@@ -105,11 +119,28 @@ export default function AppOrderCheckout() {
         .finally(() => {
           console.log("Order request completed");
           /* clear cart and total price from local Storage */
+          setOrder({
+            firstname: "",
+            lastname: "",
+            email: "",
+            telephone_number: "",
+            fiscal_code: "",
+            vat_number: "",
+            country: "",
+            region: "",
+            city: "",
+            street: "",
+            zip_code: "",
+            total_price: 0
+          })
+          setCartList([]);
+          localStorage.removeItem('cart');
+          localStorage.removeItem('cartList');
+          localStorage.removeItem('order');
+          localStorage.removeItem('total_price');
+          /* clear form */
           // ⚠️ todo
-          /* clear and hide form */
-          // ⚠️ todo
-          /* show order overview */
-          // ⚠️ todo
+
         });
     }, 2000);
   }
@@ -242,7 +273,7 @@ export default function AppOrderCheckout() {
               </div>
             </div>
             <div className="jw-100 d-flex justify-content-end">
-              <button className="btn btn-dark" disabled={!selectedPayment} onClick={handleSubmit}> Conferma e procedi al pagamento</button>
+              <button type="submit" className="btn btn-dark" disabled={!selectedPayment} > Conferma e procedi al pagamento</button>
             </div>
           </form>
         )}
