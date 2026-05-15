@@ -172,8 +172,7 @@ export default function AppSearch() {
                                 <Link to={page1} className="page-link">← Pagina 1</Link>
                                 <span className="divider" />
                                 <Link to={page2} className="page-link">Pagina 2</Link>
-                                <span className="divider" />
-                                {page3 && <Link to={page3} className="page-link">Pagina 3 →</Link>}
+                                {page3 && <><span className="divider" /><Link to={page3} className="page-link">Pagina 3 →</Link></>}
                             </div>
                         </div>
                     </div>
