@@ -146,24 +146,33 @@ const post = (req, res, next) => {
                     })
                 })
 
-                const orderQuery = `SELECT 
-                    orders.*, 
-                    JSON_ARRAYAGG(
-                    JSON_OBJECT( 'name', shoes.name, 'color', shoes.color, 'price', shoes.price, 'size', shoes_variant.size, 'discount', shoes.on_sale, 'quantity', order_shoes_variant.quantity)
-                    ) AS items
-                    FROM orders
-                    INNER JOIN order_shoes_variant ON orders.id = order_id
-                    INNER JOIN shoes_variant ON order_shoes_variant.variant_id = shoes_variant.id
-                    INNER JOIN shoes ON shoes_variant.shoe_id = shoes.id
-                    WHERE orders.id = ?
-                    GROUP BY orders.id`;
-                connection.query(orderQuery, [order_id], (err, result) => {
+                //get last inserted order
+                const queryLastOrder = 'SELECT * FROM orders WHERE id = ?';
+                connection.query(queryLastOrder, [order_id], (err, result) => {
                     if (err) {
-                        console.error('Errore nella query order:', err);
-                        return res.status(500).json({ error: 'Errore orders' });
+                        console.error('Errore nella query last order:', err);
+                        return res.status(500).json({ error: 'Errore last order' });
                     }
-                    res.status(200).json(result)
-                    next();
+
+                const queryShoesDetailsOrders = `
+                SELECT shoes.name, shoes_variant.size, shoes.color, shoes.price, shoes.on_sale AS discount, order_shoes_variant.quantity, image.main_image_url FROM orders
+                JOIN order_shoes_variant ON orders.id = order_shoes_variant.order_id
+                JOIN shoes_variant ON shoes_variant.id = order_shoes_variant.variant_id
+                JOIN shoes ON shoes.id = shoes_variant.shoe_id
+                JOIN image ON image.shoe_id = shoes.id
+                WHERE order_id = ?`
+                    connection.query(queryShoesDetailsOrders, [order_id], (err, shoesDetailsResult) => {
+                        if (err) {
+                            console.error('Errore nella query shoes details orders:', err);
+                            return res.status(500).json({ error: 'Errore shoes details orders' });
+                        }
+                        result[0]["items"] = shoesDetailsResult;
+
+                        
+
+                        res.status(200).json(result)
+                    })
+
                 })
             })
         })

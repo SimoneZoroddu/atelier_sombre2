@@ -1,55 +1,77 @@
-import { useEffect, useState } from "react"; // 👈 aggiungi useState
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useShop } from "../contexts/GlobalContext";
 import AppSideBarCart from "../components/AppSideBarCart";
-//normalize name and color for url params
 import axios from "axios";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function AppSearch() {
-    const {
-        genre,
-        searchValue,
-        shoes,
-        filteredShoes,
-        setFilteredShoes,
-        setSearchValue,
-        cartList,
-        normalizedName,
-        normalizedColor,
-        addWishlist,
-        storeWishlist,
-        isInWishlist
-    } = useShop();
+
+    const [results, setResults] = useState([]);
+
+    const { genre, page, pages } = useParams();
+    /*   console.log(genre, page); */
 
     const [sortBy, setSortBy] = useState("default");
+    const [sortedResults, setSortedResults] = useState([]);
+
+    const [totalPages, setTotalPages] = useState(0);
+
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList } = useShop();
+
+    const applySort = (data, sort) => {
+        const sorted = [...data];
+        switch (sort) {
+            case "price_asc": return sorted.sort((a, b) => a.price - b.price);
+            case "price_desc": return sorted.sort((a, b) => b.price - a.price);
+            case "name_asc": return sorted.sort((a, b) => a.name.localeCompare(b.name));
+            case "name_desc": return sorted.sort((a, b) => b.name.localeCompare(a.name));
+            case "newest": return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            case "on_sale": return sorted.filter(p => p.discount > 0);
+            default: return sorted;
+        }
+    };
 
     useEffect(() => {
-        /* useEffect for filtering by genre */
-        let filtered = shoes
-            .filter((s) =>
-                s.genre.toLowerCase().includes(genre.toLowerCase())
-            )
-            .filter((s) =>
-                s.name.toLowerCase().includes(searchValue.toLowerCase())
-            );
+        const sortParam = sortBy !== "default" ? `&sort=${sortBy}` : "";
 
-        /* ordinary according to choice */
-        if (sortBy === "price_asc") {
-            filtered = [...filtered].sort((a, b) => a.price - b.price);
-        } else if (sortBy === "price_desc") {
-            filtered = [...filtered].sort((a, b) => b.price - a.price);
-        } else if (sortBy === "name_asc") {
-            filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-        } else if (sortBy === "name_desc") {
-            filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
-        } else if (sortBy === "newest") {
-            filtered = [...filtered].sort((a, b) => b.id - a.id);
-        } else if (sortBy === "on_sale") {
-            filtered = [...filtered].sort((a, b) => b.on_sale - a.on_sale);
+        if (pages) {
+            axios.get(`http://localhost:3000/products/index/?page=${pages}`)
+                .then((res) => {
+                    /*  console.log(res.data); */
+
+                    const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
+                    setResults(data);
+                    setSortedResults(applySort(data, sortBy));
+
+                })
+                .catch((err) => console.error(err));
+            return;
         }
+        else if (genre === "discounted") {
+            axios.get(`http://localhost:3000/products/discounted?page=${page}`)
+                .then((res) => {
+                    /*    console.log(res.data.results); */
+                    const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
+                    setResults(data);
+                    setSortedResults(applySort(data, sortBy));
+                })
 
-        setFilteredShoes(filtered);
-    }, [shoes, genre, searchValue, sortBy]);
+            return;
+        } else {
+            axios.get(`http://localhost:3000/products/genre/${genre}?page=${page}`)
+                .then((res) => {
+                    /*      console.log("res.data", res.data); */
+                    const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
+                    setResults(data);
+                    setSortedResults(applySort(data, sortBy));
+                })
+                .catch((err) => console.error("Errore:", err))
+        }
+    }, [genre, page, pages]);
 
 
     return (
@@ -63,8 +85,10 @@ export default function AppSearch() {
                                 <select
                                     className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent"
                                     style={{ width: "200px" }}
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value)}
+                                    onChange={(e) => {
+                                        setSortBy(e.target.value);
+                                        setSortedResults(applySort(results, e.target.value));
+                                    }}
                                 >
                                     <option value="default">Ordina per</option>
                                     <option value="newest">Ultimi arrivi</option>
@@ -72,7 +96,6 @@ export default function AppSearch() {
                                     <option value="price_desc">Prezzo: decrescente</option>
                                     <option value="name_asc">Nome: A → Z</option>
                                     <option value="name_desc">Nome: Z → A</option>
-                                    <option value="on_sale">In Saldo</option>
                                 </select>
                             </div>
                         </div>
@@ -80,19 +103,17 @@ export default function AppSearch() {
                         {/* List Shoes */}
                         <div className="container-fluid px-0">
                             <div className="row g-0 row-cols-2 row-cols-md-4">
-                                {filteredShoes.length > 0 ? (
-                                    filteredShoes?.map((shoe) => (
+                                {
+                                    sortedResults?.map((shoe) => (
                                         <div
                                             className="col position-relative gx-2"
                                             key={shoe.id}
                                         >
                                             <div className="image-container">
-                                                <Link
-                                                    to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`}
-                                                >
+                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} state={{ scrollPosition: window.scrollY }}>
                                                     <img
                                                         className="w-100 d-flex align-items-center justify-content-center p-1"
-                                                        src={shoe.images.main_image_url}
+                                                        src={shoe.image?.main_image_url}
                                                         alt={shoe.name}
                                                         style={{ width: "18rem" }}
                                                     />
@@ -132,35 +153,13 @@ export default function AppSearch() {
                                                     ) : (
                                                         <p className="price">{shoe.price} €</p>
                                                     )}
+
                                                 </div>
                                             </div>
                                         </div>
                                     ))
-                                ) : (
-                                    <div className="d-flex flex-column align-items-center justify-content-center text-center min-vh-100 w-100">
-                                        <h4 className="fw-semibold mb-2">
-                                            Nessuna scarpa trovata
-                                        </h4>
-                                        <p
-                                            className="text-muted mb-4"
-                                            style={{ maxWidth: "340px" }}
-                                        >
-                                            Nessun risultato per{" "}
-                                            <span className="fw-semibold text-dark">
-                                                "{searchValue}"
-                                            </span>
-                                            .<br />
-                                            Prova con un termine diverso o sfoglia tutte le
-                                            categorie.
-                                        </p>
-                                        <button
-                                            className="btn btn-dark rounded-pill px-4"
-                                            onClick={() => setSearchValue("")}
-                                        >
-                                            Mostra tutte le scarpe
-                                        </button>
-                                    </div>
-                                )}
+
+                                }
                             </div>
                         </div>
                     </div>
@@ -170,7 +169,27 @@ export default function AppSearch() {
 
                     }
                 </div>
+            </div >
+            <div className="pagination-nav">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <div key={page}>
+                        <Link className="page-link"
+                            onClick={window.scrollTo({ top: 0 })}
+                            to={
+                                pages
+                                    ? `/shoes/${page}`
+                                    : genre === "discounted"
+                                        ? `/shoes/discounted/${page}`
+                                        : `/shoes/${genre}/${page}`
+                            }
+                        >
+                            Pagina {page}
+                        </Link>
+                        <span className="divider" />
+                    </div>
+                ))}
             </div>
+
         </>
     );
 }
