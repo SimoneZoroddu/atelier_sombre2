@@ -128,7 +128,7 @@ export default function ProductInfo() {
                 </button>
 
             </div>
-            <Link to='/cart' style={{ textDecoration: "none", color: "black", fontFamily: 'Jost', fontWeight: 300, textAlign: "center" }} state={{ scrollPosition: window.scrollY }}>Vai al tuo carrello</Link>
+            <Link to='/cart' style={{ textDecoration: "none", color: "black", fontFamily: 'Jost', fontWeight: 300, textAlign: "center" }} >Vai al tuo carrello</Link>
             {sizeErrorr && (<p className="toastNotification bg-danger">Seleziona una taglia</p>)}
             {toastMessage && (
                 <div className="toastNotification">

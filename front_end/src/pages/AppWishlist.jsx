@@ -68,7 +68,7 @@ export default function AppWishlist() {
                 {storeWishlist?.length === 0 ? (
                     <div className="cart_empty">
                         <p>La tua Wishlist è vuota</p>
-                        <Link to="/shoes" state={{ scrollPosition: window.scrollY }} >
+                        <Link to="/shoes" >
                             <button className="btn_continue">Continua lo shopping</button>
                         </Link>
                     </div>
@@ -88,7 +88,7 @@ export default function AppWishlist() {
 
 
                                         <div className="item_info">
-                                            <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} state={{ scrollPosition: window.scrollY }}>
+                                            <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}>
                                                 <h3 className="item_name">{item.name}</h3>
                                             </Link>
                                             <div className="item_meta">

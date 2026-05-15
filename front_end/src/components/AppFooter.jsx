@@ -34,7 +34,7 @@ export default function AppFooter() {
                 <div className="col">
                     <ul className="list-unstyled">
                         <li className="fw-medium fs-4">Servizio Clienti</li>
-                        <li><Link href="" className="text-black underline_hover"  state={{ scrollPosition: window.scrollY }}>Contattaci</Link></li>
+                        <li><Link href="" className="text-black underline_hover"  >Contattaci</Link></li>
                         <li><a href="" className="text-black underline_hover">Servizi Premium</a></li>
                         <li><a href="" className="text-black underline_hover">Traccia il mio ordine</a></li>
                         <li><a href="" className="text-black underline_hover">Richiedi un reso</a></li>

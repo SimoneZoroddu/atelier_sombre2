@@ -191,27 +191,14 @@ function ShopProvider({ children }) {
 
   const handleBack = () => {
 
-    const scrollPosition = location.state?.scrollPosition || 0;
-
     if (location.key !== "default") {
 
       navigate(-1);
-
-      setTimeout(() => {
-        window.scrollTo({
-          top: scrollPosition
-        });
-      }, 50);
 
     } else {
 
       navigate("/");
 
-      setTimeout(() => {
-        window.scrollTo({
-          top: scrollPosition
-        });
-      }, 50);
     }
   };
 
