@@ -95,10 +95,11 @@ export function DetailProvider({ children }) {
     }
 
     const originalPrice = product ? Number(product.price) : 0;
-    const discount = product ? product.on_sale : 0;
-    const finalPrice = discount !== 0
-        ? (originalPrice * (1 - discount / 100)).toFixed(2)
-        : originalPrice.toFixed(2);
+    const discount = (product.on_sale || 0); // percentuale
+    const finalPrice = discount > 0
+        ? Number((originalPrice * (1 - discount / 100)).toFixed(2))
+        : originalPrice;
+
 
     function addToCart() {
         setSizeError(false);
@@ -121,14 +122,15 @@ export function DetailProvider({ children }) {
             name: product.name,
             color: product.color,
             image: product.image.main_image_url,
-            price: product.price,
+            price: originalPrice,
             size: selectedSize,
             quantity: quantity,
             finalPrice: finalPrice,
+            discount: discount,
             maxStock: originalStock
         };
 
-        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingCart = JSON.parse(localStorage.getItem("cart") || []);
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
         );
