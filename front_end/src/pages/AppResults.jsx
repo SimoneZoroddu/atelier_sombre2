@@ -38,7 +38,7 @@ export default function AppSearch() {
         if (pages) {
             axios.get(`http://localhost:3000/products/index/?page=${pages}`)
                 .then((res) => {
-                    /*  console.log(res.data); */
+
 
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
@@ -52,7 +52,7 @@ export default function AppSearch() {
         else if (genre === "discounted") {
             axios.get(`http://localhost:3000/products/discounted?page=${page}`)
                 .then((res) => {
-                    /*    console.log(res.data.results); */
+
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
@@ -60,10 +60,10 @@ export default function AppSearch() {
                 })
 
             return;
-        } else {
+        } else if (genre == "uomo" || genre == "donna") {
             axios.get(`http://localhost:3000/products/genre/${genre}?page=${page}`)
                 .then((res) => {
-                    /*      console.log("res.data", res.data); */
+
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
@@ -71,7 +71,20 @@ export default function AppSearch() {
                 })
                 .catch((err) => console.error("Errore:", err))
         }
+        else {
+            axios.get(`http://localhost:3000/products/${genre}?page=${page}`)
+                .then((res) => {
+
+                    const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
+                    setResults(data);
+                    setSortedResults(applySort(data, sortBy));
+
+                })
+                .catch((err) => console.error(err));
+        }
     }, [genre, page, pages]);
+
 
 
     return (

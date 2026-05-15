@@ -15,21 +15,24 @@ export default function AppHeader() {
                         <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
                     </Link>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                        <ul className="navbar-nav mx-auto fs-4">
                             {/* da eliminare... possiamo lasciarlo solo sul logo, ma rimane mezzo vuoto sarebbe bello trovare qualche link da associare */}
-                            <li className="nav-item">
-                                <Link className="nav-link active underline_hover" aria-current="page" to="/" >HomePage</Link>
+                            <li className="nav-item underline_hover fw-bolder">
+                                <Link className="nav-link" to="/shoes/1">Vedi tutte le nostre collezioni</Link>
                             </li>
-                            <li className="nav-item underline_hover">
-                                <Link className="nav-link" to="/shoes/1">Vedi le nostre collezioni</Link>
+                            <li className="nav-item underline_hover fw-bolder">
+                                <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" >Uomo</Link>
                             </li>
-                            {
-                                /* 
-                                <li className="nav-item underline_hover">
-                                    <Link className="nav-link" to="/shoes">Informazioni</Link>
-                                </li> 
-                                */
-                            }
+                            <li className="nav-item underline_hover fw-bolder">
+                                <Link className="nav-link" aria-current="page" to="/shoes/donna/1" >Donna</Link>
+                            </li>
+                            <li className="nav-item underline_hover fw-bolder">
+                                <Link className="nav-link" to="/">Informazioni</Link>
+                            </li>
+                            <li className="nav-item underline_hover fw-bolder">
+                                <Link className="nav-link text-danger" aria-current="page" to="/shoes/discounted/1" >In Sconto</Link>
+                            </li>
+
                         </ul>
                     </div>
                     <Link to="/wishlist" className="nav-link px-3" >

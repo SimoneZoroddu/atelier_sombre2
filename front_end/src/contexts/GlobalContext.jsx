@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 /* create context */
 const GlobalContext = createContext();
-
 function ShopProvider({ children }) {
 
   const [loading, setLoading] = useState(false);
@@ -18,6 +17,7 @@ function ShopProvider({ children }) {
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0)
 
+  const navigate = useNavigate();
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
     const saved = localStorage.getItem('cart');

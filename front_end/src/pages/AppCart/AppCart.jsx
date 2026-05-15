@@ -62,7 +62,7 @@ export default function AppCart() {
         {cartList.length === 0 ? (
           <div className="cart_empty">
             <p>La tua Shopping bag è vuota</p>
-            <Link to="/shoes"  >
+            <Link to="/shoes/1"  >
               <button className="btn_continue">Continua lo shopping</button>
             </Link>
           </div>
