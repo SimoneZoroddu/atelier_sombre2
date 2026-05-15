@@ -120,7 +120,7 @@ export default function AppSearch() {
                                                 <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`}>
                                                     <img
                                                         className="w-100 d-flex align-items-center justify-content-center p-1"
-                                                        src={shoe.images?.main_image_url}
+                                                        src={shoe.image?.main_image_url}
                                                         alt={shoe.name}
                                                         style={{ width: "18rem" }}
                                                     />
