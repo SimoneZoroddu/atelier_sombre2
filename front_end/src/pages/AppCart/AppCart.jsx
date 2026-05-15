@@ -9,11 +9,9 @@ import "./AppCart.css";
 import Loader from "../../components/Loader";
 /* import ErrorMessage */
 import ErrorMessage from "../../components/ErrorMessage";
-import ErrorMessage from "../../components/ErrorMessage";
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor, loading, error, handleBack } = useShop();
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, shippingCost, setShippingCost, normalizedName, normalizedColor, loading, error } = useShop();
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, shippingCost, setShippingCost, normalizedName, normalizedColor, loading, error, handleBack } = useShop();
   /*   const [shippingCost, setShippingCost] = useState(0) */
   const navigate = useNavigate();
 
@@ -112,7 +110,6 @@ export default function AppCart() {
                         {/* Decrement quantity or delete item */}
                         <button className="qty_btn" disabled={item.quantity === 1}
                           onClick={() => {
-<<<<<<< HEAD
                             setCartList(cartList.map(i =>
                               i.name === item.name &&
                                 i.color === item.color &&

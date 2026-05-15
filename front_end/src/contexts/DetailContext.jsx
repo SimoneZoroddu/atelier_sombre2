@@ -95,7 +95,7 @@ export function DetailProvider({ children }) {
     }
 
     const originalPrice = product ? Number(product.price) : 0;
-    const discount = (product.on_sale || 0); // percentuale
+    const discount = product ? product.on_sale : 0; // percentuale
     const finalPrice = discount > 0
         ? Number((originalPrice * (1 - discount / 100)).toFixed(2))
         : originalPrice;
@@ -127,7 +127,8 @@ export function DetailProvider({ children }) {
             quantity: quantity,
             finalPrice: finalPrice,
             discount: discount,
-            maxStock: originalStock
+            maxStock: originalStock,
+            variant
         };
 
         const existingCart = JSON.parse(localStorage.getItem("cart") || []);

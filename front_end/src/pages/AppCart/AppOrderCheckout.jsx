@@ -322,6 +322,7 @@ export default function AppOrderCheckout() {
                       </tr>
                     </thead>
                     <tbody>
+                      {console.log(orderResponse)}
                       {(orderResponse[0]?.items)?.map(item => {
                         return (
                           <tr key={item.name + item.color + item.size}>
