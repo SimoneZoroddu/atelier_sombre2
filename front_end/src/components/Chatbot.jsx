@@ -3,7 +3,7 @@ import './Chatbot.css';
 
 const INITIAL_MESSAGE = {
     role: 'ai',
-    text: 'Ciao! Sono il tuo assistente AI. Come posso aiutarti con la navigazione o la scelta dei prodotti?',
+    text: 'Ciao! Sono Gianfranco, il tuo commesso personale. Come posso esserti utile oggi?',
 };
 
 export default function Chatbot() {
