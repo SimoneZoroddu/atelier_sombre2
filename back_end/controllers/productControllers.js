@@ -186,7 +186,7 @@ const show = (req, res, next) => {
                 const shoeImage = imagesResults.find(img => img.shoe_id === shoe.id);
                 return {
                     ...shoe,
-                    images: {
+                    image: {
                         main_image_url: shoeImage.main_image_url,
                         top_view_url: shoeImage.top_view_url,
                         secondary_image_url: shoeImage.secondary_image_url,
