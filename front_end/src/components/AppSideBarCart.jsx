@@ -22,7 +22,7 @@ export default function AppSideBarCart() {
                 <span>Subtotale</span>
                 <strong>€ {cartTotal}</strong>
             </div>
-            <Link to="/cart" className="fs-5 text-black underline_hover" state={{ scrollPosition: window.scrollY }}>
+            <Link to="/cart" className="fs-5 text-black underline_hover" >
                 Procedi al Carrello
             </Link>
             {
@@ -35,7 +35,7 @@ export default function AppSideBarCart() {
 
                         {/* INFO */}
                         <div className="item_info">
-                            <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} state={{ scrollPosition: window.scrollY }}>
+                            <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} >
                                 <h3 className="item_name">{item.name}</h3>
                             </Link>
                             {item.price !== item.finalPrice ? (

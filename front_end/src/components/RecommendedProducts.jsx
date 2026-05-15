@@ -15,7 +15,6 @@ export default function RecommendedProducts() {
             <div className="recommendedRow">
                 {recommended.map(item => (
                     <Link
-                        state={{ scrollPosition: window.scrollY }}
                         key={item.id}
                         to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}
                         className="recommendedItem"

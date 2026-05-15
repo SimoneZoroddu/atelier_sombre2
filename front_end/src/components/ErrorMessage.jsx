@@ -5,7 +5,7 @@ function ErrorMessage({ message }) {
         <div className="error-message">
             <p>{message}</p>
             
-            <Link to="/" state={{ scrollPosition: window.scrollY }} >Torna alla HomePage</Link>
+            <Link to="/" >Torna alla HomePage</Link>
             
         </div>
     );

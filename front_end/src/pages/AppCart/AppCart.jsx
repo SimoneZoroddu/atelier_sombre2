@@ -80,7 +80,7 @@ export default function AppCart() {
         {cartList.length === 0 ? (
           <div className="cart_empty">
             <p>La tua Shopping bag è vuota</p>
-            <Link to="/shoes" state={{ scrollPosition: window.scrollY }} >
+            <Link to="/shoes"  >
               <button className="btn_continue">Continua lo shopping</button>
             </Link>
           </div>
@@ -100,7 +100,7 @@ export default function AppCart() {
 
                     {/* INFO */}
                     <div className="item_info">
-                      <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}  state={{ scrollPosition: window.scrollY }}>
+                      <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} >
                         <h3 className="item_name">{item.name}</h3>
                       </Link>
 
