@@ -1,3 +1,5 @@
+/* Import custom CSS */
+import "./AppOrderCheckout.css";
 /* Import HOOKS */
 import { useState, useEffect } from "react";
 /* Import CONTEXT */
@@ -154,7 +156,7 @@ export default function AppOrderCheckout() {
 
   return (
     <>
-      <div className="container p-4">
+      <div className="checkout_container p-4">
 
         {/* Get order data */}
         {(!isSubmitted && !orderResponse) && (
@@ -234,7 +236,7 @@ export default function AppOrderCheckout() {
             <div className="container">
               <h3>Seleziona il metodo di pagamento</h3>
               <div className="d-flex m-3 gap-3" >
-                <div className="m-3">
+                <div className="m-3 pl-3">
                   {/* credit card option */}
                   <div className="form-check">
                     <input className="form-check-input" type="radio" value="Carta di credito" name="paymentMethod" id="credit-card" onChange={handleSelectedPayment} />
@@ -266,14 +268,14 @@ export default function AppOrderCheckout() {
                     </label>
                   </div>
                 </div>
-                <div>
+                <div className="pl-5 d-flex align-items-center justify-content-center">
                   {(loading) && (<Loader />)}
                   {(showPaymentSuccess) && (<p>Pagamento eseguito con successo</p>)}
                 </div>
               </div>
             </div>
             <div className="jw-100 d-flex justify-content-end">
-              <button type="submit" className="btn btn-dark" disabled={!selectedPayment} > Conferma e procedi al pagamento</button>
+              <button type="submit" className="btn btn-black rounded-0" id="submit_button" disabled={!selectedPayment} > Conferma e procedi al pagamento</button>
             </div>
           </form>
         )}
@@ -289,13 +291,13 @@ export default function AppOrderCheckout() {
                 <p className="text-center fs-3">Grazie per averci scelto! &hearts;</p>
                 <p>Ecco il riepilogo del tuo ordine</p>
                 {/* -- Order overview -- */}
-                <div className="container">
+                <div className="container order_info p-5">
                   { /* Order overview header */}
-                  <div className="d-flex order_info order_header">
+                  <div className="d-flex order_header">
                     <div>
-                      <p><span>Ordine</span>  {'AS-IT000' + orderResponse[0]?.id}</p>
+                      <p><span>n°</span>  {'AS-IT000' + orderResponse[0]?.id}</p>
                       <p><span>Intestato a</span> {capitalize(orderResponse[0]?.firstname)} {capitalize(orderResponse[0]?.lastname)}</p>
-                      <p><span>Stato</span> {orderResponse[0]?.status}</p>
+                      <p><br /><span>Stato</span> {orderResponse[0]?.status}</p>
                       <p><span>Metodo di pagamento</span> {selectedPayment}</p>
                     </div>
                     <div className="text-end ms-auto">
@@ -304,46 +306,48 @@ export default function AppOrderCheckout() {
                         <p>{(orderResponse[0]?.fiscal_code) ? `C.F. ${orderResponse[0]?.fiscal_code.toUpperCase()}` : `P.IVA ${orderResponse[0]?.vat_number}`}</p>
                         <p>{orderResponse[0]?.email.toLowerCase()}</p>
                         <p>{orderResponse[0]?.telephone_number}</p>
-                        <p>{orderResponse[0]?.street} — {orderResponse[0]?.zip_code}, {orderResponse[0]?.city} &#40;{orderResponse[0]?.region.toUpperCase()}&#41;, {capitalize(orderResponse[0]?.country)}</p>
+                        <p>{orderResponse[0]?.street} — {orderResponse[0]?.zip_code}, {orderResponse[0]?.city} &#40;{orderResponse[0]?.region.toUpperCase()}&#41;, {capitalize(orderResponse[0]?.country)}<br /></p>
                       </div>
                     </div>
                   </div>
                   {/* Order overview body */}
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Prodotto</th>
-                        <th>Colore</th>
-                        <th>Taglia</th>
-                        <th>Quantità</th>
-                        <th>Prezzo</th>
-                        <th>Sconti</th>
-                        <th>Subtotale</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {console.log(orderResponse)}
-                      {(orderResponse[0]?.items)?.map(item => {
-                        return (
-                          <tr key={item.name + item.color + item.size}>
-                            <td>{item.name}</td>
-                            <td>{item.color}</td>
-                            <td>{item.size}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.price}</td>
-                            <td>{item.discount == 0 ? '-' : `${item.discount}%`}</td>
-                            <td>{(item.price - (item.price * item.discount / 100)) * item.quantity}</td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan="6" className="text-end">Totale</td>
-                        <td>{orderResponse[0]?.total_price}</td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                  <div className="table_container">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th className="product_name">Prodotto</th>
+                          <th>Colore</th>
+                          <th>Taglia</th>
+                          <th>Quantità</th>
+                          <th className="collapsable">Prezzo</th>
+                          <th className="collapsable">Sconti</th>
+                          <th>Subtotale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {console.log(orderResponse)}
+                        {(orderResponse[0]?.items)?.map(item => {
+                          return (
+                            <tr key={item.name + item.color + item.size}>
+                              <td className="product_name">{item.name}</td>
+                              <td>{item.color}</td>
+                              <td>{item.size}</td>
+                              <td>{item.quantity}</td>
+                              <td className="collapsable">{item.price}</td>
+                              <td className="collapsable">{item.discount == 0 ? '-' : `${item.discount}%`}</td>
+                              <td>{(item.price - (item.price * item.discount / 100)) * item.quantity}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                      <tfoot>
+                        <tr> {/* ⚠️ todo: fix colspan (should convert table into grid) */}
+                          <td colSpan="5" className="text-end">Totale</td>
+                          <td>{orderResponse[0]?.total_price}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
