@@ -36,7 +36,10 @@ export default function HomePage() {
     }, [index]);
 
 
-    /*  const today = new Date();
+    /*  
+    
+    
+    const today = new Date();
      const newArrivals = shoes.filter(shoe => {
          const shoe_created_at = new Date(shoe.created_at);
          const expiry = new Date(shoe_created_at);
@@ -44,6 +47,9 @@ export default function HomePage() {
  
          return today <= expiry;
      })
+
+
+     
   */
 
     return (
