@@ -2,7 +2,7 @@ require('dotenv').config();
 const transporter = require("../data/mailer");
 
 const sendOrderEmailCustomer = async (req, res, next) => {
-
+  console.log(req.body.order);
   try {
 
     const { email, firstname } = req.body.order;
