@@ -21,7 +21,7 @@ export default function AppHeader() {
                                 <Link className="nav-link active underline_hover" aria-current="page" to="/"  state={{ scrollPosition: window.scrollY }}>HomePage</Link>
                             </li>
                             <li className="nav-item underline_hover">
-                                <Link className="nav-link" to="/shoes"  state={{ scrollPosition: window.scrollY }} >Vedi le nostre collezioni</Link>
+                                <Link className="nav-link" to="/shoes/1"  state={{ scrollPosition: window.scrollY }} >Vedi le nostre collezioni</Link>
                             </li>
                             {
                                 /* 

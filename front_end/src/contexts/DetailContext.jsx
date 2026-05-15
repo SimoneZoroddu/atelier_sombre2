@@ -22,11 +22,11 @@ export function DetailProvider({ children }) {
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
-    
+
     //gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    
+
     //gestione errori
     const [error, setError] = useState(null);
     const [sizeErrorr, setSizeError] = useState(false);
@@ -34,7 +34,7 @@ export function DetailProvider({ children }) {
 
     //gestione quantità e carrello
     const [stockMap, setStockMap] = useState({});
-    
+
     // gestione messaggio di conferma ordine
     const [toastMessage, setToastMessage] = useState("");
 
@@ -60,13 +60,28 @@ export function DetailProvider({ children }) {
     ];
 
     const handleBack = () => {
-        if (product) {
-            setGenre(product.genre);
-        }
+
+        const scrollPosition = location.state?.scrollPosition || 0;
+
         if (location.key !== "default") {
+
             navigate(-1);
+
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollPosition
+                });
+            }, 50);
+
         } else {
+
             navigate("/");
+
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollPosition
+                });
+            }, 50);
         }
     };
 

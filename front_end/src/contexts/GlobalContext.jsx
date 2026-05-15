@@ -209,8 +209,7 @@ function ShopProvider({ children }) {
 
       setTimeout(() => {
         window.scrollTo({
-          top: scrollPosition,
-          behavior: "instant"
+          top: scrollPosition
         });
       }, 50);
 
@@ -220,8 +219,7 @@ function ShopProvider({ children }) {
 
       setTimeout(() => {
         window.scrollTo({
-          top: scrollPosition,
-          behavior: "instant"
+          top: scrollPosition
         });
       }, 50);
     }

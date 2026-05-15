@@ -174,7 +174,6 @@ export default function AppSearch() {
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <div key={page}>
                         <Link className="page-link"
-                            state={{ scrollPosition: window.scrollY }}
                             onClick={window.scrollTo({ top: 0 })}
                             to={
                                 pages
