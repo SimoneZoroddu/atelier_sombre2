@@ -36,7 +36,7 @@ export default function AppOrderCheckout() {
     total_price: 0
   });
 
-  console.log(cartList);
+  // console.log(cartList);
 
   /* HANDLE cart ITEMS */
   /* SET and keep ITEMS updated */

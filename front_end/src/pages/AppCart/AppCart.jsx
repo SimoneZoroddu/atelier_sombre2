@@ -34,7 +34,7 @@ export default function AppCart() {
   if (error) return <ErrorMessage message={error} />;
   if (loading) return <Loader />;
 
-  console.log(localStorage);
+  // console.log(localStorage);
 
   return (
     <>
