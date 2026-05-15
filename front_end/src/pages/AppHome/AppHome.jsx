@@ -11,8 +11,9 @@ import hero_img3 from "../../img/hero_space3.webp"
 import hero_img4 from "../../img/hero_space4.jpg"
 import hero_img5 from "../../img/hero_space5.jpg"
 import hero_img6 from "../../img/hero_space6.jpg"
+import surprisemotherfucker from "../../img/surprisemotherfucker.jpg"
 
-const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5];
+const image = [hero_img6, surprisemotherfucker, hero_img, hero_img6, hero_img2, surprisemotherfucker, hero_img6, hero_img3, surprisemotherfucker, hero_img6, hero_img4, hero_img6, hero_img5];
 
 /* context */
 import { useShop } from "../../contexts/GlobalContext"
