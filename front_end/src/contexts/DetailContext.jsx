@@ -99,6 +99,9 @@ export function DetailProvider({ children }) {
             return;
         }
 
+        const variantObj = product.quantity.find(q => q.size === selectedSize);
+        const variantId = variantObj ? Number(variantObj.id) : null;
+
         const cartItem = {
             id: product.id,
             name: product.name,
@@ -110,8 +113,10 @@ export function DetailProvider({ children }) {
             finalPrice: finalPrice,
             discount: discount,
             maxStock: originalStock,
-            variant: product.shoe_id
+            variant: variantId
         };
+
+        if (!variantId) console.warn(`Variant id mancante per prodotto ${product.id} taglia ${selectedSize}`, product.quantity);
 
         const existingCart = JSON.parse(localStorage.getItem("cart") || []);
         const existingItem = existingCart.find(
