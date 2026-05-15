@@ -19,7 +19,7 @@ export default function AppSideBarSearch() {
             <div className="offcanvas-body">
                 <input className="form-control mb-3" type="search" placeholder="Che tipo di scarpa cerchi?" value={searchValue} onChange={(e) => { setSearchValue(e.target.value), setGenre("") }} onKeyDown={(e) => {
                     if (e.key === "Enter")
-                        navigate("/shoes")
+                        navigate("/shoes/1")
                 }} />
 
                 {
