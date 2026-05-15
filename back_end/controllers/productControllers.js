@@ -45,7 +45,7 @@ const index = (req, res, next) => {
             }
             //merge shoes and images
             finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
+                shoe.image = imagesResults.find(image => image.shoe_id === shoe.id);
             });
 
             res.json(finalResults);
@@ -142,7 +142,7 @@ const showDiscounted = (req, res, next) => {
             }
             //merge shoes and images
             finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
+                shoe.image = imagesResults.find(image => image.shoe_id === shoe.id);
             });
 
             res.json(finalResults);
