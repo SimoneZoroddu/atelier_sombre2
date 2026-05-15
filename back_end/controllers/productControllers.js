@@ -45,7 +45,7 @@ const index = (req, res, next) => {
             }
             //merge shoes and images
             finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
+                shoe.image = imagesResults.find(image => image.shoe_id === shoe.id);
             });
 
             res.json(finalResults);
@@ -142,7 +142,7 @@ const showDiscounted = (req, res, next) => {
             }
             //merge shoes and images
             finalResults.results.forEach(shoe => {
-                shoe.images = imagesResults.find(image => image.shoe_id === shoe.id);
+                shoe.image = imagesResults.find(image => image.shoe_id === shoe.id);
             });
 
             res.json(finalResults);
@@ -195,7 +195,7 @@ const show = (req, res, next) => {
                 };
             })
 
-            const queryQty = 'SELECT id, size, stock FROM shoes_variant WHERE shoe_id = ?';
+            const queryQty = 'SELECT * FROM shoes_variant WHERE shoe_id = ?';
             //get quantity
             connection.query(queryQty, id, (err, qtyResults) => {
                 if (err) {
@@ -203,6 +203,7 @@ const show = (req, res, next) => {
                     return res.status(500).json({ error: 'Errore interno' });
                 }
                 finalResults[0].quantity = qtyResults;
+                console.log(finalResults[0]);
 
                 res.json(finalResults[0]);
             });
@@ -211,4 +212,56 @@ const show = (req, res, next) => {
     });
 }
 
-module.exports = { index, showByGenre, showDiscounted, show };
+const showByCategory = (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = (page - 1) * limit;
+    const category = req.params.category;
+
+    console.log(req)
+
+    const queryShoes = 'SELECT * FROM shoes WHERE category = ? LIMIT ? OFFSET ?';
+    // Get from DB all shoes
+    connection.query(queryShoes, [category, limit, offset], (err, shoesResults) => {
+        if (err) {
+            console.error('Errore nella query shoes:', err);
+            return res.status(500).json({ error: 'Errore interno (Shoes)' });
+        }
+
+        if (!shoesResults) {
+            return res.json(['nessun risultato']);
+        }
+
+        const finalResults = { results: shoesResults, };
+
+        const queryPages = 'SELECT COUNT(*) AS total FROM shoes WHERE category = ?';
+        connection.query(queryPages, [category], (err, pagesResults) => {
+            if (err) {
+                console.error('Errore nella query pages:', err);
+                return res.status(500).json({ error: 'Errore interno (Pages)' });
+            }
+
+            finalResults.current_page = page;
+            finalResults.limit = limit;
+            finalResults.total_pages = Math.ceil(pagesResults[0].total / limit);
+            finalResults.total_results = pagesResults[0].total;
+        });
+
+        const queryImages = 'SELECT * FROM image';
+        connection.query(queryImages, (err, imagesResults) => {
+            if (err) {
+                console.error('Errore nella query images:', err);
+                return res.status(500).json({ error: 'Errore interno (Images)' });
+            }
+            //merge shoes and images
+            finalResults.results.forEach(shoe => {
+                shoe.image = imagesResults.find(image => image.shoe_id === shoe.id);
+            });
+
+            res.json(finalResults);
+            console.log(finalResults);
+        });
+    });
+}
+
+module.exports = { index, showByGenre, showDiscounted, showByCategory, show };

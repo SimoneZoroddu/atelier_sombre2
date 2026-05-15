@@ -11,9 +11,9 @@ import hero_img3 from "../../img/hero_space3.webp"
 import hero_img4 from "../../img/hero_space4.jpg"
 import hero_img5 from "../../img/hero_space5.jpg"
 import hero_img6 from "../../img/hero_space6.jpg"
-import surprisemotherfucker from "../../img/surprisemotherfucker.jpg"
 
-const image = [hero_img6, surprisemotherfucker, hero_img, hero_img6, hero_img2, surprisemotherfucker, hero_img6, hero_img3, surprisemotherfucker, hero_img6, hero_img4, hero_img6, hero_img5];
+
+const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5];
 
 /* context */
 import { useShop } from "../../contexts/GlobalContext"
@@ -36,7 +36,10 @@ export default function HomePage() {
     }, [index]);
 
 
-    /*  const today = new Date();
+    /*  
+    
+    
+    const today = new Date();
      const newArrivals = shoes.filter(shoe => {
          const shoe_created_at = new Date(shoe.created_at);
          const expiry = new Date(shoe_created_at);
@@ -44,6 +47,9 @@ export default function HomePage() {
  
          return today <= expiry;
      })
+
+
+
   */
 
     return (
@@ -53,7 +59,7 @@ export default function HomePage() {
                     <div className="col">
                         <div>
                             <div className="container-fluid">
-                                <Link className="nav-link active" aria-current="page" to="/shoes">
+                                <Link className="nav-link active" aria-current="page" to="/shoes/1" >
                                     <div className="hero-wrapper">
                                         <img src={image[0]} alt="placeholder" className="hero-placeholder" />
                                         {image.map((imgSrc, i) => (
@@ -68,33 +74,33 @@ export default function HomePage() {
                                 </Link>
                                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                                 <div className="text-center mb-5">
-                                    <Link to="/shoes" className="fs-5 text-black underline_hover">
+                                    <Link to="/shoes/1" className="fs-5 text-black underline_hover" >
                                         Acquista ora
                                     </Link>
                                 </div>
                                 <div className="container-fluid">
                                     <div className="row row-cols-1 row-cols-md-2 g-4 text-center">
                                         <div className="col px-0">
-                                            {
-                                                <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsWoman[0]?.ID}  >
-                                                    <Link to="/shoes" onClick={FilterWoman}>
-                                                        <img src={newArrivalsWoman[0]?.images.model_image_url} className="img-fluid" alt={newArrivalsWoman[0]?.name} style={{ width: "120rem" }} />
-                                                    </Link>
-                                                </div>
-                                            }
-                                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterWoman}>
+
+                                            <div className="d-flex justify-content-start flex-wrap py-4"  >
+                                                <Link to="/shoes/donna/1" >
+                                                    <img src='https://saint-laurent.dam.kering.com/asset/2c520417-2c46-42ed-af79-70af55178751/Medium2/8671811TVAN3085_Y.jpg?v=1' className="img-fluid" alt='donna' style={{ width: "120rem" }} />
+                                                </Link>
+                                            </div>
+
+                                            <Link to="/shoes/donna/1" className="fs-5 text-black underline_hover"  >
                                                 Nuovi Arrivi Donna
                                             </Link>
                                         </div>
                                         <div className="col px-0">
-                                            {
-                                                <div className="d-flex justify-content-start flex-wrap py-4" key={newArrivalsMan[0]?.ID}  >
-                                                    <Link to="/shoes" onClick={FilterMan}>
-                                                        <img src={newArrivalsMan[0]?.images.model_image_url} className="img-fluid" alt={newArrivalsMan[0]?.name} style={{ width: "120rem" }} />
-                                                    </Link>
-                                                </div>
-                                            }
-                                            <Link to="/shoes" className="fs-5 text-black underline_hover" onClick={FilterMan}>
+
+                                            <div className="d-flex justify-content-start flex-wrap py-4"   >
+                                                <Link to="/shoes/uomo/1"  >
+                                                    <img src='https://saint-laurent.dam.kering.com/asset/e19f8190-9263-4078-8447-995e16fe36f8/Original-Ecom/860499AAAPI1000_Y.jpg?v=1' className="img-fluid" alt='uomo' style={{ width: "120rem" }} />
+                                                </Link>
+                                            </div>
+
+                                            <Link to="/shoes/uomo/1" className="fs-5 text-black underline_hover"  >
                                                 Nuova Arrivi Uomo
                                             </Link>
                                         </div>

@@ -7,10 +7,9 @@ const ordersRoutes = require("./routes/ordersRoutes.js");
 const newsletterRoutes = require("./routes/newsletterRoutes.js");
 const pageNotFound = require("./middlewares/pageNotFound");
 const serverError = require("./middlewares/serverError");
+//import chatbot route
+const chatbotRoutes = require("./routes/chatbot.js");
 
-app.listen(port, () => {
-    console.log(`http://127.0.0.1:3000/`);
-});
 
 //cors middleware (see env file for FRONTENDED_URL)
 app.use(cors({origin: process.env.FRONTENDED_URL,
@@ -24,9 +23,11 @@ app.use(express.json());
 app.use("/products", productsRoutes); 
 app.use("/orders", ordersRoutes);
 app.use("/newsletter", newsletterRoutes);
-
+app.use("/chatbot", chatbotRoutes);
 app.use(pageNotFound);
 app.use(serverError);
 
 
-
+app.listen(port, () => {
+    console.log(`http://127.0.0.1:3000/`);
+});

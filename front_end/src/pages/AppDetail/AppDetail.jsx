@@ -30,28 +30,28 @@ function DetailPageContent() {
 
     return (
         <>
+            {/* Back button */}
+            <button
+                onClick={handleBack}
+                style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    paddingLeft: "3rem",
+                    marginTop: "1rem",
+                }}
+            >
+                <i className="bi bi-arrow-left"></i>
+            </button>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
-                        {/* Back button */}
-                        <button
-                            onClick={handleBack}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                paddingLeft: "3rem",
-                                marginTop: "1rem",
-                            }}
-                        >
-                            <i className="bi bi-arrow-left"></i>
-                        </button>
                         <div className="product-page">
                             <ProductImages />
                             <ProductInfo />
                         </div>
-                            <RecommendedProducts />
-                            <ProductShipping />
+                        <RecommendedProducts />
+                        <ProductShipping />
                         <FullscreenImageOverlay />
                     </div>
                     {

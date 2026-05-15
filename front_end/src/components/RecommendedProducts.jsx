@@ -4,7 +4,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function RecommendedProducts() {
     const { recommended } = useDetail();
-    const {normalizedName, normalizedColor} = useShop();
+    const { normalizedName, normalizedColor } = useShop();
 
     if (recommended.length === 0) return null;
 
@@ -20,7 +20,7 @@ export default function RecommendedProducts() {
                         className="recommendedItem"
                     >
                         <img
-                            src={item.images.main_image_url}
+                            src={item.image.main_image_url}
                             alt={item.name}
                             className="recommendedImage"
                         />

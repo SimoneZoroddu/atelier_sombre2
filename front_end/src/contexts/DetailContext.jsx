@@ -22,11 +22,11 @@ export function DetailProvider({ children }) {
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
-    
+
     //gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    
+
     //gestione errori
     const [error, setError] = useState(null);
     const [sizeErrorr, setSizeError] = useState(false);
@@ -34,7 +34,7 @@ export function DetailProvider({ children }) {
 
     //gestione quantità e carrello
     const [stockMap, setStockMap] = useState({});
-    
+
     // gestione messaggio di conferma ordine
     const [toastMessage, setToastMessage] = useState("");
 
@@ -60,9 +60,6 @@ export function DetailProvider({ children }) {
     ];
 
     const handleBack = () => {
-        if (product) {
-            setGenre(product.genre);
-        }
         if (location.key !== "default") {
             navigate(-1);
         } else {
@@ -80,10 +77,11 @@ export function DetailProvider({ children }) {
     }
 
     const originalPrice = product ? Number(product.price) : 0;
-    const discount = product ? product.on_sale : 0;
-    const finalPrice = discount !== 0
-        ? (originalPrice * (1 - discount / 100)).toFixed(2)
-        : originalPrice.toFixed(2);
+    const discount = product ? product.on_sale : 0; // percentuale
+    const finalPrice = discount > 0
+        ? Number((originalPrice * (1 - discount / 100)).toFixed(2))
+        : originalPrice;
+
 
     function addToCart() {
         setSizeError(false);
@@ -101,19 +99,26 @@ export function DetailProvider({ children }) {
             return;
         }
 
+        const variantObj = product.quantity.find(q => q.size === selectedSize);
+        const variantId = variantObj ? Number(variantObj.id) : null;
+
         const cartItem = {
             id: product.id,
             name: product.name,
             color: product.color,
             image: product.image.main_image_url,
-            price: product.price,
+            price: originalPrice,
             size: selectedSize,
             quantity: quantity,
             finalPrice: finalPrice,
-            maxStock: originalStock
+            discount: discount,
+            maxStock: originalStock,
+            variant: variantId
         };
 
-        const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+        if (!variantId) console.warn(`Variant id mancante per prodotto ${product.id} taglia ${selectedSize}`, product.quantity);
+
+        const existingCart = JSON.parse(localStorage.getItem("cart") || []);
         const existingItem = existingCart.find(
             item => item.id === cartItem.id && item.size === cartItem.size
         );
@@ -148,7 +153,7 @@ export function DetailProvider({ children }) {
                 setLoading(true);
                 setError(null);
 
-                const res = await fetch(`http://127.0.0.1:3000/product/${name}/${color}`);
+                const res = await fetch(`http://127.0.0.1:3000/products/${name}/${color}`);
                 if (!res.ok) throw new Error(`Errore ${res.status}`);
 
                 const data = await res.json();

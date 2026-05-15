@@ -11,12 +11,11 @@ export default function AppSearch() {
 
     const { genre, page, pages } = useParams();
     /*   console.log(genre, page); */
-    const [page1, setPage1] = useState("")
-    const [page2, setPage2] = useState("")
-    const [page3, setPage3] = useState("")
 
     const [sortBy, setSortBy] = useState("default");
     const [sortedResults, setSortedResults] = useState([]);
+
+    const [totalPages, setTotalPages] = useState(0);
 
     const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList } = useShop();
 
@@ -39,12 +38,10 @@ export default function AppSearch() {
         if (pages) {
             axios.get(`http://localhost:3000/products/index/?page=${pages}`)
                 .then((res) => {
-                    console.log(res.data);
-                    setPage1(`http://localhost:5173/shoes/1`)
-                    setPage2(`http://localhost:5173/shoes/2`)
-                    setPage3(`http://localhost:5173/shoes/3`)
+                    /*  console.log(res.data); */
 
                     const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
                     setResults(data);
                     setSortedResults(applySort(data, sortBy));
 
@@ -55,11 +52,9 @@ export default function AppSearch() {
         else if (genre === "discounted") {
             axios.get(`http://localhost:3000/products/discounted?page=${page}`)
                 .then((res) => {
-                    console.log(res.data.results);
-                    setPage1(`http://localhost:5173/shoes/discounted/1`)
-                    setPage2(`http://localhost:5173/shoes/discounted/2`)
-                    setPage3(``)
+                    /*    console.log(res.data.results); */
                     const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
                     setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
@@ -68,11 +63,9 @@ export default function AppSearch() {
         } else if (!genre) {
             axios.get(`http://localhost:3000/products/genre/${genre}?page=${page}`)
                 .then((res) => {
-                    console.log("res.data", res.data);
-                    setPage1(`http://localhost:5173/shoes/${genre}/1`)
-                    setPage2(`http://localhost:5173/shoes/${genre}/2`)
-                    setPage3(``)
+                    /*      console.log("res.data", res.data); */
                     const data = res.data.results;
+                    setTotalPages(res.data.total_pages);
                     setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
@@ -131,10 +124,10 @@ export default function AppSearch() {
                                             key={shoe.id}
                                         >
                                             <div className="image-container">
-                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`}>
+                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} >
                                                     <img
                                                         className="w-100 d-flex align-items-center justify-content-center p-1"
-                                                        src={shoe.images?.main_image_url}
+                                                        src={shoe.image?.main_image_url}
                                                         alt={shoe.name}
                                                         style={{ width: "18rem" }}
                                                     />
@@ -182,13 +175,6 @@ export default function AppSearch() {
 
                                 }
                             </div>
-                            <div className="pagination-nav">
-                                <Link to={page1} className="page-link">← Pagina 1</Link>
-                                <span className="divider" />
-                                <Link to={page2} className="page-link">Pagina 2</Link>
-                                <span className="divider" />
-                                {page3 && <Link to={page3} className="page-link">Pagina 3 →</Link>}
-                            </div>
                         </div>
                     </div>
                     {
@@ -198,6 +184,25 @@ export default function AppSearch() {
                     }
                 </div>
             </div >
+            <div className="pagination-nav">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <div key={page}>
+                        <Link className="page-link"
+                            to={
+                                pages
+                                    ? `/shoes/${page}`
+                                    : genre === "discounted"
+                                        ? `/shoes/discounted/${page}`
+                                        : `/shoes/${genre}/${page}`
+                            }
+                        >
+                            Pagina {page}
+                        </Link>
+                        <span className="divider" />
+                    </div>
+                ))}
+            </div>
+
         </>
     );
 }

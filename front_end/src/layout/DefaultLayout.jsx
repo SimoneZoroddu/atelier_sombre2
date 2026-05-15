@@ -3,6 +3,8 @@ import AppHeader from "../components/AppHeader";
 import AppFooter from "../components/AppFooter";
 
 import NewsletterPopup from "../components/PopUp";
+import Chatbot from "../components/Chatbot";
+
 export default function DefaultLayout() {
 
 
@@ -11,6 +13,7 @@ export default function DefaultLayout() {
             <AppHeader />
             <Outlet />
             <NewsletterPopup />
+            <Chatbot />
             <AppFooter />
         </>
     )

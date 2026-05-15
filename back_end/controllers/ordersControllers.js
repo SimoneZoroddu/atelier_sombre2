@@ -72,6 +72,7 @@ const show = (req, res) => {
 //Post routes new order
 const post = (req, res, next) => {
     //get data from front
+    console.log(req.body)
     const {
         firstname,
         lastname,
@@ -160,18 +161,18 @@ const post = (req, res, next) => {
                 JOIN shoes_variant ON shoes_variant.id = order_shoes_variant.variant_id
                 JOIN shoes ON shoes.id = shoes_variant.shoe_id
                 JOIN image ON image.shoe_id = shoes.id
-                WHERE order_id = 19`
-                    connection.query(queryShoesDetailsOrders, (err, shoesDetailsResult) => {
+                WHERE order_id = ?`
+                    connection.query(queryShoesDetailsOrders, [order_id], (err, shoesDetailsResult) => {
                         if (err) {
                             console.error('Errore nella query shoes details orders:', err);
                             return res.status(500).json({ error: 'Errore shoes details orders' });
                         }
-
                         result[0]["items"] = shoesDetailsResult;
+
+                        
+
                         res.status(200).json(result)
                     })
-
-
 
                 })
             })
