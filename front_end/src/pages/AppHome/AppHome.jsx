@@ -59,7 +59,7 @@ export default function HomePage() {
                     <div className="col">
                         <div>
                             <div className="container-fluid">
-                                <Link className="nav-link active" aria-current="page" to="/shoes/1">
+                                <Link className="nav-link active" aria-current="page" to="/shoes/1"  state={{ scrollPosition: window.scrollY }}>
                                     <div className="hero-wrapper">
                                         <img src={image[0]} alt="placeholder" className="hero-placeholder" />
                                         {image.map((imgSrc, i) => (
@@ -74,7 +74,7 @@ export default function HomePage() {
                                 </Link>
                                 <div className="text-center fs-2 py-4">Nuovi arrivi di Atelier Sombre</div>
                                 <div className="text-center mb-5">
-                                    <Link to="/shoes/1" className="fs-5 text-black underline_hover">
+                                    <Link to="/shoes/1" className="fs-5 text-black underline_hover"  state={{ scrollPosition: window.scrollY }}>
                                         Acquista ora
                                     </Link>
                                 </div>
@@ -83,24 +83,24 @@ export default function HomePage() {
                                         <div className="col px-0">
 
                                             <div className="d-flex justify-content-start flex-wrap py-4"  >
-                                                <Link to="/shoes/donna/1" >
+                                                <Link to="/shoes/donna/1"  state={{ scrollPosition: window.scrollY }}>
                                                     <img src='https://saint-laurent.dam.kering.com/asset/2c520417-2c46-42ed-af79-70af55178751/Medium2/8671811TVAN3085_Y.jpg?v=1' className="img-fluid" alt='donna' style={{ width: "120rem" }} />
                                                 </Link>
                                             </div>
 
-                                            <Link to="/shoes/donna/1" className="fs-5 text-black underline_hover" >
+                                            <Link to="/shoes/donna/1" className="fs-5 text-black underline_hover"  state={{ scrollPosition: window.scrollY }} >
                                                 Nuovi Arrivi Donna
                                             </Link>
                                         </div>
                                         <div className="col px-0">
 
                                             <div className="d-flex justify-content-start flex-wrap py-4"   >
-                                                <Link to="/shoes/uomo/1" >
+                                                <Link to="/shoes/uomo/1"   state={{ scrollPosition: window.scrollY }}>
                                                     <img src='https://saint-laurent.dam.kering.com/asset/e19f8190-9263-4078-8447-995e16fe36f8/Original-Ecom/860499AAAPI1000_Y.jpg?v=1' className="img-fluid" alt='uomo' style={{ width: "120rem" }} />
                                                 </Link>
                                             </div>
 
-                                            <Link to="/shoes/uomo/1" className="fs-5 text-black underline_hover" >
+                                            <Link to="/shoes/uomo/1" className="fs-5 text-black underline_hover"   state={{ scrollPosition: window.scrollY }}>
                                                 Nuova Arrivi Uomo
                                             </Link>
                                         </div>

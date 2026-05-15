@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 /* create context */
 const GlobalContext = createContext();
@@ -7,6 +8,8 @@ function ShopProvider({ children }) {
 
   const [loading, setLoading] = useState(false);
 
+  const location = useLocation();
+  const navigate = useNavigate();
   /* Initialize localStorage */
   const [cartList, setCartList] = useState(() => {
     const saved = localStorage.getItem('cartList');
@@ -194,6 +197,37 @@ function ShopProvider({ children }) {
       })
   }
 
+
+
+  const handleBack = () => {
+
+    const scrollPosition = location.state?.scrollPosition || 0;
+
+    if (location.key !== "default") {
+
+      navigate(-1);
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: "instant"
+        });
+      }, 50);
+
+    } else {
+
+      navigate("/");
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: "instant"
+        });
+      }, 50);
+    }
+  };
+
+
   return (
     <GlobalContext.Provider
       value={{
@@ -229,7 +263,8 @@ function ShopProvider({ children }) {
         storeWishlist,
         setStoreWishlist,
         addWishlist,
-        isInWishlist
+        isInWishlist,
+        handleBack
       }}>
       {children}
     </GlobalContext.Provider>

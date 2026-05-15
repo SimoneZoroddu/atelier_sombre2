@@ -110,7 +110,7 @@ export default function AppSearch() {
                                             key={shoe.id}
                                         >
                                             <div className="image-container">
-                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`}>
+                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} state={{ scrollPosition: window.scrollY }}>
                                                     <img
                                                         className="w-100 d-flex align-items-center justify-content-center p-1"
                                                         src={shoe.image?.main_image_url}
@@ -172,10 +172,10 @@ export default function AppSearch() {
             </div >
             <div className="pagination-nav">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <>
-
+                    <div key={page}>
                         <Link className="page-link"
-                            key={page}
+                            state={{ scrollPosition: window.scrollY }}
+                            onClick={window.scrollTo({ top: 0 })}
                             to={
                                 pages
                                     ? `/shoes/${page}`
@@ -187,7 +187,7 @@ export default function AppSearch() {
                             Pagina {page}
                         </Link>
                         <span className="divider" />
-                    </>
+                    </div>
                 ))}
             </div>
 
