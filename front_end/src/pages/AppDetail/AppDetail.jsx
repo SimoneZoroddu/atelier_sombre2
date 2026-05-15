@@ -1,10 +1,12 @@
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
-import { useShop } from "../../contexts/GlobalContext";
 import AppSideBarCart from "../../components/AppSideBarCart"
 import ErrorMessage from "../../components/ErrorMessage";
-import AppCart from "../AppCart/AppCart";
 import Loader from "../../components/Loader";
+import { DetailProvider, useDetail } from "../../contexts/DetailContext";
+import ProductImages from "../../components/ProductImages";
+import ProductInfo from "../../components/ProductInfo";
+import RecommendedProducts from "../../components/RecommendedProducts";
+import ProductShipping from "../../components/ProductShipping";
+import FullscreenImageOverlay from "../../components/FullscreenImageOverlay";
 
 import "./AppDetail.css";
 
@@ -300,28 +302,26 @@ export default function DetailPage() {
     if (loading) {
         return <Loader />;
     }
-
-
-
+    if (!product) return <ErrorMessage message={error} />;
 
     return (
         <>
+            {/* Back button */}
+            <button
+                onClick={handleBack}
+                style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    paddingLeft: "3rem",
+                    marginTop: "1rem",
+                }}
+            >
+                <i className="bi bi-arrow-left"></i>
+            </button>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
-                        {/* Back button */}
-                        <button
-                            onClick={handleBack}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                paddingLeft: "3rem",
-                                marginTop: "1rem",
-                            }}
-                        >
-                            <i className="bi bi-arrow-left"></i>
-                        </button>
                         <div className="product-page">
 
                             {/* LEFT: IMMAGINI */}
@@ -549,43 +549,9 @@ export default function DetailPage() {
                             </div>
 
                         </div>
-                        {isFullscreen && (
-                            <div className="fullscreenOverlay" onClick={() => setIsFullscreen(false)}>
-
-                                <button
-                                    className="arrow left"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentIndex((prev) =>
-                                            prev === 0 ? images.length - 1 : prev - 1
-                                        );
-                                        setMainImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]);
-                                    }}
-                                >
-                                    ‹
-                                </button>
-
-                                <img
-                                    src={images[currentIndex]}
-                                    alt="fullscreen"
-                                    className="fullscreenImage"
-                                    onClick={(e) => e.stopPropagation()}
-                                />
-
-                                <button
-                                    className="arrow right"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentIndex((prev) =>
-                                            prev === images.length - 1 ? 0 : prev + 1
-                                        );
-                                        setMainImage(images[currentIndex === images.length - 1 ? 0 : currentIndex + 1]);
-                                    }}
-                                >
-                                    ›
-                                </button>
-                            </div>
-                        )}
+                        <RecommendedProducts />
+                        <ProductShipping />
+                        <FullscreenImageOverlay />
                     </div>
                     {
                         cartList.length !== 0 &&
@@ -594,46 +560,14 @@ export default function DetailPage() {
                     }
                 </div>
             </div>
-            {isFullscreen && (
-                <div className="fullscreenOverlay" onClick={() => setIsFullscreen(false)}>
-
-                    <button
-                        className="arrow left"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentIndex((prev) =>
-                                prev === 0 ? images.length - 1 : prev - 1
-                            );
-                            setMainImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]);
-                        }}
-                    >
-                        ‹
-                    </button>
-
-                    <img
-                        src={images[currentIndex]}
-                        alt="fullscreen"
-                        className="fullscreenImage"
-                        onClick={(e) => e.stopPropagation()}
-                    />
-
-                    <button
-                        className="arrow right"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentIndex((prev) =>
-                                prev === images.length - 1 ? 0 : prev + 1
-                            );
-                            setMainImage(images[currentIndex === images.length - 1 ? 0 : currentIndex + 1]);
-                        }}
-                    >
-                        ›
-                    </button>
-                </div>
-            )}
-
-
-
         </>
+    );
+}
+
+export default function DetailPage() {
+    return (
+        <DetailProvider>
+            <DetailPageContent />
+        </DetailProvider>
     );
 }

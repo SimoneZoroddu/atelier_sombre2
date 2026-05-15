@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 /* create context */
 const GlobalContext = createContext();
@@ -6,6 +7,32 @@ const GlobalContext = createContext();
 function ShopProvider({ children }) {
 
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
+=======
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  /* Initialize localStorage */
+  const [cartList, setCartList] = useState(() => {
+    const saved = localStorage.getItem('cartList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  /* Save changes to localStorage */
+  useEffect(() => {
+    localStorage.setItem('cartList', JSON.stringify(cartList));
+  }, [cartList]);
+
+  /* const addToCart = (item) => {
+    if (!selectedSize) {
+      alert("Seleziona una taglia prima di aggiungere al carrello.")
+      return;
+    }
+    setCartList((prev) => [...prev, CartItem]);
+    console.log(CartItem, CartList);
+  }; */
+
+>>>>>>> develop
   const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
@@ -186,6 +213,35 @@ function ShopProvider({ children }) {
       })
   }
 
+
+
+  const handleBack = () => {
+
+    const scrollPosition = location.state?.scrollPosition || 0;
+
+    if (location.key !== "default") {
+
+      navigate(-1);
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition
+        });
+      }, 50);
+
+    } else {
+
+      navigate("/");
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition
+        });
+      }, 50);
+    }
+  };
+
+
   return (
     <GlobalContext.Provider
       value={{
@@ -223,7 +279,8 @@ function ShopProvider({ children }) {
         storeWishlist,
         setStoreWishlist,
         addWishlist,
-        isInWishlist
+        isInWishlist,
+        handleBack
       }}>
       {children}
     </GlobalContext.Provider>

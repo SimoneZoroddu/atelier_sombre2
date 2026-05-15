@@ -2,7 +2,7 @@ require('dotenv').config();
 const transporter = require("../data/mailer");
 
 const sendOrderEmailCustomer = async (req, res, next) => {
-
+  console.log(req.body.order);
   try {
 
     const { email, firstname } = req.body.order;
@@ -25,6 +25,7 @@ const sendOrderEmailCustomer = async (req, res, next) => {
     console.error("Errore invio email customer:", error);
 
     return res.status(500).json({
+      message: "Ordine inserito con successo",
       error: "Errore invio email customer"
     });
   }
