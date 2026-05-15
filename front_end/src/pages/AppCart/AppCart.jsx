@@ -14,14 +14,14 @@ export default function AppCart() {
   /* declare support variables */
   const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor, loading, error, handleBack } = useShop();
   const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, shippingCost, setShippingCost, normalizedName, normalizedColor, loading, error } = useShop();
-/*   const [shippingCost, setShippingCost] = useState(0) */
+  /*   const [shippingCost, setShippingCost] = useState(0) */
   const navigate = useNavigate();
 
 
   /* Handle free shipping */
-/*   useEffect(() => {
-    setShippingCost(cartTotal >= 200 ? 0 : 60);
-  }, [cartTotal]); */
+  /*   useEffect(() => {
+      setShippingCost(cartTotal >= 200 ? 0 : 60);
+    }, [cartTotal]); */
 
   /* handle checkout */
   function handleCheckout() {
@@ -71,11 +71,11 @@ export default function AppCart() {
         ) : (
           <div className="cart_content">
 
-          {/* ── SINISTRA: lista prodotti ── */}
-          <section className="cart_body">
-            <ul className="cart_list">
-              {cartList.map((item) => (
-                <li className="cart_item" key={`${item.name}-${item.color}-${item.size}`}>
+            {/* ── SINISTRA: lista prodotti ── */}
+            <section className="cart_body">
+              <ul className="cart_list">
+                {cartList.map((item) => (
+                  <li className="cart_item" key={`${item.name}-${item.color}-${item.size}`}>
 
                     {/* IMMAGINE — nascosta su mobile via CSS */}
                     <div className="item_image_wrapper">
@@ -84,7 +84,7 @@ export default function AppCart() {
 
                     {/* INFO */}
                     <div className="item_info">
-                      <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}  state={{ scrollPosition: window.scrollY }}>
+                      <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} state={{ scrollPosition: window.scrollY }}>
                         <h3 className="item_name">{item.name}</h3>
                       </Link>
 
@@ -93,75 +93,76 @@ export default function AppCart() {
                         <p>Colore: <strong>{item.color}</strong></p>
                       </div>
 
-                    {Number(item.price) !== Number(item.finalPrice) ? (
-                      <p className="price">
-                        <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
-                          {Number(item.price).toFixed(2)} €
-                        </span>
-                        <span style={{ fontWeight: 550, }}>
-                          {Number(item.finalPrice).toFixed(2)} €
-                        </span>
+                      {Number(item.price) !== Number(item.finalPrice) ? (
+                        <p className="price">
+                          <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
+                            {Number(item.price).toFixed(2)} €
+                          </span>
+                          <span style={{ fontWeight: 550, }}>
+                            {Number(item.finalPrice).toFixed(2)} €
+                          </span>
 
                         </p>
                       ) : (
                         <p className="price">{item.price} €</p>
                       )}
 
-                    {/* QUANTITÀ */}
-                    <div className="item_quantity">
-                      {/* Decrement quantity or delete item */}
-                      <button className="qty_btn" disabled={item.quantity === 1}
-                        onClick={() => {
-                          setCartList(cartList.map(i =>
-                            i.name === item.name &&
-                              i.color === item.color &&
-                              i.size === item.size
-                              ?
-                              { ...i, quantity: i.quantity - 1 }
-                              :
-                              i
-                          ));
-                        }}
-                      >
-                        —
-                      </button>
-                      {/* Show quantity */}
-                      <span>{item.quantity}</span>
-                      {/* Increment quantity */}
-                      <button
-                        className="qty_btn"
-                        disabled={item.quantity >= item.maxStock}
-                        onClick={() => {
-                          setCartList(cartList.map(i =>
-                            i.name === item.name &&
-                              i.color === item.color &&
-                              i.size === item.size
-                              ?
-                              { ...i, quantity: i.quantity + 1 }
-                              :
-                              i
-                          ));
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
+                      {/* QUANTITÀ */}
+                      <div className="item_quantity">
+                        {/* Decrement quantity or delete item */}
+                        <button className="qty_btn" disabled={item.quantity === 1}
+                          onClick={() => {
+<<<<<<< HEAD
+                            setCartList(cartList.map(i =>
+                              i.name === item.name &&
+                                i.color === item.color &&
+                                i.size === item.size
+                                ?
+                                { ...i, quantity: i.quantity + 1 }
+                                :
+                                i
+                            ));
+                          }}
+                        >
+                          —
+                        </button>
+                        {/* Show quantity */}
+                        <span>{item.quantity}</span>
+                        {/* Increment quantity */}
+                        <button
+                          className="qty_btn"
+                          disabled={item.quantity >= item.maxStock}
+                          onClick={() => {
+                            setCartList(cartList.map(i =>
+                              i.name === item.name &&
+                                i.color === item.color &&
+                                i.size === item.size
+                                ?
+                                { ...i, quantity: i.quantity + 1 }
+                                :
+                                i
+                            ));
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
 
-                    {/* RIMUOVI */}
-                    <button
-                      className="remove_btn"
-                      onClick={() => {
-                        setCartList(cartList.filter(i =>
-                          !(
-                            i.name === item.name &&
-                            i.color === item.color &&
-                            i.size === item.size
-                          )
-                        ));
-                      }}
-                    >
-                      Rimuovi
-                    </button>
+                      {/* RIMUOVI */}
+                      <button
+                        className="remove_btn"
+                        onClick={() => {
+                          setCartList(cartList.filter(i =>
+                            !(
+                              i.name === item.name &&
+                              i.color === item.color &&
+                              i.size === item.size
+                            )
+                          ));
+                        }}
+                      >
+                        Rimuovi
+                      </button>
 
                     </div>
 
