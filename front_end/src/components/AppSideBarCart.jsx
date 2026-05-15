@@ -34,7 +34,7 @@ export default function AppSideBarCart() {
 
                                 {/* INFO */}
                                 <div className="item_info text-center">
-                                    <img src={item.image} alt={item.name} className="dsadsadsa mx-auto" />
+                                    <img src={item.image} alt={item.name} className="center_image_cart mx-auto" />
                                     <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} >
                                         <h3 className="item_name">{item.name}</h3>
                                     </Link>
@@ -115,18 +115,31 @@ export default function AppSideBarCart() {
                         ))
                     }
                 </div>
-                <div className="height_sidecartpayment pt-4 bg-black text-white px-3">
-                    <div className="sidebar_row ">
-                        <span>Spedizione Gratuita sopra i <span className="text-success">200€</span></span>
-                    </div>
-                    <div className="sidebar_row">
-                        <span className="fs-4">Subtotale</span>
-                        <strong>€ {cartTotal}</strong>
-                    </div>
-                    <Link to="/cart" className="fs-3 text-white underline_hover box_shadow_cart" onClick={(e) => setIsVisibleCart(!isVisibleCart)}>
-                        Procedi al Carrello
-                    </Link>
-                </div>
+                {
+                    cartList.lenght > 0
+                        ?
+                        <div className="height_sidecartpayment pt-4 bg-black text-white px-3">
+                            <div className="sidebar_row ">
+                                <span>Spedizione Gratuita sopra i <span className="text-success">200€</span></span>
+                            </div>
+                            <div className="sidebar_row">
+                                <span className="fs-4">Subtotale</span>
+                                <strong>€ {cartTotal}</strong>
+                            </div>
+                            <Link to="/cart" className="fs-3 text-white underline_hover box_shadow_cart" onClick={(e) => setIsVisibleCart(!isVisibleCart)}>
+                                Procedi al Carrello
+                            </Link>
+                        </div>
+                        :
+                        <>
+                            <div className="d-flex justify-content-center fs-1 pb-1">
+                                Il tuo Carrello é Vuoto
+                            </div>
+                            <Link to="/shoes/1" className="d-flex justify-content-center text-decoration-none" >
+                                <button className="btn_continue" onClick={() => setIsVisibleCart(!isVisibleCart)}>Continua lo shopping</button>
+                            </Link>
+                        </>
+                }
             </div>
 
         </>
