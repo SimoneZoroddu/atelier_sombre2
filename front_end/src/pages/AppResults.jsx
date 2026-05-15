@@ -65,7 +65,7 @@ export default function AppSearch() {
                 })
 
             return;
-        } else {
+        } else if (!genre) {
             axios.get(`http://localhost:3000/products/genre/${genre}?page=${page}`)
                 .then((res) => {
                     console.log("res.data", res.data);
@@ -78,7 +78,21 @@ export default function AppSearch() {
                 })
                 .catch((err) => console.error("Errore:", err))
         }
+        else {
+            axios.get(`http://localhost:3000/products/${genre}?page=${page}`)
+                .then((res) => {
+
+                    const data = res.data.results;
+
+                    setTotalPages(res.data.total_pages);
+                    setResults(data);
+                    setSortedResults(applySort(data, sortBy));
+
+                })
+                .catch((err) => console.error(err));
+        }
     }, [genre, page, pages]);
+
 
 
     return (

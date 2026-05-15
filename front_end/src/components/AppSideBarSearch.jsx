@@ -25,7 +25,7 @@ export default function AppSideBarSearch() {
                 {
                     category?.map((item, index) => (
                         <div className=" ms-1 mb-2" data-bs-dismiss="offcanvas" key={index}>
-                            <Link to="/shoes" className="text-black underline_hover " onClick={() => { setSearchValue(item), setGenre("") }} >
+                            <Link to={`/shoes/${item.toLowerCase()}/1`} className="text-black underline_hover " onClick={() => { setSearchValue(item), setGenre("") }} >
                                 {item}
                             </Link>
                         </div>
