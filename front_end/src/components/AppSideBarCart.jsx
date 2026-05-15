@@ -19,21 +19,22 @@ export default function AppSideBarCart() {
             </div>
             <div className="cart_sidebar_overlay border-0 px-2">
                 <div className="overflow-auto py-3 height_sidecartlist">
-                    <button className="remove_btn" onClick={() => setIsVisibleCart(!isVisibleCart)}  >
-                        Chiudi il Carrello
-                    </button>
-                    <h1>
-                        Il tuo Carrello
-                    </h1>
+                    <div className="d-flex">
+                        <h1 className="d-inline me-auto">
+                            Il tuo Carrello
+                        </h1>
+                        <button className="remove_btn pb-3" onClick={() => setIsVisibleCart(!isVisibleCart)}  >
+                            Chiudi il Carrello
+                        </button>
+                    </div>
                     {
                         cartList.map((item, index) => (
-                            <div key={index}>
+                            <div key={index} className="pb-3">
                                 {/* IMMAGINE — nascosta su mobile via CSS */}
-                                <div className="item_image_wrapper">
-                                    <img src={item.image} alt={item.name} className="item_image" />
-                                </div>
+
                                 {/* INFO */}
-                                <div className="item_info">
+                                <div className="item_info text-center">
+                                    <img src={item.image} alt={item.name} className="dsadsadsa mx-auto" />
                                     <Link to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`} >
                                         <h3 className="item_name">{item.name}</h3>
                                     </Link>
@@ -53,7 +54,7 @@ export default function AppSideBarCart() {
                                     <div className="item_quantity">
                                         {/* Decrement quantity or delete item */}
                                         <button
-                                            className="qty_btn"
+                                            className="qty_btn mx-auto"
                                             disabled={item.quantity === 1}
                                             onClick={() => {
                                                 const updatedCart = cartList.map(i =>
@@ -71,10 +72,10 @@ export default function AppSideBarCart() {
                                             —
                                         </button>
                                         {/* Show quantity */}
-                                        <span>{item.quantity}</span>
+                                        <span className="mx-auto">{item.quantity}</span>
                                         {/* Increment quantity */}
                                         <button
-                                            className="qty_btn"
+                                            className="qty_btn mx-auto"
                                             disabled={item.quantity >= item.maxStock}
                                             onClick={() => {
                                                 if (item.quantity >= item.maxStock) return;
@@ -95,7 +96,7 @@ export default function AppSideBarCart() {
                                     </div>
                                     {/* RIMUOVI */}
                                     <button
-                                        className="remove_btn"
+                                        className="remove_btn mx-auto"
                                         onClick={() => {
                                             const updatedCart = cartList.filter(i =>
                                                 !(
@@ -114,15 +115,15 @@ export default function AppSideBarCart() {
                         ))
                     }
                 </div>
-                <div className="height_sidecartpayment pt-4">
-                    <div className="sidebar_row">
-                        <span>Spedizione Gratuita sopra i 200€</span>
+                <div className="height_sidecartpayment pt-4 bg-black text-white px-3">
+                    <div className="sidebar_row ">
+                        <span>Spedizione Gratuita sopra i <span className="text-success">200€</span></span>
                     </div>
                     <div className="sidebar_row">
                         <span className="fs-4">Subtotale</span>
                         <strong>€ {cartTotal}</strong>
                     </div>
-                    <Link to="/cart" className="fs-3 text-black underline_hover box_shadow_cart" onClick={(e) => setIsVisibleCart(!isVisibleCart)}>
+                    <Link to="/cart" className="fs-3 text-white underline_hover box_shadow_cart" onClick={(e) => setIsVisibleCart(!isVisibleCart)}>
                         Procedi al Carrello
                     </Link>
                 </div>

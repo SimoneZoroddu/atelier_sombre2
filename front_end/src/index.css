@@ -234,7 +234,7 @@ i {
     position: fixed;
     top: 0;
     right: 0;
-    width: 300px;
+    width: 600px;
     height: 100%;
     overflow-y: auto;
     background: white;
@@ -243,7 +243,7 @@ i {
 }
 
 .height_sidecartpayment {
-    width: 18.7rem;
+    width: 600px;
     height: 8rem;
     background-color: white;
     position: fixed;
@@ -268,4 +268,11 @@ i {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     cursor: pointer;
+}
+
+
+.dsadsadsa{
+    width: 70%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
 }

@@ -5,11 +5,13 @@ import axios from "axios";
 const GlobalContext = createContext();
 function ShopProvider({ children }) {
 
+  // Variabili di stato
+
+
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
-  const url = import.meta.env.VITE_API_ADDRESS + "products/index?page=1&limit=100";
   const [shoes, setShoes] = useState([]);
   const [filteredShoes, setFilteredShoes] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -17,17 +19,51 @@ function ShopProvider({ children }) {
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0)
   const [isVisibleCart, setIsVisibleCart] = useState(false)
-  const navigate = useNavigate();
-  /* Initialize localStorage */
-  const [cartList, setCartList] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [storeWishlist, setStoreWishlist] = useState()
 
-  /* Save changes to localStorage */
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartList));
-  }, [cartList]);
+
+  //VARIABILI DI TESTO SEMPLICE
+  const STORAGE_KEY = "newsletter_popup_seen";
+
+  // URL DI BASE
+  const url = import.meta.env.VITE_API_ADDRESS + "products/index?page=1&limit=100";
+
+  //Per navigare
+  const navigate = useNavigate();
+  const location = useLocation()
+
+
+  const handleBack = () => {
+
+    if (location.key !== "default") {
+
+      navigate(-1);
+
+    } else {
+
+      navigate("/");
+
+    }
+  };
+
+  // Regola precisa per normalizzare nome e colore
+  const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
+  const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
+
+
+  /* slugify url function  RENDERE SLUG OVVERO SENZA CARATTERI STRANI E SPAZI */
+  function slugify(str) {
+    return str
+      .toLowerCase()                 // convert to lowercase
+      .trim()                        // remove leading/trailing spaces  
+      .replace(/[^\w\s-]/g, '')      // remove special chars that are not alphanumeric, spaces, or hyphens
+      .replace(/[\s_]+/g, '-')       // convert spaces to hyphens
+      .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
+  }
+
+  //CHIAMATA AXIOS PER TUTTE LE SCARPE
 
   useEffect(() => {
     const fetchShoes = async () => {
@@ -50,15 +86,23 @@ function ShopProvider({ children }) {
     fetchShoes();
   }, []);
 
-  /* slugify url function */
-  function slugify(str) {
-    return str
-      .toLowerCase()                 // convert to lowercase
-      .trim()                        // remove leading/trailing spaces  
-      .replace(/[^\w\s-]/g, '')      // remove special chars that are not alphanumeric, spaces, or hyphens
-      .replace(/[\s_]+/g, '-')       // convert spaces to hyphens
-      .replace(/^-+|-+$/g, '');      // remove leading/trailing hyphens
-  }
+
+
+
+  // TUTTO IL LOCALSTORAGE
+
+  /* Initialize localStorage */
+  const [cartList, setCartList] = useState(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  /* Save changes to localStorage */
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartList));
+  }, [cartList]);
+
+
 
   /* get cart data from localStorage */
   useEffect(() => {
@@ -75,6 +119,7 @@ function ShopProvider({ children }) {
 
   }, [setCartList]);
 
+
   /* keep updated cart data in localStorage */
   useEffect(() => {
     if (!isInitialLoading) {
@@ -87,22 +132,23 @@ function ShopProvider({ children }) {
     setCartTotal(cartList.map(item => Number(item.finalPrice ?? item.price) * Number(item.quantity)).reduce((a, b) => a + b, 0));
   }, [cartList]);
 
-  /* Handle free shipping */
+
+
+  /* CONSEGNA GRATUITA */
   useEffect(() => {
     setShippingCost(cartTotal >= 200 ? 0 : 60);
   }, [cartTotal]);
 
 
+
+  // TUTTO SULL EMAIL
+
+  //CONTROLLO EMAIL VALIDA
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  const STORAGE_KEY = "newsletter_popup_seen";
-
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [storeWishlist, setStoreWishlist] = useState()
-
+  // AXIOS POST PER EMAIL
   const handleSubmit = async () => {
     if (!email.trim()) {
       setError("Inserisci la tua email.");
@@ -131,10 +177,8 @@ function ShopProvider({ children }) {
   };
 
 
-  const normalizedName = (name) => name.toLowerCase().replace(/\s+/g, "-");
-  const normalizedColor = (color) => color.toLowerCase().replace(/\s+/g, "-");
-
   //funzioni per la wishlist aggiunta togliere e cambio cuore e no tgra pieno e no
+
   function isInWishlist(id) {
 
     return storeWishlist.some(
@@ -189,60 +233,32 @@ function ShopProvider({ children }) {
 
 
 
-  const handleBack = () => {
-
-    if (location.key !== "default") {
-
-      navigate(-1);
-
-    } else {
-
-      navigate("/");
-
-    }
-  };
-
-
   return (
     <GlobalContext.Provider
       value={{
-        loading,
-        setLoading,
-        cartList,
-        setCartList,
-        genre,
-        setGenre,
-        searchValue,
-        setSearchValue,
-        category,
-        setCategory,
-        shoes,
-        setShoes,
-        filteredShoes,
-        setFilteredShoes,
+        loading, setLoading,
+        cartList, setCartList,
+        genre, setGenre,
+        searchValue, setSearchValue,
+        category, setCategory,
+        shoes, setShoes,
+        filteredShoes, setFilteredShoes,
+        isInitialLoading, setIsInitialLoading,
+        cartTotal, setCartTotal,
+        shippingCost, setShippingCost,
+        submitted, setSubmitted,
+        storeWishlist, setStoreWishlist,
+        isVisibleCart, setIsVisibleCart,
+        email, setEmail,
+        error, setError,
         slugify,
-        isInitialLoading,
-        setIsInitialLoading,
-        cartTotal,
-        setCartTotal,
-        shippingCost,
-        setShippingCost,
         handleSubmit,
         STORAGE_KEY,
-        email,
-        setEmail,
-        error,
-        setError,
-        submitted,
-        setSubmitted,
         normalizedName,
         normalizedColor,
-        storeWishlist,
-        setStoreWishlist,
         addWishlist,
         isInWishlist,
         handleBack,
-        isVisibleCart, setIsVisibleCart
       }}>
       {children}
     </GlobalContext.Provider>

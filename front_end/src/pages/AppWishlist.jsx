@@ -68,7 +68,7 @@ export default function AppWishlist() {
                 {storeWishlist?.length === 0 ? (
                     <div className="cart_empty">
                         <p>La tua Wishlist è vuota</p>
-                        <Link to="/shoes" >
+                        <Link to="/shoes/1" >
                             <button className="btn_continue">Continua lo shopping</button>
                         </Link>
                     </div>
