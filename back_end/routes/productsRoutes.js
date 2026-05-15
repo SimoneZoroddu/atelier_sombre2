@@ -14,4 +14,7 @@ router.get('/discounted', productControllers.showDiscounted);
 // show route for a single product by name and color
 router.get('/:name/:color', productControllers.show);
 
+// show route for shoes by category
+router.get('/:category', productControllers.showByCategory);
+
 module.exports = router;

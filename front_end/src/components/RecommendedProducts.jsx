@@ -4,7 +4,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function RecommendedProducts() {
     const { recommended } = useDetail();
-    const {normalizedName, normalizedColor} = useShop();
+    const { normalizedName, normalizedColor } = useShop();
 
     if (recommended.length === 0) return null;
 
@@ -15,12 +15,13 @@ export default function RecommendedProducts() {
             <div className="recommendedRow">
                 {recommended.map(item => (
                     <Link
+                        state={{ scrollPosition: window.scrollY }}
                         key={item.id}
                         to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}
                         className="recommendedItem"
                     >
                         <img
-                            src={item.images.main_image_url}
+                            src={item.image.main_image_url}
                             alt={item.name}
                             className="recommendedImage"
                         />
