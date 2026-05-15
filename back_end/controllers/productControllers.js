@@ -203,6 +203,7 @@ const show = (req, res, next) => {
                     return res.status(500).json({ error: 'Errore interno' });
                 }
                 finalResults[0].quantity = qtyResults;
+                console.log(finalResults[0]);
 
                 res.json(finalResults[0]);
             });
