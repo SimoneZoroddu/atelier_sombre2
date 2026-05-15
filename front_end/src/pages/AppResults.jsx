@@ -161,7 +161,6 @@ export default function AppSearch() {
 
                                 }
                             </div>
-
                         </div>
                     </div>
                     {
