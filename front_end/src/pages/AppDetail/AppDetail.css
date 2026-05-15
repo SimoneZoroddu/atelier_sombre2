@@ -14,16 +14,32 @@ img {
 }
 
 /* ─── LAYOUT PRINCIPALE ─── */
-.product-page {
+.container-fluid:has(.product-page) .col {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
-        "images info"
-        "recommended recommended";
+        "back back"
+        "product product"
+        "recommended shipping"
+        "overlay overlay";
     gap: 2rem 5%;
     max-width: 1200px;
-    margin: 3rem auto;
+    margin: 0 auto;
     padding: 0 2rem;
+    align-items: start;
+}
+
+.container-fluid:has(.product-page) .col > button {
+    grid-area: back;
+    justify-self: start;
+}
+
+.product-page {
+    grid-area: product;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "images info";
+    gap: 2rem 5%;
     width: 100%;
 }
 
@@ -295,18 +311,30 @@ img {
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
-    .product-page {
+    .container-fluid:has(.product-page) .col {
         grid-template-columns: 1fr;
         grid-template-areas:
-            "images"
-            "info"
-            "recommended";
+            "back"
+            "product"
+            "recommended"
+            "shipping"
+            "overlay";
         padding: 0 1rem;
         margin: 1.5rem auto;
     }
 
+    .product-page {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "images"
+            "info";
+        margin: 0;
+        padding: 0;
+    }
+
 
     .mainImage {
+        order: 1;
         width: 80%;
     }
 
@@ -320,6 +348,7 @@ img {
     }
 
     .thumbnailsColumn {
+        order: 2;
         display: flex;
         flex-direction: row;
         gap: 0.5rem;
@@ -334,10 +363,10 @@ img {
 
 /* ─── SPEDIZIONE ─── */
 .shipping-section {
+    grid-area: shipping;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    margin-top: 4rem;
 }
 
 .shipping-label {
@@ -398,7 +427,7 @@ img {
     padding: 1rem 1.1rem;
     background: #f5f7f4;
     border-left: 2px solid #7a9e7e;
-    margin-top: 5rem;
+    margin-top: 2rem;
 }
 
 .eco-icon {

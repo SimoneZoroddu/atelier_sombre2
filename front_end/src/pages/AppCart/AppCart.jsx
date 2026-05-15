@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useShop } from "../../contexts/GlobalContext";
 /* Import css */
 import "./AppCart.css";
-
+/* import Loader */
+import Loader from "../../components/Loader";
+/* import ErrorMessage */
+import ErrorMessage from "../../components/ErrorMessage";  
 export default function AppCart() {
   /* declare support variables */
-  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor } = useShop();
+  const { cartList, setCartList, isInitialLoading, setIsInitialLoading, cartTotal, normalizedName, normalizedColor, loading, error } = useShop();
   const navigate = useNavigate();
 
 
@@ -31,6 +34,24 @@ export default function AppCart() {
     setCartList(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   }
+
+
+
+  const [shippingCost, setShippingCost] = useState(0)
+
+
+  useEffect(() => {
+    if (cartTotal >= 200) {
+      setShippingCost(0)
+      return
+    } else {
+      setShippingCost(60)
+    }
+  }, [shippingCost]);
+
+
+  if (error) return <ErrorMessage message={error} />;
+  if (loading) return <Loader />;
 
 
   return (
@@ -150,6 +171,7 @@ export default function AppCart() {
                     >
                       Rimuovi
                     </button>
+
                   </div>
 
                 </li>
@@ -161,41 +183,38 @@ export default function AppCart() {
           <aside className="cart_sidebar">
 
             <h3 className="sidebar_title">Riepilogo ordine</h3>
-
+            <div className="sidebar_row text-success">
+              <span>Spedizione Gratuita sopra i 200€</span>
+            </div>
             <div className="sidebar_row">
               <span>Subtotale</span>
               <strong>€ {cartTotal}</strong>
             </div>
 
-            <div className="sidebar_row">
-              <span>Spedizione</span>
-              <span className="shipping_placeholder">Calcolata al checkout</span>
-            </div>
+            {(cartTotal >= 200)
+              ?
+              <div className="sidebar_row">
+                <span>Spedizione</span>
+                <span className="shipping_placeholder text-success">Gratis</span>
+              </div>
+              :
+              <div className="sidebar_row">
+                <span>Spedizione</span>
+                <span className="shipping_placeholder">{shippingCost}</span>
+              </div>
+            }
 
-            <div className="sidebar_divider" />
+
 
             <div className="sidebar_row sidebar_total">
               <span>Totale stimato</span>
-              <strong>€ {cartTotal}</strong>
+              <strong>€ {cartTotal + shippingCost}</strong>
             </div>
 
             <button className="btn_checkout" onClick={handleCheckout}>
               Procedi all'acquisto
             </button>
 
-            {/* ECO BOX */}
-            <div className="eco-box">
-              <span className="eco-icon"><i className="bi bi-leaf"></i></span>
-              <div className="eco-text">
-                <p className="eco-title">Il nostro impegno per il pianeta</p>
-                <p className="eco-body">
-                  Ogni scelta che facciamo è guidata dal rispetto per l'ambiente.
-                  Utilizziamo materiali certificati e confezioni in carta riciclata,
-                  e lavoriamo con corrieri che adottano pratiche di consegna a basse emissioni.
-                  Perché il lusso non dovrebbe avere un costo per la terra.
-                </p>
-              </div>
-            </div>
 
           </aside>
 

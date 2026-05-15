@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useShop } from "../contexts/GlobalContext";
 import AppSideBarCart from "../components/AppSideBarCart";
 //normalize name and color for url params
-
+import axios from "axios";
 
 export default function AppSearch() {
     const {
@@ -15,7 +15,10 @@ export default function AppSearch() {
         setSearchValue,
         cartList,
         normalizedName,
-        normalizedColor
+        normalizedColor,
+        addWishlist,
+        storeWishlist,
+        isInWishlist
     } = useShop();
 
     const [sortBy, setSortBy] = useState("default");
@@ -103,6 +106,7 @@ export default function AppSearch() {
                                                             {shoe.name}
                                                         </p>
                                                         <button
+                                                            onClick={(e) => addWishlist(shoe)}
                                                             className="btn btn-sm bg-transparent border-0 p-0"
                                                             style={{
                                                                 fontSize: "1.5rem",
@@ -110,7 +114,7 @@ export default function AppSearch() {
                                                                 color: "#555",
                                                             }}
                                                         >
-                                                            ♡
+                                                            {isInWishlist(shoe.id) ? <i className="bi bi-suit-heart-fill"></i> : <i className="bi bi-suit-heart"></i>}
                                                         </button>
                                                     </div>
                                                     <p className="mb-0 text-muted">
@@ -122,7 +126,7 @@ export default function AppSearch() {
                                                                 {shoe.price} €
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {(shoe.price * (1 - shoe.on_sale / 100))} €
+                                                                {(shoe.price * (1 - shoe.on_sale / 100)).toFixed(2)} €
                                                             </span>
                                                         </p>
                                                     ) : (

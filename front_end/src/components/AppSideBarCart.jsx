@@ -14,7 +14,17 @@ export default function AppSideBarCart() {
     }
 
     return (
-        <div className="col-1 border-0 cart_sidebar">
+        <div className="col-1 border-0 cart_sidebar d-none d-lg-inline">
+            <div className="sidebar_row">
+                <span>Spedizione Gratuita sopra i 200€</span>
+            </div>
+            <div className="sidebar_row">
+                <span>Subtotale</span>
+                <strong>€ {cartTotal}</strong>
+            </div>
+            <Link to="/cart" className="fs-5 text-black underline_hover">
+                Procedi al Carrello
+            </Link>
             {
                 cartList.map((item, index) => (
                     <div key={index}>
@@ -48,10 +58,7 @@ export default function AppSideBarCart() {
                                 <button
                                     className="qty_btn"
                                     disabled={item.quantity === 1}
-
                                     onClick={() => {
-
-                                        /* 🔵 NUOVO */
                                         const updatedCart = cartList.map(i =>
                                             i.name === item.name &&
                                                 i.color === item.color &&
@@ -61,7 +68,6 @@ export default function AppSideBarCart() {
                                                 :
                                                 i
                                         );
-
                                         updateCart(updatedCart);
                                     }}
                                 >
@@ -72,13 +78,9 @@ export default function AppSideBarCart() {
                                 {/* Increment quantity */}
                                 <button
                                     className="qty_btn"
-
                                     disabled={item.quantity >= item.maxStock}
-
                                     onClick={() => {
-
                                         if (item.quantity >= item.maxStock) return;
-
                                         const updatedCart = cartList.map(i =>
                                             i.name === item.name &&
                                                 i.color === item.color &&
@@ -99,10 +101,7 @@ export default function AppSideBarCart() {
                             {/* RIMUOVI */}
                             <button
                                 className="remove_btn"
-
                                 onClick={() => {
-
-                                    /* 🔵 NUOVO */
                                     const updatedCart = cartList.filter(i =>
                                         !(
                                             i.name === item.name &&
@@ -110,7 +109,6 @@ export default function AppSideBarCart() {
                                             i.size === item.size
                                         )
                                     );
-
                                     updateCart(updatedCart);
                                 }}
                             >
@@ -120,13 +118,6 @@ export default function AppSideBarCart() {
                     </div>
                 ))
             }
-            <div className="sidebar_row pt-3">
-                <span>Subtotale</span>
-                <strong>€ {cartTotal}</strong>
-            </div>
-            <Link to="/cart" className="fs-5 text-black underline_hover">
-                Procedi al Carrello
-            </Link>
         </div>
     )
 }
