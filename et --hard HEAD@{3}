@@ -1,0 +1,111 @@
+[33m61611d9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mcheckout[m[33m, [m[1;31morigin/checkout[m[33m)[m HEAD@{0}: commit (merge): Merge branch 'develop' into checkout
+[33md2fcf5f[m HEAD@{1}: checkout: moving from develop to checkout
+[33m038243a[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{2}: pull --tags origin develop: Fast-forward
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{3}: checkout: moving from checkout to develop
+[33md2fcf5f[m HEAD@{4}: commit: fix cart and checkout
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{5}: checkout: moving from develop to checkout
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{6}: checkout: moving from cart to develop
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{7}: checkout: moving from checkout to cart
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{8}: checkout: moving from cart to checkout
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{9}: merge develop: Fast-forward
+[33mf4a8c78[m HEAD@{10}: checkout: moving from checkout to cart
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{11}: checkout: moving from develop to checkout
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{12}: merge checkout: Fast-forward
+[33m12330ec[m HEAD@{13}: checkout: moving from checkout to develop
+[33m29fbed5[m[33m ([m[1;31morigin/cart[m[33m, [m[1;32mcart[m[33m)[m HEAD@{14}: commit: fix conditional rendering
+[33m12330ec[m HEAD@{15}: merge develop: Fast-forward
+[33m55bf524[m HEAD@{16}: checkout: moving from develop to checkout
+[33m12330ec[m HEAD@{17}: pull --tags origin develop: Fast-forward
+[33md30544d[m HEAD@{18}: checkout: moving from develop to develop
+[33md30544d[m HEAD@{19}: pull --tags origin develop: Fast-forward
+[33md5c3771[m HEAD@{20}: pull --tags origin develop: Fast-forward
+[33m0330373[m HEAD@{21}: pull --tags origin develop: Merge made by the 'ort' strategy.
+[33m55bf524[m HEAD@{22}: merge checkout: Fast-forward
+[33mbf055f5[m HEAD@{23}: checkout: moving from checkout to develop
+[33m55bf524[m HEAD@{24}: commit (merge): Merge branch 'develop' into checkout
+[33mbf338e3[m HEAD@{25}: checkout: moving from develop to checkout
+[33mbf055f5[m HEAD@{26}: pull --tags origin develop: Fast-forward
+[33m997abc7[m[33m ([m[1;31morigin/back_end[m[33m)[m HEAD@{27}: checkout: moving from checkout to develop
+[33mbf338e3[m HEAD@{28}: commit: change loader color
+[33m1a6931a[m HEAD@{29}: commit: fix checkout
+[33m6778d8d[m HEAD@{30}: commit: add loader
+[33m997abc7[m[33m ([m[1;31morigin/back_end[m[33m)[m HEAD@{31}: merge develop: Fast-forward
+[33m6be108e[m HEAD@{32}: checkout: moving from develop to checkout
+[33m997abc7[m[33m ([m[1;31morigin/back_end[m[33m)[m HEAD@{33}: pull --tags origin develop: Fast-forward
+[33m4fcdfa7[m HEAD@{34}: checkout: moving from checkout to develop
+[33m6be108e[m HEAD@{35}: checkout: moving from develop to checkout
+[33m4fcdfa7[m HEAD@{36}: pull --tags origin develop: Fast-forward
+[33m6be108e[m HEAD@{37}: checkout: moving from checkout to develop
+[33m6be108e[m HEAD@{38}: merge develop: Fast-forward
+[33mf2e5da7[m HEAD@{39}: checkout: moving from develop to checkout
+[33m6be108e[m HEAD@{40}: pull --tags origin develop: Fast-forward
+[33mb8e0cbd[m HEAD@{41}: pull --tags origin develop: Fast-forward
+[33m8eca2dd[m HEAD@{42}: pull --tags origin develop: Fast-forward
+[33m7ab845f[m HEAD@{43}: pull --tags origin develop: Fast-forward
+[33mfd46a1c[m[33m ([m[1;31morigin/homepage[m[33m)[m HEAD@{44}: pull --tags origin develop: Fast-forward
+[33m5b6cc59[m HEAD@{45}: pull --tags origin develop: Fast-forward
+[33m8cea0df[m HEAD@{46}: pull --tags origin develop: Fast-forward
+[33m332515c[m HEAD@{47}: commit: fix slugify function export
+[33mdedd02e[m HEAD@{48}: commit: slugify route of detail page
+[33mb930cc8[m HEAD@{49}: commit: fix slugify function export
+[33mf3845c4[m HEAD@{50}: pull --tags origin develop: Merge made by the 'ort' strategy.
+[33ma8f22ee[m HEAD@{51}: commit: add slugify function to global context (shop)
+[33m635e396[m HEAD@{52}: pull --tags origin develop: Fast-forward
+[33mb95c6e2[m HEAD@{53}: pull --tags origin develop: Fast-forward
+[33mf4a8c78[m HEAD@{54}: checkout: moving from cart to develop
+[33mf4a8c78[m HEAD@{55}: merge develop: Fast-forward
+[33m1111c1e[m HEAD@{56}: checkout: moving from develop to cart
+[33mf4a8c78[m HEAD@{57}: pull --tags origin develop: Fast-forward
+[33m1bfeebc[m HEAD@{58}: checkout: moving from cart to develop
+[33m1111c1e[m HEAD@{59}: checkout: moving from develop to cart
+[33m1bfeebc[m HEAD@{60}: commit: fix delete link on cart item
+[33mc053b78[m HEAD@{61}: merge cart: Merge made by the 'ort' strategy.
+[33m977f7ad[m HEAD@{62}: pull --tags origin develop: Fast-forward
+[33m7ea4f97[m HEAD@{63}: checkout: moving from cart to develop
+[33m1111c1e[m HEAD@{64}: commit: fix delete feature in cart
+[33mee1b668[m HEAD@{65}: checkout: moving from develop to cart
+[33m7ea4f97[m HEAD@{66}: pull --tags origin develop: Fast-forward
+[33m28b0e44[m HEAD@{67}: pull --tags origin develop: Fast-forward
+[33m2499538[m HEAD@{68}: pull --tags origin develop: Fast-forward
+[33m74a40a2[m HEAD@{69}: pull --tags origin develop: Fast-forward
+[33mf2e5da7[m HEAD@{70}: merge checkout: Fast-forward
+[33mc1045ef[m HEAD@{71}: checkout: moving from checkout to develop
+[33mf2e5da7[m HEAD@{72}: commit: clean/comment some code
+[33mc1045ef[m HEAD@{73}: merge develop: Fast-forward
+[33md6345f4[m HEAD@{74}: checkout: moving from develop to checkout
+[33mc1045ef[m HEAD@{75}: pull --tags origin develop: Fast-forward
+[33mc2915d1[m HEAD@{76}: pull --tags origin develop: Fast-forward
+[33md6345f4[m HEAD@{77}: checkout: moving from checkout to develop
+[33md6345f4[m HEAD@{78}: merge develop: Fast-forward
+[33m0289019[m HEAD@{79}: checkout: moving from develop to checkout
+[33md6345f4[m HEAD@{80}: pull --tags origin develop: Fast-forward
+[33mee1b668[m HEAD@{81}: checkout: moving from checkout to develop
+[33m0289019[m HEAD@{82}: checkout: moving from homepage to checkout
+[33m7824c90[m[33m ([m[1;32mhomepage[m[33m)[m HEAD@{83}: pull --tags origin homepage: Fast-forward
+[33mce05702[m HEAD@{84}: checkout: moving from cart to homepage
+[33mee1b668[m HEAD@{85}: merge develop: Fast-forward
+[33m741d644[m HEAD@{86}: checkout: moving from develop to cart
+[33mee1b668[m HEAD@{87}: merge cart: Merge made by the 'ort' strategy.
+[33m27bc576[m HEAD@{88}: checkout: moving from cart to develop
+[33m741d644[m HEAD@{89}: commit: implement remove item from cart
+[33md3d96b0[m HEAD@{90}: checkout: moving from develop to cart
+[33m27bc576[m HEAD@{91}: pull --tags origin develop: Merge made by the 'ort' strategy.
+[33m0289019[m HEAD@{92}: merge checkout: Fast-forward
+[33md3d96b0[m HEAD@{93}: checkout: moving from checkout to develop
+[33m0289019[m HEAD@{94}: commit: fix vat number
+[33md3d96b0[m HEAD@{95}: merge develop: Fast-forward
+[33m27ed668[m HEAD@{96}: checkout: moving from cart to checkout
+[33md3d96b0[m HEAD@{97}: merge develop: Fast-forward
+[33mbbc2c7c[m HEAD@{98}: checkout: moving from develop to cart
+[33md3d96b0[m HEAD@{99}: commit: fix vat number
+[33m27ed668[m HEAD@{100}: merge checkout: Fast-forward
+[33md31b740[m HEAD@{101}: checkout: moving from checkout to develop
+[33m27ed668[m HEAD@{102}: commit: fix vat number
+[33md31b740[m HEAD@{103}: merge develop: Fast-forward
+[33mbb60669[m HEAD@{104}: checkout: moving from cart to checkout
+[33mbbc2c7c[m HEAD@{105}: checkout: moving from develop to cart
+[33md31b740[m HEAD@{106}: pull --tags origin develop: Fast-forward
+[33m71a5a8c[m HEAD@{107}: checkout: moving from develop to develop
+[33m71a5a8c[m HEAD@{108}: pull --tags origin develop: Fast-forward
+[33m4b6b424[m HEAD@{109}: merge checkout: Merge made by the 'ort' strategy.
+[33mdbbc5c1[m HEAD@{11
