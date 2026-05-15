@@ -110,7 +110,7 @@ export function DetailProvider({ children }) {
             finalPrice: finalPrice,
             discount: discount,
             maxStock: originalStock,
-            variant
+            variant: product.shoe_id
         };
 
         const existingCart = JSON.parse(localStorage.getItem("cart") || []);

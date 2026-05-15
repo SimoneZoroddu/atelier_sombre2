@@ -36,7 +36,7 @@ export default function AppOrderCheckout() {
     total_price: 0
   });
 
-  console.log(localStorage);
+  console.log(cartList);
 
   /* HANDLE cart ITEMS */
   /* SET and keep ITEMS updated */
@@ -44,7 +44,7 @@ export default function AppOrderCheckout() {
     setProductsData(
       cartList.map(item => (
         {
-          variant_id: Number(item.id),
+          variant_id: Number(item.variant),
           quantity: Number(item.quantity),
           price: Number(item.finalPrice ?? item.price),
         }
