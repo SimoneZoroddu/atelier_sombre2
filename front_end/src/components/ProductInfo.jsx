@@ -3,12 +3,12 @@ import { useDetail } from "../contexts/DetailContext";
 
 export default function ProductInfo() {
     const {
-        product,
-        showDetails, setShowDetails,
-        selectedSize, setSelectedSize,
-        stockMap,
         quantity, setQuantity,
         sizeErrorr, setSizeError,
+        showDetails, setShowDetails,
+        selectedSize, setSelectedSize,
+        product,
+        stockMap,
         toastMessage,
         addToCart,
         addWishlist,
@@ -44,10 +44,7 @@ export default function ProductInfo() {
 
             {/* ACCORDION */}
             <div className="accordion">
-                <button
-                    className="accordionHeader"
-                    onClick={() => setShowDetails(prev => !prev)}
-                >
+                <button className="accordionHeader" onClick={() => setShowDetails(prev => !prev)}       >
                     Dettagli prodotto
                     <span>{showDetails ? "−" : "+"}</span>
                 </button>
@@ -67,15 +64,12 @@ export default function ProductInfo() {
             <h3>Taglie disponibili</h3>
             <div className="sizesRow">
                 {product.quantity.map(q => (
-                    <button
-                        key={q.id}
-                        disabled={stockMap[q.size] === 0}
+                    <button key={q.id} disabled={stockMap[q.size] === 0} className="sizeButton"
                         onClick={() => {
                             setSizeError(false);
                             setSelectedSize(prev => prev === q.size ? null : q.size);
                             setQuantity(1);
                         }}
-                        className="sizeButton"
                         style={{
                             background: selectedSize === q.size ? "black" : "white",
                             color: selectedSize === q.size ? "white" : "black",
@@ -91,9 +85,7 @@ export default function ProductInfo() {
             {selectedSize && (
                 <div style={{ marginTop: "1rem" }}>
                     <label style={{ fontWeight: 550 }}>Quantità:</label>
-                    <select
-                        value={quantity}
-                        onChange={(e) => setQuantity(Number(e.target.value))}
+                    <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}
                         style={{
                             marginLeft: "1rem",
                             padding: "0.5rem",
@@ -115,9 +107,7 @@ export default function ProductInfo() {
                     <span className="cart-icon"><i className="bi bi-cart-fill"></i></span>
                 </button>
 
-                <button
-                    onClick={(e) => addWishlist(product)}
-                    className="btn btn-sm bg-transparent border-0 p-0"
+                <button onClick={(e) => addWishlist(product)} className="btn btn-sm bg-transparent border-0 p-0"
                     style={{
                         fontSize: "1.5rem",
                         lineHeight: 1,

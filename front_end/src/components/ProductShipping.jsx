@@ -10,10 +10,7 @@ export default function ProductShipping() {
                 <div className="shipping-items">
                     {shippingInfo.map(item => (
                         <div key={item.id} className="shipping-item">
-                            <button
-                                className="shipping-item-header"
-                                onClick={() => setOpenShipping(prev => prev === item.id ? null : item.id)}
-                            >
+                            <button className="shipping-item-header" onClick={() => setOpenShipping(prev => prev === item.id ? null : item.id)}        >
                                 <span className="shipping-item-left">
                                     <i className={item.icon}></i>
                                     {item.title}

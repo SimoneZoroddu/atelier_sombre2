@@ -12,7 +12,6 @@ import hero_img4 from "../../img/hero_space4.jpg"
 import hero_img5 from "../../img/hero_space5.jpg"
 import hero_img6 from "../../img/hero_space6.jpg"
 
-
 const image = [hero_img6, hero_img, hero_img6, hero_img2, hero_img6, hero_img3, hero_img6, hero_img4, hero_img6, hero_img5];
 
 /* context */
@@ -22,6 +21,7 @@ import AppSideBarCart from "../../components/AppSideBarCart"
 
 
 export default function HomePage() {
+
     const { setGenre, setSearchValue, shoes, setShoes, cartList } = useShop()
 
     //creazione indice per ciclare le immagini
@@ -36,21 +36,6 @@ export default function HomePage() {
     }, [index]);
 
 
-    /*  
-    
-    
-    const today = new Date();
-     const newArrivals = shoes.filter(shoe => {
-         const shoe_created_at = new Date(shoe.created_at);
-         const expiry = new Date(shoe_created_at);
-         expiry.setMonth(expiry.getMonth() + 3);
- 
-         return today <= expiry;
-     })
-
-
-
-  */
 
     return (
         <>
@@ -164,3 +149,27 @@ export default function HomePage() {
         </>
     )
 }
+
+
+
+
+
+
+
+
+
+    /*  
+    
+    
+    const today = new Date();
+     const newArrivals = shoes.filter(shoe => {
+         const shoe_created_at = new Date(shoe.created_at);
+         const expiry = new Date(shoe_created_at);
+         expiry.setMonth(expiry.getMonth() + 3);
+ 
+         return today <= expiry;
+     })
+
+
+
+  */

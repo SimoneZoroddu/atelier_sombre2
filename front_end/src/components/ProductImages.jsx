@@ -55,11 +55,7 @@ export default function ProductImages() {
                 ]
                     .filter(img => img)
                     .map((img, i) => (
-                        <img
-                            key={i}
-                            src={img}
-                            alt="thumb"
-                            className="thumbnailVertical"
+                        <img key={i} src={img} alt="thumb" className="thumbnailVertical"
                             style={{
                                 border: mainImage === img ? "2px solid black" : "1px solid #ccc"
                             }}
@@ -71,11 +67,7 @@ export default function ProductImages() {
 
             {/* IMMAGINE PRINCIPALE */}
             <div className="mainImageWrapper">
-                <img
-                    ref={imgRef}
-                    src={mainImage}
-                    alt={product.name}
-                    className="mainImage"
+                <img ref={imgRef} src={mainImage} alt={product.name} className="mainImage"
                     onMouseMove={handleZoom}
                     onMouseLeave={handleLeave}
                     onClick={() => setIsFullscreen(true)}

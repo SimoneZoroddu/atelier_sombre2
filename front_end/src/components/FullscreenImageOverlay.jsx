@@ -2,9 +2,9 @@ import { useDetail } from "../contexts/DetailContext";
 
 export default function FullscreenImageOverlay() {
     const {
-        product,
         isFullscreen, setIsFullscreen,
         currentIndex, setCurrentIndex,
+        product,
         setMainImage
     } = useDetail();
 
@@ -19,8 +19,7 @@ export default function FullscreenImageOverlay() {
 
     return (
         <div className="fullscreenOverlay" onClick={() => setIsFullscreen(false)}>
-            <button
-                className="arrow left"
+            <button className="arrow left"
                 onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex((prev) =>
@@ -32,15 +31,9 @@ export default function FullscreenImageOverlay() {
                 ‹
             </button>
 
-            <img
-                src={images[currentIndex]}
-                alt="fullscreen"
-                className="fullscreenImage"
-                onClick={(e) => e.stopPropagation()}
-            />
+            <img src={images[currentIndex]} alt="fullscreen" className="fullscreenImage" onClick={(e) => e.stopPropagation()} />
 
-            <button
-                className="arrow right"
+            <button className="arrow right"
                 onClick={(e) => {
                     e.stopPropagation();
                     setCurrentIndex((prev) =>

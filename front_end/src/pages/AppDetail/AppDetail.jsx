@@ -31,8 +31,7 @@ function DetailPageContent() {
     return (
         <>
             {/* Back button */}
-            <button
-                onClick={handleBack}
+            <button onClick={handleBack}
                 style={{
                     background: "none",
                     border: "none",

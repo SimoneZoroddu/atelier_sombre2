@@ -34,7 +34,7 @@ export function useDetail() {
 export function DetailProvider({ children }) {
 
     // Context Global
-    const { cartList, setCartList, setGenre, addWishlist, isInWishlist } = useShop();
+    const { cartList, setCartList, setGenre, addWishlist, isInWishlist, normalizedName, normalizedColor } = useShop();
 
     // parametri del link
     const { name, color } = useParams();
@@ -260,6 +260,7 @@ export function DetailProvider({ children }) {
         saved, setSaved,
         stockMap, setStockMap,
         toastMessage, setToastMessage,
+        normalizedName, normalizedColor,
         shippingInfo,
         handleBack,
         capitalizeWords,
