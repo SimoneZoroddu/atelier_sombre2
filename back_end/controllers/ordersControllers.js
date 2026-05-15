@@ -166,9 +166,10 @@ const post = (req, res, next) => {
                             console.error('Errore nella query shoes details orders:', err);
                             return res.status(500).json({ error: 'Errore shoes details orders' });
                         }
-
                         result[0]["items"] = shoesDetailsResult;
-                        console.log(result[0].items)
+
+                        
+
                         res.status(200).json(result)
                     })
 
