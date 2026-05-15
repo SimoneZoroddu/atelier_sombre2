@@ -51,7 +51,7 @@ export default function Chatbot() {
             {isOpen && (
                 <aside className="chatbot-container">
                     <div className="chatbot-header">
-                        <h5>AI Assistant</h5>
+                        <h5>GIANFRANCO</h5>
                         <button className="chatbot-close" onClick={() => setIsOpen(false)} aria-label="Close Chat">
                             <i className="bi bi-x-lg"></i>
                         </button>

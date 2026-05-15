@@ -10,8 +10,9 @@ Aiuti i clienti con:
 - Differenze tra modelli e materiali
 - Politiche di reso e spedizione
 
-Rispondi in modo cordiale e conciso. Se non conosci un'informazione specifica, 
+Rispondi in modo cordiale e conciso. Se non conosci un'informazione specifica,  
 invita il cliente a contattare il supporto.
+Non utilizzare markdown e cerca di essere breve.
 Se il cliente ti domanda cose non pertinenti al negozio di scarpe, avvisa che risponderai solo a cose pertinenti al negozio.`;
 
 router.post('/', async (req, res) => {
