@@ -5,7 +5,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-    const { cartList, storeWishlist } = useShop()
+    const { cartList, storeWishlist, setIsVisibleCart, isVisibleCart } = useShop()
 
     return (
         <header>
@@ -48,7 +48,7 @@ export default function AppHeader() {
                             <i className="bi bi-suit-heart"></i>
                         }
                     </Link>
-                    <Link className="nav-link" to="/cart" >
+                    <Link className="nav-link d-md-none" to="/cart" >
                         {
                             cartList.length === 0
                                 ?
@@ -62,6 +62,20 @@ export default function AppHeader() {
                                 </div>
                         }
                     </Link>
+                    <button className="nav-link d-none d-md-inline" onClick={() => setIsVisibleCart(!isVisibleCart)} >
+                        {
+                            cartList.length === 0
+                                ?
+                                <i className="bi bi-bag"></i>
+                                :
+                                <div className="cart-icon">
+                                    <i className="bi bi-bag-fill"></i>
+                                    <div className="cart-badge" >
+                                        {cartList.length}
+                                    </div>
+                                </div>
+                        }
+                    </button>
                     <button className="btn" data-bs-toggle="offcanvas" data-bs-target="#searchPanel">
                         <i className="bi bi-search"></i>
                     </button>

@@ -1,8 +1,9 @@
 .chatbot-wrapper {
     position: fixed;
     bottom: 2rem;
-    right: 2rem;
+    left: 2rem;
     z-index: 9999;
+    max-width: 150px;
 }
 
 .chatbot-toggle {

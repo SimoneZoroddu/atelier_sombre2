@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { useDetail } from "../contexts/DetailContext";
-import { useShop } from "../contexts/GlobalContext";
 
 export default function RecommendedProducts() {
-    const { recommended } = useDetail();
-    const { normalizedName, normalizedColor } = useShop();
+    const { recommended, normalizedName, normalizedColor } = useDetail();
 
     if (recommended.length === 0) return null;
 
@@ -14,16 +12,8 @@ export default function RecommendedProducts() {
 
             <div className="recommendedRow">
                 {recommended.map(item => (
-                    <Link
-                        key={item.id}
-                        to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}
-                        className="recommendedItem"
-                    >
-                        <img
-                            src={item.image.main_image_url}
-                            alt={item.name}
-                            className="recommendedImage"
-                        />
+                    <Link key={item.id} className="recommendedItem" to={`/products/${normalizedName(item.name)}/${normalizedColor(item.color)}`}   >
+                        <img src={item.image.main_image_url} alt={item.name} className="recommendedImage" />
                         <p className="recommendedName">{item.name}</p>
                         <p className="recommendedPrice">{item.price} €</p>
                     </Link>

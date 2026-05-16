@@ -2,18 +2,44 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useShop } from "./GlobalContext";
 
+const shippingInfo = [
+    {
+        id: "standard",
+        icon: "bi bi-box-seam",
+        title: "Spedizione Standard",
+        detail: "Consegna in 2-4 giorni lavorativi. Tracciamento incluso."
+    },
+    {
+        id: "express",
+        icon: "bi bi-lightning",
+        title: "Spedizione Express",
+        detail: "Consegna il giorno successivo se ordinato entro le 12:00. Disponibile per le principali città italiane."
+    },
+    {
+        id: "returns",
+        icon: "bi bi-arrow-return-left",
+        title: "Resi & Rimborsi",
+        detail: "Resi gratuiti entro 30 giorni dall'acquisto. Il rimborso viene elaborato in 3-5 giorni lavorativi."
+    }
+];
+
 const DetailContext = createContext();
 
 export function useDetail() {
     return useContext(DetailContext);
 }
 
-export function DetailProvider({ children }) {
-    const { name, color } = useParams();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { cartList, setCartList, setGenre, addWishlist, isInWishlist } = useShop();
 
+
+export function DetailProvider({ children }) {
+
+    // Context Global
+    const { cartList, setCartList, setGenre, addWishlist, isInWishlist, normalizedName, normalizedColor, isVisibleCart, setIsVisibleCart } = useShop();
+
+    // parametri del link
+    const { name, color } = useParams();
+
+    // Variabili di Stato
     const [product, setProduct] = useState(null);
     const [mainImage, setMainImage] = useState("");
     const [selectedSize, setSelectedSize] = useState(null);
@@ -22,42 +48,22 @@ export function DetailProvider({ children }) {
     const [recommended, setRecommended] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const [openShipping, setOpenShipping] = useState(null);
-
     //gestione ovelay
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-
     //gestione errori
     const [error, setError] = useState(null);
     const [sizeErrorr, setSizeError] = useState(false);
     const [saved, setSaved] = useState(false);
-
     //gestione quantità e carrello
     const [stockMap, setStockMap] = useState({});
-
     // gestione messaggio di conferma ordine
     const [toastMessage, setToastMessage] = useState("");
 
-    const shippingInfo = [
-        {
-            id: "standard",
-            icon: "bi bi-box-seam",
-            title: "Spedizione Standard",
-            detail: "Consegna in 2-4 giorni lavorativi. Tracciamento incluso."
-        },
-        {
-            id: "express",
-            icon: "bi bi-lightning",
-            title: "Spedizione Express",
-            detail: "Consegna il giorno successivo se ordinato entro le 12:00. Disponibile per le principali città italiane."
-        },
-        {
-            id: "returns",
-            icon: "bi bi-arrow-return-left",
-            title: "Resi & Rimborsi",
-            detail: "Resi gratuiti entro 30 giorni dall'acquisto. Il rimborso viene elaborato in 3-5 giorni lavorativi."
-        }
-    ];
+
+    // per la navigazione
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleBack = () => {
         if (location.key !== "default") {
@@ -67,6 +73,7 @@ export function DetailProvider({ children }) {
         }
     };
 
+    // UpperCase Words
     function capitalizeWords(str) {
         if (!str) return "";
         return str
@@ -76,6 +83,8 @@ export function DetailProvider({ children }) {
             .join(" ");
     }
 
+
+    // Calcolo prezzo finale meno sconti
     const originalPrice = product ? Number(product.price) : 0;
     const discount = product ? product.on_sale : 0; // percentuale
     const finalPrice = discount > 0
@@ -83,7 +92,10 @@ export function DetailProvider({ children }) {
         : originalPrice;
 
 
+    // aggiunta carrello
+
     function addToCart() {
+        setIsVisibleCart(!isVisibleCart)
         setSizeError(false);
         if (!selectedSize) {
             setTimeout(() => setSizeError(true), 1000);
@@ -147,6 +159,9 @@ export function DetailProvider({ children }) {
         setCartList(JSON.parse(localStorage.getItem("cart")));
     }
 
+
+    // recupero singola scarpa
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -176,6 +191,9 @@ export function DetailProvider({ children }) {
         fetchProduct();
     }, [name, color]);
 
+
+    // recupero tutte le scarpe per i consigliati by genre (possibile farlo anche tramite fetch genre)
+
     useEffect(() => {
         if (!product) return;
 
@@ -199,6 +217,9 @@ export function DetailProvider({ children }) {
 
         fetchRecommended();
     }, [product]);
+
+
+    // recupero quantita nel localStorage (cartList)
 
     useEffect(() => {
         if (!product) return;
@@ -240,6 +261,7 @@ export function DetailProvider({ children }) {
         saved, setSaved,
         stockMap, setStockMap,
         toastMessage, setToastMessage,
+        normalizedName, normalizedColor,
         shippingInfo,
         handleBack,
         capitalizeWords,

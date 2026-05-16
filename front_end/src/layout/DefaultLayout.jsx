@@ -4,9 +4,11 @@ import AppFooter from "../components/AppFooter";
 
 import NewsletterPopup from "../components/PopUp";
 import Chatbot from "../components/Chatbot";
+import { useShop } from "../contexts/GlobalContext";
+import AppSideBarCart from "../components/AppSideBarCart";
 
 export default function DefaultLayout() {
-
+    const { isVisibleCart } = useShop()
 
     return (
         <>
@@ -15,6 +17,11 @@ export default function DefaultLayout() {
             <NewsletterPopup />
             <Chatbot />
             <AppFooter />
+            {
+
+                isVisibleCart && <AppSideBarCart />
+
+            }
         </>
     )
 }

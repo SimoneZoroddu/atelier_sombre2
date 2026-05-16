@@ -31,8 +31,7 @@ function DetailPageContent() {
     return (
         <>
             {/* Back button */}
-            <button
-                onClick={handleBack}
+            <button onClick={handleBack}
                 style={{
                     background: "none",
                     border: "none",
@@ -54,11 +53,6 @@ function DetailPageContent() {
                         <ProductShipping />
                         <FullscreenImageOverlay />
                     </div>
-                    {
-                        cartList.length !== 0 &&
-                        location.pathname !== "/cart" &&
-                        <AppSideBarCart />
-                    }
                 </div>
             </div>
         </>

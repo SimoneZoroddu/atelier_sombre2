@@ -7,18 +7,16 @@ import ErrorMessage from "../components/ErrorMessage";
 
 export default function AppSearch() {
 
-    const [results, setResults] = useState([]);
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart } = useShop();
 
     const { genre, page, pages } = useParams();
-    /*   console.log(genre, page); */
 
+    const [results, setResults] = useState([]);
     const [sortBy, setSortBy] = useState("default");
     const [sortedResults, setSortedResults] = useState([]);
-
     const [totalPages, setTotalPages] = useState(0);
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList } = useShop();
-
+    // Ordinare
     const applySort = (data, sort) => {
         const sorted = [...data];
         switch (sort) {
@@ -38,13 +36,10 @@ export default function AppSearch() {
         if (pages) {
             axios.get(`http://localhost:3000/products/index/?page=${pages}`)
                 .then((res) => {
-
-
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
                     setSortedResults(applySort(data, sortBy));
-
                 })
                 .catch((err) => console.error(err));
             return;
@@ -52,7 +47,6 @@ export default function AppSearch() {
         else if (genre === "discounted") {
             axios.get(`http://localhost:3000/products/discounted?page=${page}`)
                 .then((res) => {
-
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
@@ -63,7 +57,6 @@ export default function AppSearch() {
         } else if (genre == "uomo" || genre == "donna") {
             axios.get(`http://localhost:3000/products/genre/${genre}?page=${page}`)
                 .then((res) => {
-
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
@@ -74,12 +67,10 @@ export default function AppSearch() {
         else {
             axios.get(`http://localhost:3000/products/${genre}?page=${page}`)
                 .then((res) => {
-
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
                     setResults(data);
                     setSortedResults(applySort(data, sortBy));
-
                 })
                 .catch((err) => console.error(err));
         }
@@ -95,9 +86,7 @@ export default function AppSearch() {
                         {/* Select for the choice*/}
                         <div className="container-fluid px-3 py-2">
                             <div className="d-flex justify-content-end">
-                                <select
-                                    className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent"
-                                    style={{ width: "200px" }}
+                                <select className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent" style={{ width: "200px" }}
                                     onChange={(e) => {
                                         setSortBy(e.target.value);
                                         setSortedResults(applySort(results, e.target.value));
@@ -118,18 +107,10 @@ export default function AppSearch() {
                             <div className="row g-0 row-cols-2 row-cols-md-4">
                                 {
                                     sortedResults?.map((shoe) => (
-                                        <div
-                                            className="col position-relative gx-2"
-                                            key={shoe.id}
-                                        >
+                                        <div className="col position-relative gx-2" key={shoe.id}          >
                                             <div className="image-container">
                                                 <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} >
-                                                    <img
-                                                        className="w-100 d-flex align-items-center justify-content-center p-1"
-                                                        src={shoe.image?.main_image_url}
-                                                        alt={shoe.name}
-                                                        style={{ width: "18rem" }}
-                                                    />
+                                                    <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image?.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
                                                 </Link>
                                             </div>
 
@@ -139,9 +120,7 @@ export default function AppSearch() {
                                                         <p className="mb-0 fw-semibold">
                                                             {shoe.name}
                                                         </p>
-                                                        <button
-                                                            onClick={(e) => addWishlist(shoe)}
-                                                            className="btn btn-sm bg-transparent border-0 p-0"
+                                                        <button onClick={(e) => addWishlist(shoe)} className="btn btn-sm bg-transparent border-0 p-0"
                                                             style={{
                                                                 fontSize: "1.5rem",
                                                                 lineHeight: 1,
@@ -176,24 +155,14 @@ export default function AppSearch() {
                             </div>
                         </div>
                     </div>
-                    {
 
-                        cartList.length != 0 && <AppSideBarCart />
-
-                    }
                 </div>
             </div >
             <div className="pagination-nav">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <div key={page}>
                         <Link className="page-link"
-                            to={
-                                pages
-                                    ? `/shoes/${page}`
-                                    : genre === "discounted"
-                                        ? `/shoes/discounted/${page}`
-                                        : `/shoes/${genre}/${page}`
-                            }
+                            to={pages ? `/shoes/${page}` : genre === "discounted" ? `/shoes/discounted/${page}` : `/shoes/${genre}/${page}`}
                         >
                             Pagina {page}
                         </Link>

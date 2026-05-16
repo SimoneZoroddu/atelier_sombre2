@@ -14,20 +14,16 @@ export default function AppFooter() {
                     <h4 className="pb-4">Resta aggiornato!</h4>
                     <form action="">
                         <div>
-                            <input
-                                className="rounded-pill border-1 p-1 px-2"
-                                name="emailNewsletter"
-                                required
-                                type="email"
-                                placeholder="La tua email"
-                                value={email}
+                            <input className="rounded-pill border-1 p-1 px-2" name="emailNewsletter" required type="email" placeholder="La tua email" value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
                                     if (error) setError("");
                                 }}
                                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                                 autoFocus />
-                            <button className="border-0 background_color_basic ms-3" onClick={handleSubmit}>Invia</button>
+                            <button className="border-0 background_color_basic ms-3" onClick={handleSubmit}>
+                                Invia
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -53,7 +49,7 @@ export default function AppFooter() {
                 <div className="col">
                     <ul className="list-unstyled">
                         <li className="fw-medium fs-4">Informazioni aziendali</li>
-                        <li><a href="" className="text-black underline_hover">Tods Group</a></li>
+                        <li><a href="" className="text-black underline_hover">Angelo Ren Group</a></li>
                         <li><a href="" className="text-black underline_hover">Note legali</a></li>
                         <li><a href="" className="text-black underline_hover">Termini e Condizioni di utilizzo</a></li>
                         <li><a href="" className="text-black underline_hover">Informativa Privacy</a></li>
