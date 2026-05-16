@@ -22,6 +22,7 @@ export default function AppOrderCheckout() {
   const [selectedPayment, setSelectedPayment] = useState('');
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [orderError, setOrderError] = useState(null);
 
   const [order, setOrder] = useState({
     firstname: "",
@@ -114,13 +115,9 @@ export default function AppOrderCheckout() {
         .then(res => {
           /* Save RESPONSE STATE */
           setOrderResponse(res.data);
-        })
-        .catch(err => {
-          console.error(err); // ⚠️ To B implemented with visual alert/feedback UX
-        })
-        .finally(() => {
-          console.log("Order request completed");
-          /* clear cart and total price from local Storage */
+          setOrderError(null);
+
+          /* clear cart and total price from local Storage (only on success) */
           setOrder({
             firstname: "",
             lastname: "",
@@ -134,15 +131,22 @@ export default function AppOrderCheckout() {
             street: "",
             zip_code: "",
             total_price: 0
-          })
+          });
           setCartList([]);
           localStorage.removeItem('cart');
           localStorage.removeItem('cartList');
           localStorage.removeItem('order');
           localStorage.removeItem('total_price');
-          /* clear form */
-          // ⚠️ todo
-
+        })
+        .catch(err => {
+          console.error(err); // ⚠️ To B implemented with visual alert/feedback UX
+          setOrderError('Si è verificato un errore durante l\'invio dell\'ordine. Riprova più tardi.');
+          setIsSubmitted(false);
+          setShowPaymentSuccess(false);
+          setLoading(false);
+        })
+        .finally(() => {
+          console.log("Order request completed");
         });
     }, 2000);
   }
@@ -164,6 +168,13 @@ export default function AppOrderCheckout() {
             <div className="m-3">
               <h2>Dati personali</h2>
             </div>
+            {orderError && (
+              <div className="m-3">
+                <div className="alert alert-danger" role="alert">
+                  {orderError}
+                </div>
+              </div>
+            )}
             <div className="row row-cols-2 m-3">
               <div className="mb-3">
                 <label htmlFor="firstname_field" className="form-label">Nome</label>
