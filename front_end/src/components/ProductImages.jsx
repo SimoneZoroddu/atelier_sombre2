@@ -46,7 +46,7 @@ export default function ProductImages() {
     return (
         <div className="imagesWrapper">
             {/* THUMBNAILS */}
-            <div className="thumbnailsColumn">
+            <div className="thumbnailsColumn d-flex justify-content-center">
                 {[
                     product.image.main_image_url,
                     product.image.top_view_url,
@@ -66,7 +66,7 @@ export default function ProductImages() {
             </div>
 
             {/* IMMAGINE PRINCIPALE */}
-            <div className="mainImageWrapper">
+            <div className="mainImageWrapper d-flex align-self-center">
                 <img ref={imgRef} src={mainImage} alt={product.name} className="mainImage"
                     onMouseMove={handleZoom}
                     onMouseLeave={handleLeave}
