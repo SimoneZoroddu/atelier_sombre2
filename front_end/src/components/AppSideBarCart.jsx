@@ -116,7 +116,7 @@ export default function AppSideBarCart() {
                     }
                 </div>
                 {
-                    cartList.lenght > 0
+                    cartList.length > 0
                         ?
                         <div className="height_sidecartpayment pt-4 bg-black text-white px-3">
                             <div className="sidebar_row ">
