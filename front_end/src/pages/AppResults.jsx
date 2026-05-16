@@ -16,8 +16,6 @@ export default function AppSearch() {
     const [sortedResults, setSortedResults] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, searchValue } = useShop();
-
     const applySort = (data, sort) => {
         const sorted = [...data];
         switch (sort) {
