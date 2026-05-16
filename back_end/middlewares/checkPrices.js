@@ -4,10 +4,6 @@ const checkPrices = (req, res, next) => {
 
     const { items } = req.body;
 
-    if (!items || items.length === 0) {
-        return res.status(400).json({ error: "Il carrello è vuoto" });
-    }
-
     const ids = items.map(item => item.variant_id);
 
     const queryShoes = `

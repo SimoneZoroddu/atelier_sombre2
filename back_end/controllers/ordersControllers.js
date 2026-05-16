@@ -155,20 +155,18 @@ const post = (req, res, next) => {
                     }
 
                 const queryShoesDetailsOrders = `
-                SELECT shoes.name, shoes_variant.size, shoes.color, shoes.price, shoes.on_sale AS discount, order_shoes_variant.quantity, image.main_image_url FROM orders
-                JOIN order_shoes_variant ON orders.id = order_shoes_variant.order_id
-                JOIN shoes_variant ON shoes_variant.id = order_shoes_variant.variant_id
-                JOIN shoes ON shoes.id = shoes_variant.shoe_id
-                JOIN image ON image.shoe_id = shoes.id
-                WHERE order_id = ?`
+                        SELECT shoes.name, shoes_variant.size, shoes.color, shoes.price, shoes.on_sale AS discount, order_shoes_variant.quantity, image.main_image_url FROM orders
+                        JOIN order_shoes_variant ON orders.id = order_shoes_variant.order_id
+                        JOIN shoes_variant ON shoes_variant.id = order_shoes_variant.variant_id
+                        JOIN shoes ON shoes.id = shoes_variant.shoe_id
+                        JOIN image ON image.shoe_id = shoes.id
+                        WHERE order_id = ?`
                     connection.query(queryShoesDetailsOrders, [order_id], (err, shoesDetailsResult) => {
                         if (err) {
                             console.error('Errore nella query shoes details orders:', err);
                             return res.status(500).json({ error: 'Errore shoes details orders' });
                         }
                         result[0]["items"] = shoesDetailsResult;
-
-                        
 
                         res.status(200).json(result)
                     })
