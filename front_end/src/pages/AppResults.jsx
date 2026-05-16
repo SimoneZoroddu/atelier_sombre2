@@ -7,7 +7,7 @@ import ErrorMessage from "../components/ErrorMessage";
 
 export default function AppSearch() {
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart } = useShop();
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart, searchValue } = useShop();
 
     const { genre, page, pages } = useParams();
 
