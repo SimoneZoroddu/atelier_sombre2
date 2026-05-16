@@ -115,7 +115,7 @@ export default function AppCart() {
                                 i.color === item.color &&
                                 i.size === item.size
                                 ?
-                                { ...i, quantity: i.quantity + 1 }
+                                { ...i, quantity: i.quantity - 1 }
                                 :
                                 i
                             ));
