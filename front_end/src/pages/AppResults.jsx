@@ -16,7 +16,8 @@ export default function AppSearch() {
     const [sortedResults, setSortedResults] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    // Ordinare
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, searchValue } = useShop();
+
     const applySort = (data, sort) => {
         const sorted = [...data];
         switch (sort) {
@@ -77,6 +78,10 @@ export default function AppSearch() {
     }, [genre, page, pages]);
 
 
+    const filteredResults = sortedResults.filter((shoe) =>
+        shoe.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
 
     return (
         <>
@@ -106,7 +111,7 @@ export default function AppSearch() {
                         <div className="container-fluid px-0">
                             <div className="row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                 {
-                                    sortedResults?.map((shoe) => (
+                                    filteredResults?.map((shoe) => (
                                         <div className="col position-relative gx-2" key={shoe.id}          >
                                             <div className="image-container">
                                                 <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} >
@@ -136,10 +141,10 @@ export default function AppSearch() {
                                                     {shoe.on_sale !== 0 ? (
                                                         <p className="price d-flex">
                                                             <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                                                                {`${Math.ceil(shoe.price)}€`} 
+                                                                {`${Math.ceil(shoe.price)}€`}
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {`${(shoe.price * (1 - shoe.on_sale / 100))}€`} 
+                                                                {`${(shoe.price * (1 - shoe.on_sale / 100))}€`}
                                                             </span>
                                                             <span className="ms-auto" >
                                                                 -{shoe.on_sale}%
