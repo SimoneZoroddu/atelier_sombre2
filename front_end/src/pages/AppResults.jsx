@@ -17,7 +17,7 @@ export default function AppSearch() {
 
     const [totalPages, setTotalPages] = useState(0);
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList } = useShop();
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, searchValue } = useShop();
 
     const applySort = (data, sort) => {
         const sorted = [...data];
@@ -87,6 +87,10 @@ export default function AppSearch() {
     }, [genre, page, pages]);
 
 
+    const filteredResults = sortedResults.filter((shoe) =>
+        shoe.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
 
     return (
         <>
@@ -118,7 +122,7 @@ export default function AppSearch() {
                         <div className="container-fluid px-0">
                             <div className="row g-0 row-cols-2 row-cols-md-4">
                                 {
-                                    sortedResults?.map((shoe) => (
+                                    filteredResults?.map((shoe) => (
                                         <div
                                             className="col position-relative gx-2"
                                             key={shoe.id}
