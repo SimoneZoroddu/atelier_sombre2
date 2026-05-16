@@ -300,7 +300,7 @@ export default function AppOrderCheckout() {
                     </div>
                     <div className="text-end ms-auto">
                       <div>
-                        {console.log(orderResponse)}
+                        {/* {console.log(orderResponse)} */}
                         <p>{(orderResponse[0]?.fiscal_code) ? `C.F. ${orderResponse[0]?.fiscal_code.toUpperCase()}` : `P.IVA ${orderResponse[0]?.vat_number}`}</p>
                         <p>{orderResponse[0]?.email.toLowerCase()}</p>
                         <p>{orderResponse[0]?.telephone_number}</p>
@@ -322,7 +322,7 @@ export default function AppOrderCheckout() {
                       </tr>
                     </thead>
                     <tbody>
-                      {console.log(orderResponse)}
+                     {/*  {console.log(orderResponse)} */}
                       {(orderResponse[0]?.items)?.map(item => {
                         return (
                           <tr key={item.name + item.color + item.size}>

@@ -104,7 +104,7 @@ export default function AppSearch() {
 
                         {/* List Shoes */}
                         <div className="container-fluid px-0">
-                            <div className="row g-0 row-cols-2 row-cols-md-4">
+                            <div className="row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                 {
                                     sortedResults?.map((shoe) => (
                                         <div className="col position-relative gx-2" key={shoe.id}          >
@@ -134,16 +134,19 @@ export default function AppSearch() {
                                                         {shoe.color}
                                                     </p>
                                                     {shoe.on_sale !== 0 ? (
-                                                        <p className="price">
+                                                        <p className="price d-flex">
                                                             <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                                                                {shoe.price} €
+                                                                {`${Math.ceil(shoe.price)}€`} 
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {(shoe.price * (1 - shoe.on_sale / 100)).toFixed(2)} €
+                                                                {`${(shoe.price * (1 - shoe.on_sale / 100))}€`} 
+                                                            </span>
+                                                            <span className="ms-auto" >
+                                                                -{shoe.on_sale}%
                                                             </span>
                                                         </p>
                                                     ) : (
-                                                        <p className="price">{shoe.price} €</p>
+                                                        <p className="price">{Math.ceil(shoe.price)} €</p>
                                                     )}
 
                                                 </div>

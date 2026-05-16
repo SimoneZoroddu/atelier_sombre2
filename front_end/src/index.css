@@ -276,3 +276,7 @@ i {
     aspect-ratio: 3 / 4;
     object-fit: cover;
 }
+
+#searchPanel{
+    width: 600px;
+}

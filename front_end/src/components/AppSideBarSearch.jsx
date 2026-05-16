@@ -11,7 +11,7 @@ export default function AppSideBarSearch() {
 
     return (
         <div className="offcanvas offcanvas-end" id="searchPanel">
-            <div className="offcanvas-header">
+            <div className="offcanvas-header ">
                 <h5 className="offcanvas-title">Ricerca</h5>
                 <button className="btn-close" data-bs-dismiss="offcanvas"></button>
             </div>

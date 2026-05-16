@@ -11,11 +11,8 @@ export default function AppHeader() {
         <header>
             <nav className="navbar navbar-expand-lg background_color_basic mb-2">
                 <div className="container-fluid mx-2">
-                    <Link className="navbar-brand" to="/"  >
-                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
-                    </Link>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav mx-auto fs-4">
+                        <ul className="navbar-nav fs-4">
                             {/* da eliminare... possiamo lasciarlo solo sul logo, ma rimane mezzo vuoto sarebbe bello trovare qualche link da associare */}
                             <li className="nav-item underline_hover fw-bolder">
                                 <Link className="nav-link" to="/shoes/1">Vedi tutte le nostre collezioni</Link>
@@ -34,6 +31,9 @@ export default function AppHeader() {
                             </li>
 
                         </ul>
+                    <Link className="navbar-brand position-absolute start-50 me-5" to="/"  >
+                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
+                    </Link>
                     </div>
                     <Link to="/wishlist" className="nav-link px-3" >
                         {storeWishlist?.length
