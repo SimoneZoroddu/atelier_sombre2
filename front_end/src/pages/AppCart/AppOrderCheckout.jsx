@@ -108,7 +108,6 @@ export default function AppOrderCheckout() {
         order: { ...order, total_price: computedTotal },
         items: productsData
       };
-      console.log('body della post request ', body); // ⚠️ To B removed
 
       /* SUBMIT DATA */
       axios.post(orderUrl, body)
@@ -160,7 +159,7 @@ export default function AppOrderCheckout() {
 
   return (
     <>
-      <div className="checkout_container p-4">
+      <div className="checkout_container">
 
         {/* Get order data */}
         {(!isSubmitted && !orderResponse) && (
@@ -219,7 +218,7 @@ export default function AppOrderCheckout() {
                   onChange={handleInputChange} />
               </div>
               <div className="mb-3">
-                <label htmlFor="region_field" className="form-label">Regione</label>
+                <label htmlFor="region_field" className="form-label">Provincia</label>
                 <input type="text" className="form-control" id="region_field"
                   name="region" value={order.region}
                   onChange={handleInputChange} />
@@ -302,7 +301,7 @@ export default function AppOrderCheckout() {
                 <p className="text-center fs-3">Grazie per averci scelto! &hearts;</p>
                 <p>Ecco il riepilogo del tuo ordine</p>
                 {/* -- Order overview -- */}
-                <div className="container order_info p-5">
+                <div className="container order_info">
                   { /* Order overview header */}
                   <div className="d-flex order_header">
                     <div>
@@ -323,41 +322,36 @@ export default function AppOrderCheckout() {
                   </div>
                   {/* Order overview body */}
                   <div className="table_container">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th className="product_name">Prodotto</th>
-                          <th>Colore</th>
-                          <th>Taglia</th>
-                          <th>Quantità</th>
-                          <th className="collapsable">Prezzo</th>
-                          <th className="collapsable">Sconti</th>
-                          <th>Subtotale</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {console.log(orderResponse)}
-                        {(orderResponse[0]?.items)?.map(item => {
-                          return (
-                            <tr key={item.name + item.color + item.size}>
-                              <td className="product_name">{item.name}</td>
-                              <td>{item.color}</td>
-                              <td>{item.size}</td>
-                              <td>{item.quantity}</td>
-                              <td className="collapsable">{item.price}</td>
-                              <td className="collapsable">{item.discount == 0 ? '-' : `${item.discount}%`}</td>
-                              <td>{(item.price - (item.price * item.discount / 100)) * item.quantity}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr> {/* ⚠️ todo: fix colspan (should convert table into grid) */}
-                          <td colSpan="5" className="text-end">Totale</td>
-                          <td>{orderResponse[0]?.total_price}</td>
-                        </tr>
-                      </tfoot>
-                    </table>
+
+                    <div className="container overview_table">
+                      <div className="row table_header">
+                        <div className="col-3 product_name">Prodotto</div>
+                        <div className="col-2 product_color">Colore</div>
+                        <div className="col-1 product_size">Taglia</div>
+                        <div className="col-1 product_quantity">Quantità</div>
+                        <div className="col-2 collapsable product_price">Prezzo</div>
+                        <div className="col-1 collapsable product_discount">Sconti</div>
+                        <div className="col-2 product_subtotal">Subtotale</div>
+                      </div>
+                      {/* {console.log(orderResponse)} */}
+                      {(orderResponse[0]?.items)?.map(item => {
+                        return (
+                          <div className="row" key={item.name + item.color + item.size}>
+                            <div className="col-3 text-start product_name">{item.name}</div>
+                            <div className="col-2 product_color">{item.color}</div>
+                            <div className="col-1 product_size">{item.size}</div>
+                            <div className="col-1 product_quantity">{item.quantity}</div>
+                            <div className="col-2 collapsable product_price">{(item.price)}</div>
+                            <div className="col-1 collapsable discount_green product_discount">{item.discount == 0 ? '-' : `${item.discount}%`}</div>
+                            <div className="col-2 product_subtotal">{(item.price - (item.price * item.discount / 100)) * item.quantity}.00</div>
+                          </div>
+                        )
+                      })}
+                      <div className="row"> {/* ⚠️ todo: fix colspan (should convert table into grid) */}
+                        <div className="col-12 cart_total">tot. {orderResponse[0]?.total_price}</div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
