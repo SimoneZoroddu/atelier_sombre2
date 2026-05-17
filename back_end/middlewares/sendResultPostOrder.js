@@ -10,7 +10,7 @@ const sendResultPostOrder = (req, res) => {
         }
         
         const order_id = idResult[0]['LAST_INSERT_ID()'];
-        console.log(order_id);
+        // console.log(order_id);
 
         const queryLastOrder = 'SELECT * FROM orders WHERE id = ?';
         connection.query(queryLastOrder, [order_id], (err, result) => {
