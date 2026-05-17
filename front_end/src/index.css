@@ -271,12 +271,21 @@ i {
 }
 
 
-.center_image_cart{
+.center_image_cart {
     width: 70%;
     aspect-ratio: 3 / 4;
     object-fit: cover;
 }
 
-#searchPanel{
+#searchPanel {
     width: 600px;
+}
+
+.hover_card_info {
+    transition: all 0.3s ease;
+}
+
+.hover_card_info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }

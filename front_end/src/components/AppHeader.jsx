@@ -14,25 +14,25 @@ export default function AppHeader() {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav fs-4">
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" to="/shoes/1" onClick={setSearchValue("")}>Vedi tutte le nostre collezioni</Link>
+                                <Link className="nav-link" to="/shoes/1" onClick={() => setSearchValue("")}>Vedi tutte le nostre collezioni</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" >Uomo</Link>
+                                <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" onClick={() => setSearchValue("")} >Uomo</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" aria-current="page" to="/shoes/donna/1" >Donna</Link>
+                                <Link className="nav-link" aria-current="page" to="/shoes/donna/1" onClick={() => setSearchValue("")} >Donna</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" to="/">Informazioni</Link>
+                                <Link className="nav-link" to="/info" onClick={() => setSearchValue("")}>Informazioni</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link text-danger" aria-current="page" to="/shoes/discounted/1" >In Sconto</Link>
+                                <Link className="nav-link text-danger" aria-current="page" to="/shoes/discounted/1" onClick={() => setSearchValue("")} >In Sconto</Link>
                             </li>
 
                         </ul>
-                    <Link className="navbar-brand position-absolute start-50 me-5" to="/"  >
-                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
-                    </Link>
+                        <Link className="navbar-brand position-absolute start-50 me-5" to="/"  >
+                            <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
+                        </Link>
                     </div>
                     <Link to="/wishlist" className="nav-link px-3" >
                         {storeWishlist?.length
