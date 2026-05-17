@@ -12,7 +12,7 @@ export default function AppSideBarCart() {
         setCartList(updatedCart);
         localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
-    //console.log(cartList);
+
 
     return (
         <>
@@ -141,9 +141,9 @@ export default function AppSideBarCart() {
                             <div className="d-flex justify-content-center fs-1 pb-1">
                                 Il tuo Carrello é Vuoto
                             </div>
-                            <Link to="/shoes/1" className="d-flex justify-content-center text-decoration-none" >
+                            <div className=" d-flex justify-content-center text-decoration-none">
                                 <button className="btn_continue" onClick={() => setIsVisibleCart(!isVisibleCart)}>Continua lo shopping</button>
-                            </Link>
+                            </div>
                         </>
                 }
             </div>
