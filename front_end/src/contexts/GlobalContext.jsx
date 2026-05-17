@@ -9,11 +9,8 @@ function ShopProvider({ children }) {
 
 
   const [loading, setLoading] = useState(false);
-  const [genre, setGenre] = useState("")
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState([])
-  const [shoes, setShoes] = useState([]);
-  const [filteredShoes, setFilteredShoes] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
@@ -72,12 +69,12 @@ function ShopProvider({ children }) {
         setError(null);
 
         const res = await axios.get(url);
-        setShoes(res.data.results);
-        setFilteredShoes(res.data.results);
-        setCategory([...new Set(res.data.results.map(shoe => shoe.category))]);
+
+        const result = res.data.results
+        setCategory([...new Set(result.map(shoe => shoe.category))]);
 
       } catch (err) {
-        setError("Impossibile caricare i prodotti. Riprova più tardi.");
+        setError("Impossibile caricare le categorie. Riprova più tardi.");
       } finally {
         setLoading(false);
       }
@@ -238,11 +235,7 @@ function ShopProvider({ children }) {
       value={{
         loading, setLoading,
         cartList, setCartList,
-        genre, setGenre,
         searchValue, setSearchValue,
-        category, setCategory,
-        shoes, setShoes,
-        filteredShoes, setFilteredShoes,
         isInitialLoading, setIsInitialLoading,
         cartTotal, setCartTotal,
         shippingCost, setShippingCost,
@@ -251,6 +244,7 @@ function ShopProvider({ children }) {
         isVisibleCart, setIsVisibleCart,
         email, setEmail,
         error, setError,
+        category, setCategory,
         slugify,
         handleSubmit,
         STORAGE_KEY,

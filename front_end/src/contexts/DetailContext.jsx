@@ -34,7 +34,7 @@ export function useDetail() {
 export function DetailProvider({ children }) {
 
     // Context Global
-    const { cartList, setCartList, setGenre, addWishlist, isInWishlist, normalizedName, normalizedColor, isVisibleCart, setIsVisibleCart } = useShop();
+    const { cartList, setCartList, addWishlist, isInWishlist, normalizedName, normalizedColor, isVisibleCart, setIsVisibleCart } = useShop();
 
     // parametri del link
     const { name, color } = useParams();

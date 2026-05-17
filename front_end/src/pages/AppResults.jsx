@@ -7,11 +7,10 @@ import ErrorMessage from "../components/ErrorMessage";
 
 export default function AppSearch() {
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart, searchValue } = useShop();
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, searchValue } = useShop();
 
     const { genre, page, pages } = useParams();
 
-    const [results, setResults] = useState([]);
     const [sortBy, setSortBy] = useState("default");
     const [sortedResults, setSortedResults] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
@@ -37,7 +36,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error(err));
@@ -48,7 +46,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
 
@@ -58,7 +55,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error("Errore:", err))
@@ -68,7 +64,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error(err));
@@ -96,7 +91,7 @@ export default function AppSearch() {
                                 <select className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent" style={{ width: "200px" }}
                                     onChange={(e) => {
                                         setSortBy(e.target.value);
-                                        setSortedResults(applySort(results, e.target.value));
+                                        setSortedResults(applySort(sortedResults, e.target.value));
                                     }}
                                 >
                                     <option value="default">Ordina per</option>
