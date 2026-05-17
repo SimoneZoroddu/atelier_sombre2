@@ -5,7 +5,7 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-    const { cartList, storeWishlist, setIsVisibleCart, isVisibleCart } = useShop()
+    const { cartList, storeWishlist, setIsVisibleCart, isVisibleCart, setSearchValue } = useShop()
 
     return (
         <header>
@@ -13,9 +13,8 @@ export default function AppHeader() {
                 <div className="container-fluid mx-2">
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav fs-4">
-                            {/* da eliminare... possiamo lasciarlo solo sul logo, ma rimane mezzo vuoto sarebbe bello trovare qualche link da associare */}
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" to="/shoes/1">Vedi tutte le nostre collezioni</Link>
+                                <Link className="nav-link" to="/shoes/1" onClick={setSearchValue("")}>Vedi tutte le nostre collezioni</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
                                 <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" >Uomo</Link>
