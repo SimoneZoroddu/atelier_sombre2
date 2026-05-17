@@ -12,8 +12,17 @@ import AppCart from "./pages/AppCart/AppCart";
 import AppOrderCheckout from "./pages/AppCart/AppOrderCheckout";
 import AppWishlist from "./pages/AppWishlist";
 import ErrorMessage from "./components/ErrorMessage";
+import { useEffect } from "react";
+
 function App() {
 
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <BrowserRouter>

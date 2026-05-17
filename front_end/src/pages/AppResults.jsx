@@ -80,6 +80,10 @@ export default function AppSearch() {
         shoe.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
+    // setta la posizione al click
+    function setPosition() {
+        localStorage.setItem("position_now", window.scrollY)
+    }
 
     return (
         <>
@@ -112,7 +116,7 @@ export default function AppSearch() {
                                     filteredResults?.map((shoe) => (
                                         <div className="col position-relative gx-2" key={shoe.id}          >
                                             <div className="image-container">
-                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} >
+                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} onClick={setPosition} >
                                                     <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image?.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
                                                 </Link>
                                             </div>

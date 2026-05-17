@@ -46,7 +46,7 @@ export default function ProductImages() {
     return (
         <div className="imagesWrapper">
             {/* THUMBNAILS */}
-            <div className="thumbnailsColumn d-flex justify-content-center">
+            <div className="thumbnailsColumn d-flex justify-content-center pt-3">
                 {[
                     product.image.main_image_url,
                     product.image.top_view_url,
