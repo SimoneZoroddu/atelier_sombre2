@@ -82,100 +82,107 @@ export default function AppSearch() {
 
     return (
         <>
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col">
-                        {/* Select for the choice*/}
-                        <div className="container-fluid px-3 py-2">
-                            <div className="d-flex justify-content-end">
-                                <select className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent" style={{ width: "200px" }}
-                                    onChange={(e) => {
-                                        setSortBy(e.target.value);
-                                        setSortedResults(applySort(sortedResults, e.target.value));
-                                    }}
-                                >
-                                    <option value="default">Ordina per</option>
-                                    <option value="newest">Ultimi arrivi</option>
-                                    <option value="price_asc">Prezzo: crescente</option>
-                                    <option value="price_desc">Prezzo: decrescente</option>
-                                    <option value="name_asc">Nome: A → Z</option>
-                                    <option value="name_desc">Nome: Z → A</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* List Shoes */}
-                        <div className="container-fluid px-0">
-                            <div className="row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                                {
-                                    filteredResults?.map((shoe) => (
-                                        <div className="col position-relative gx-2" key={shoe.id}          >
-                                            <div className="image-container">
-                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} onClick={setPosition} >
-                                                    <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image?.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
-                                                </Link>
-                                            </div>
-
-                                            <div className="card-body px-1">
-                                                <div className="px-3 py-2">
-                                                    <div className="d-flex justify-content-between align-items-start">
-                                                        <p className="mb-0 fw-semibold">
-                                                            {shoe.name}
-                                                        </p>
-                                                        <button onClick={(e) => addWishlist(shoe)} className="btn btn-sm bg-transparent border-0 p-0"
-                                                            style={{
-                                                                fontSize: "1.5rem",
-                                                                lineHeight: 1,
-                                                                color: "#555",
-                                                            }}
-                                                        >
-                                                            {isInWishlist(shoe.id) ? <i className="bi bi-suit-heart-fill"></i> : <i className="bi bi-suit-heart"></i>}
-                                                        </button>
-                                                    </div>
-                                                    <p className="mb-0 text-muted">
-                                                        {shoe.color}
-                                                    </p>
-                                                    {shoe.on_sale !== 0 ? (
-                                                        <p className="price d-flex">
-                                                            <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                                                                {`${Math.ceil(shoe.price)}€`}
-                                                            </span>
-                                                            <span style={{ fontWeight: 600, }}>
-                                                                {`${Math.ceil(shoe.price * (1 - shoe.on_sale / 100))}€`}
-                                                            </span>
-                                                            <span className="ms-auto" >
-                                                                -{`${Math.ceil(shoe.on_sale)}%`}
-                                                            </span>
-                                                        </p>
-                                                    ) : (
-                                                        <p className="price">{`${Math.ceil(shoe.price)}€`} </p>
-                                                    )}
-
-                                                </div>
-                                            </div>
+            {
+                filteredResults.length > 0
+                    ?
+                    <>
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col">
+                                    {/* Select for the choice*/}
+                                    <div className="container-fluid px-3 py-2">
+                                        <div className="d-flex justify-content-end">
+                                            <select className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent" style={{ width: "200px" }}
+                                                onChange={(e) => {
+                                                    setSortBy(e.target.value);
+                                                    setSortedResults(applySort(sortedResults, e.target.value));
+                                                }}
+                                            >
+                                                <option value="default">Ordina per</option>
+                                                <option value="newest">Ultimi arrivi</option>
+                                                <option value="price_asc">Prezzo: crescente</option>
+                                                <option value="price_desc">Prezzo: decrescente</option>
+                                                <option value="name_asc">Nome: A → Z</option>
+                                                <option value="name_desc">Nome: Z → A</option>
+                                            </select>
                                         </div>
-                                    ))
+                                    </div>
 
-                                }
+                                    {/* List Shoes */}
+                                    <div className="container-fluid px-0">
+                                        <div className="row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+                                            {
+                                                filteredResults?.map((shoe) => (
+                                                    <div className="col position-relative gx-2" key={shoe.id}          >
+                                                        <div className="image-container">
+                                                            <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} onClick={setPosition} >
+                                                                <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image?.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
+                                                            </Link>
+                                                        </div>
+
+                                                        <div className="card-body px-1">
+                                                            <div className="px-3 py-2">
+                                                                <div className="d-flex justify-content-between align-items-start">
+                                                                    <p className="mb-0 fw-semibold">
+                                                                        {shoe.name}
+                                                                    </p>
+                                                                    <button onClick={(e) => addWishlist(shoe)} className="btn btn-sm bg-transparent border-0 p-0"
+                                                                        style={{
+                                                                            fontSize: "1.5rem",
+                                                                            lineHeight: 1,
+                                                                            color: "#555",
+                                                                        }}
+                                                                    >
+                                                                        {isInWishlist(shoe.id) ? <i className="bi bi-suit-heart-fill"></i> : <i className="bi bi-suit-heart"></i>}
+                                                                    </button>
+                                                                </div>
+                                                                <p className="mb-0 text-muted">
+                                                                    {shoe.color}
+                                                                </p>
+                                                                {shoe.on_sale !== 0 ? (
+                                                                    <p className="price d-flex">
+                                                                        <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
+                                                                            {`${Math.ceil(shoe.price)}€`}
+                                                                        </span>
+                                                                        <span style={{ fontWeight: 600, }}>
+                                                                            {`${Math.ceil(shoe.price * (1 - shoe.on_sale / 100))}€`}
+                                                                        </span>
+                                                                        <span className="ms-auto" >
+                                                                            -{`${Math.ceil(shoe.on_sale)}%`}
+                                                                        </span>
+                                                                    </p>
+                                                                ) : (
+                                                                    <p className="price">{`${Math.ceil(shoe.price)}€`} </p>
+                                                                )}
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+                        </div >
+                        <div className="pagination-nav">
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                <div key={page}>
+                                    <Link className="page-link"
+                                        to={pages ? `/shoes/${page}` : genre === "discounted" ? `/shoes/discounted/${page}` : `/shoes/${genre}/${page}`}
+                                    >
+                                        Pagina {page}
+                                    </Link>
+                                    <span className="divider" />
+                                </div>
+                            ))}
                         </div>
-                    </div>
-
-                </div>
-            </div >
-            <div className="pagination-nav">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <div key={page}>
-                        <Link className="page-link"
-                            to={pages ? `/shoes/${page}` : genre === "discounted" ? `/shoes/discounted/${page}` : `/shoes/${genre}/${page}`}
-                        >
-                            Pagina {page}
-                        </Link>
-                        <span className="divider" />
-                    </div>
-                ))}
-            </div>
-
+                    </>
+                    :
+                    <ErrorMessage />
+            }
         </>
     );
 }
