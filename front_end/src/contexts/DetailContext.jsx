@@ -69,7 +69,7 @@ export function DetailProvider({ children }) {
         if (location.key !== "default") {
             navigate(-1)
             const position_now = localStorage.getItem("position_now")
-            setTimeout(() => { window.scrollTo(0, position_now); }, 500)
+            setTimeout(() => { window.scrollTo(0, position_now); }, 100)
         } else {
             navigate("/");
         }
