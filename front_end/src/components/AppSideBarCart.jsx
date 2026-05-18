@@ -24,7 +24,7 @@ export default function AppSideBarCart() {
                         <h1 className="d-inline me-auto">
                             Il tuo Carrello
                         </h1>
-                        <button className="btn-close" data-bs-dismiss="offcanvas" onClick={() => setIsVisibleCart(!isVisibleCart)}>
+                        <button className="btn-close" onClick={() => setIsVisibleCart(!isVisibleCart)}>
 
                         </button>
                     </div>
