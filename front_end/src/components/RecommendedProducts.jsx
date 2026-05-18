@@ -19,14 +19,14 @@ export default function RecommendedProducts() {
                         {item.on_sale !== 0 ? (
                             <p >
                                 <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                                    {item.price} €
+                                    {`${Math.ceil(item.price)}€`}
                                 </span>
                                 <span style={{ fontWeight: 600 }}>
-                                    {Number((item.price * (1 - item.on_sale / 100)).toFixed(2))} €
+                                    {`${Math.ceil(Number((item.price * (1 - item.on_sale / 100))))}€`}
                                 </span>
                             </p>
                         ) : (
-                            <p style={{ fontWeight: 600 }}>{item.price} €</p>
+                            <p style={{ fontWeight: 600 }}>{`${Math.ceil(item.price)}€`}</p>
                         )}
                     </Link>
                 ))}

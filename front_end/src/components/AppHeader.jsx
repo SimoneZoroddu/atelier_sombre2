@@ -12,7 +12,7 @@ export default function AppHeader() {
             <nav className="navbar navbar-expand-lg background_color_basic mb-2">
                 <div className="container-fluid mx-2">
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav fs-4">
+                        <ul className="navbar-nav">
                             <li className="nav-item underline_hover fw-bolder">
                                 <Link className="nav-link" to="/shoes/1" onClick={() => setSearchValue("")}>Vedi tutte le nostre collezioni</Link>
                             </li>
@@ -30,11 +30,11 @@ export default function AppHeader() {
                             </li>
 
                         </ul>
-                        <Link className="navbar-brand position-absolute start-50 me-5" to="/"  >
-                            <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
-                        </Link>
                     </div>
-                    <Link to="/wishlist" className="nav-link px-3" >
+                    <Link className="navbar-brand position-absolute start-50 me-auto" to="/"  >
+                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
+                    </Link>
+                    <Link to="/wishlist" className="nav-link px-3 ms-auto " >
                         {storeWishlist?.length
                             ?
                             <div className="cart-icon">

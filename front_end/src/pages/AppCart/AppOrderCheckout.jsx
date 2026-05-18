@@ -458,9 +458,9 @@ export default function AppOrderCheckout() {
                 <p className="text-center fs-3">Grazie per averci scelto! &hearts;</p>
                 <p>Ecco il riepilogo del tuo ordine</p>
                 {/* -- Order overview -- */}
-                <div className="container order_info">
+                <div className="container order_info p-md-4 p-0">
                   { /* Order overview header */}
-                  <div className="d-flex order_header">
+                  <div className="d-flex flex-column flex-md-row order_header">
                     <div>
                       <p><span>n°</span>  {'AS-IT000' + orderResponse[0]?.id}</p>
                       <p><span>Intestato a</span> {capitalize(orderResponse[0]?.firstname)} {capitalize(orderResponse[0]?.lastname)}</p>
@@ -481,7 +481,7 @@ export default function AppOrderCheckout() {
                   <div className="table_container">
 
                     <div className="container overview_table">
-                      <div className="row table_header">
+                      <div className="row table_header d-none d-md-flex">
                         <div className="col-3 product_name">Prodotto</div>
                         <div className="col-2 product_color">Colore</div>
                         <div className="col-1 product_size">Taglia</div>
@@ -494,13 +494,13 @@ export default function AppOrderCheckout() {
                       {(orderResponse[0]?.items)?.map(item => {
                         return (
                           <div className="row" key={item.name + item.color + item.size}>
-                            <div className="col-3 text-start product_name">{item.name}</div>
-                            <div className="col-2 product_color">{item.color}</div>
-                            <div className="col-1 product_size">{item.size}</div>
-                            <div className="col-1 product_quantity">{item.quantity}</div>
-                            <div className="col-2 collapsable product_price">{(item.price)}</div>
-                            <div className="col-1 collapsable discount_green product_discount">{item.discount == 0 ? '-' : `${item.discount}%`}</div>
-                            <div className="col-2 product_subtotal">{(item.price - (item.price * item.discount / 100)) * item.quantity}.00</div>
+                            <div className="col-12 col-md-3 p-0 p-md-2 text-start product_name">{item.name}</div>
+                            <div className="col-6 col-md-2 p-0 p-md-2 product_color">{item.color}</div>
+                            <div className="col-6 col-md-1 p-0 p-md-2 product_size">{item.size}</div>
+                            <div className="col-6 col-md-1 p-0 p-md-2 product_quantity">{item.quantity}</div>
+                            <div className="col-6 col-md-2 p-0 p-md-2 collapsable product_price">{Math.ceil(item.price)}</div>
+                            <div className="col-6 col-md-1 p-0 p-md-2 collapsable discount_green product_discount">{item.discount == 0 ? '-' : `${item.discount}%`}</div>
+                            <div className="col-6 col-md-2 p-0 p-md-2 product_subtotal">{(item.price - (item.price * item.discount / 100)) * item.quantity}.00</div>
                           </div>
                         )
                       })}
