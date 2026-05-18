@@ -184,19 +184,14 @@ export default function AppOrderCheckout() {
         return '';
 
       case 'fiscal_code':
-        if (!value.trim()) return "* Codice fiscale mancante";
-        if (value.length <= 11) return 'Codice fiscale non valido';
-        return '';
-
       case 'vat_number':
-        if (!value.trim()) return "* Partita IVA mancante";
-        if (value.length <= 15) return 'Partita IVA non valida';
+        const hasFiscal = order.fiscal_code.trim();
+        const hasVat = order.vat_number.trim();
+        if (hasFiscal && hasVat) return "* Codice fiscale o Partita IVA (non entrambi)";
+        if (!hasFiscal && !hasVat) return "* Compila Codice Fiscale o P.IVA";
+        if (name === 'fiscal_code' && hasFiscal && hasFiscal.length !== 16) return 'Codice fiscale non valido';
+        if (name === 'vat_number' && hasVat && hasVat.length !== 11) return 'Partita IVA non valida';
         return '';
-
-      /*       case 'fiscal_code':
-            case 'vat_number':
-              if (fiscal_code.value.trim() && vat_number.value.trim()) return "* 'Codice fiscale' o 'Partita IVA' (non entrambi)";
-              return ''; */
 
       case 'country':
         if (!value.trim()) return "* Paese mancante";
@@ -470,7 +465,8 @@ export default function AppOrderCheckout() {
                     <div className="text-end ms-auto">
                       <div>
                         {/* {console.log(orderResponse)} */}
-                        <p>{(orderResponse[0]?.fiscal_code) ? `C.F. ${orderResponse[0]?.fiscal_code.toUpperCase()}` : `P.IVA ${orderResponse[0]?.vat_number}`}</p>
+                        <p>{(orderResponse[0]?.fiscal_code) && `C.F. ${orderResponse[0]?.fiscal_code.toUpperCase()}`}
+                        {(orderResponse[0]?.vat_number) && `P.IVA ${orderResponse[0]?.vat_number}`}</p>
                         <p>{orderResponse[0]?.email.toLowerCase()}</p>
                         <p>{orderResponse[0]?.telephone_number}</p>
                         <p>{orderResponse[0]?.street} — {orderResponse[0]?.zip_code}, {orderResponse[0]?.city} &#40;{orderResponse[0]?.region.toUpperCase()}&#41;, {capitalize(orderResponse[0]?.country)}<br /></p>
