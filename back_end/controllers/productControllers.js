@@ -218,8 +218,6 @@ const showByCategory = (req, res, next) => {
     const offset = (page - 1) * limit;
     const category = req.params.category;
 
-    console.log(req)
-
     const queryShoes = 'SELECT * FROM shoes WHERE category = ? LIMIT ? OFFSET ?';
     // Get from DB all shoes
     connection.query(queryShoes, [category, limit, offset], (err, shoesResults) => {
@@ -259,7 +257,6 @@ const showByCategory = (req, res, next) => {
             });
 
             res.json(finalResults);
-            console.log(finalResults);
         });
     });
 }
