@@ -92,8 +92,11 @@ export default function AppOrderCheckout() {
   function handleSubmit(e) {
     /* prevent default */
     e.preventDefault();
-    /* VALIDATE data */
-    // ⚠️ todo  
+    /* VALIDATE all FIELDS */
+    if (!handleAllFieldsValidation()) {
+      alert('Per favore, completa correttamente tutti i campi');
+      return;
+    };
     /* HANDLE PAYMENT */
     /* Simulate payment processing */
     setLoading(true);
@@ -108,7 +111,6 @@ export default function AppOrderCheckout() {
         order: { ...order, total_price: computedTotal },
         items: productsData
       };
-      console.log('body della post request ', body); // ⚠️ To B removed
 
       /* SUBMIT DATA */
       axios.post(orderUrl, body)
@@ -157,10 +159,97 @@ export default function AppOrderCheckout() {
   }
 
 
+  /* Form VALIDATION */
+  const [formErr, setFormErr] = useState({});
+  function validateForm(name, value) {
+    switch (name) {
+      case 'firstname':
+        if (!value.trim()) return "* Nome mancante";
+        if (value.length > 50) return 'Nome non valido';
+        return '';
+
+      case 'lastname':
+        if (!value.trim()) return "* Cognome mancante";
+        if (value.length > 50) return 'Cognome non valido';
+        return '';
+
+      case 'email': /* ⚠️ could be implemented */
+        if (!value.trim()) return "* Email mancante";
+        if (!value.includes('@') || !value.includes('.') || value.length > 100) return 'Email non valida';
+        return '';
+
+      case 'telephone_number':
+        if (!value.trim()) return "* Telefono mancante";
+        if (value.length < 7 || value.length > 15) return 'Numero di telefono non valido';
+        return '';
+
+      case 'fiscal_code':
+        if (!value.trim()) return "* Codice fiscale mancante";
+        if (value.length <= 11) return 'Codice fiscale non valido';
+        return '';
+
+      case 'vat_number':
+        if (!value.trim()) return "* Partita IVA mancante";
+        if (value.length <= 15) return 'Partita IVA non valida';
+        return '';
+
+      /*       case 'fiscal_code':
+            case 'vat_number':
+              if (fiscal_code.value.trim() && vat_number.value.trim()) return "* 'Codice fiscale' o 'Partita IVA' (non entrambi)";
+              return ''; */
+
+      case 'country':
+        if (!value.trim()) return "* Paese mancante";
+        if (value.length <= 2 || value.length > 50) return 'Paese non valido (max 50 caratteri)';
+        return '';
+
+      case 'region':
+        if (!value.trim()) return "* Provincia mancante";
+        if (value.length < 2 || value.length > 2) return 'Provincia non valida';
+        return '';
+
+      case 'city':
+        if (!value.trim()) return "* Città mancante";
+        if (value.length < 2 || value.length > 50) return `Città non valida`
+        return '';
+
+      case 'street':
+        if (!value.trim()) return "* Indirizzo mancante";
+        if (value.length < 5 || value.length > 100) return 'Indirizzo non valido';
+        return '';
+
+      case 'zip_code':
+        if (!value.trim()) return "* CAP mancante";
+        if (value.length < 5 || value.length > 9) return 'CAP non valido';
+        return '';
+
+      default:
+        return '';
+    }
+  }
+
+  /* Handle single FIELD VALIDATION */
+  function handleBlur(name) {
+    const fieldError = validateForm(name, order[name]);
+    setFormErr({ ...formErr, [name]: fieldError });
+  }
+  /* Handle FORM VALIDATION (all) */
+  function handleAllFieldsValidation() {
+    const fieldErrorS = {};
+    Object.keys(order).forEach(name => {
+      if (name !== 'total_price') {
+        const fieldError = validateForm(name, order[name]);
+        if (fieldError) fieldErrorS[name] = fieldError;
+      }
+    });
+    setFormErr(fieldErrorS);
+    return Object.keys(fieldErrorS).length === 0;
+  }
+
 
   return (
     <>
-      <div className="checkout_container p-4">
+      <div className="checkout_container">
 
         {/* Get order data */}
         {(!isSubmitted && !orderResponse) && (
@@ -178,69 +267,136 @@ export default function AppOrderCheckout() {
             <div className="row row-cols-2 m-3">
               <div className="mb-3">
                 <label htmlFor="firstname_field" className="form-label">Nome</label>
-                <input type="text" className="form-control" id="firstname_field"
-                  name="firstname" value={order.firstname}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.firstname ? 'is-invalid' : ''}`}
+                  id="firstname_field"
+                  name="firstname"
+                  value={order.firstname}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('firstname')} />
+                {formErr.firstname && <small className="form-validation-alert">{formErr.firstname}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="lastname_field" className="form-label">Cognome</label>
-                <input type="text" className="form-control" id="lastname_field"
-                  name="lastname" value={order.lastname}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.lastname ? 'is-invalid' : ''}`}
+                  id="lastname_field"
+                  name="lastname"
+                  value={order.lastname}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('lastname')} />
+                {formErr.lastname && <small className="form-validation-alert">{formErr.lastname}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="email_field" className="form-label">Email</label>
-                <input type="email" className="form-control" id="email_field" aria-describedby="emailHelp"
-                  name="email" value={order.email}
-                  onChange={handleInputChange} />
+                <input
+                  type="email"
+                  className={`form-control ${formErr.email ? 'is-invalid' : ''}`}
+                  id="email_field"
+                  aria-describedby="emailHelp"
+                  name="email"
+                  value={order.email}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('email')} />
+                {formErr.email && <small className="form-validation-alert">{formErr.email}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="telephone_number_field" className="form-label">Telefono</label>
-                <input type="text" className="form-control" id="telephone_number_field"
-                  name="telephone_number" value={order.telephone_number}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.telephone_number ? 'is-invalid' : ''}`}
+                  id="telephone_number_field"
+                  name="telephone_number"
+                  value={order.telephone_number}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('telephone_number')} />
+                {formErr.telephone_number && <small className="form-validation-alert">{formErr.telephone_number}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="fiscal_code_field" className="form-label">Codice Fiscale</label>
-                <input type="text" className="form-control" id="fiscal_code_field"
-                  name="fiscal_code" value={order.fiscal_code}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.fiscal_code ? 'is-invalid' : ''}`}
+                  id="fiscal_code_field"
+                  name="fiscal_code"
+                  value={order.fiscal_code}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('fiscal_code')} />
+                {formErr.fiscal_code && <small className="form-validation-alert">{formErr.fiscal_code}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="vat_number_field" className="form-label">P. IVA</label>
-                <input type="text" className="form-control" id="vat_number_field"
-                  name="vat_number" value={order.vat_number}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.vat_number ? 'is-invalid' : ''}`}
+                  id="vat_number_field"
+                  name="vat_number"
+                  value={order.vat_number}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('vat_number')} />
+                {formErr.vat_number && <small className="form-validation-alert">{formErr.vat_number}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="country_field" className="form-label">Paese</label>
-                <input type="text" className="form-control" id="country_field"
-                  name="country" value={order.country}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.country ? 'is-invalid' : ''}`}
+                  id="country_field"
+                  name="country"
+                  value={order.country}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('country')} />
+                {formErr.country && <small className="form-validation-alert">{formErr.country}</small>}
               </div>
               <div className="mb-3">
-                <label htmlFor="region_field" className="form-label">Regione</label>
-                <input type="text" className="form-control" id="region_field"
-                  name="region" value={order.region}
-                  onChange={handleInputChange} />
+                <label htmlFor="region_field" className="form-label">Provincia</label>
+                <input
+                  type="text"
+                  className={`form-control ${formErr.region ? 'is-invalid' : ''}`}
+                  id="region_field"
+                  name="region"
+                  value={order.region}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('region')} />
+                {formErr.region && <small className="form-validation-alert">{formErr.region}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="city_field" className="form-label">Città</label>
-                <input type="text" className="form-control" id="city_field"
-                  name="city" value={order.city}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.city ? 'is-invalid' : ''}`}
+                  id="city_field"
+                  name="city"
+                  value={order.city}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('city')} />
+                {formErr.city && <small className="form-validation-alert">{formErr.city}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="street_field" className="form-label">Indirizzo</label>
-                <input type="text" className="form-control" id="street_field"
-                  name="street" value={order.street}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.street ? 'is-invalid' : ''}`}
+                  id="street_field"
+                  name="street"
+                  value={order.street}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('street')} />
+                {formErr.street && <small className="form-validation-alert">{formErr.street}</small>}
               </div>
               <div className="mb-3">
                 <label htmlFor="zip_code_field" className="form-label">CAP</label>
-                <input type="text" className="form-control" id="zip_code_field"
-                  name="zip_code" value={order.zip_code}
-                  onChange={handleInputChange} />
+                <input
+                  type="text"
+                  className={`form-control ${formErr.zip_code ? 'is-invalid' : ''}`}
+                  id="zip_code_field"
+                  name="zip_code"
+                  value={order.zip_code}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlur('zip_code')} />
+                {formErr.zip_code && <small className="form-validation-alert">{formErr.zip_code}</small>}
               </div>
             </div>
             {/* Payment placeholder */}
@@ -302,7 +458,7 @@ export default function AppOrderCheckout() {
                 <p className="text-center fs-3">Grazie per averci scelto! &hearts;</p>
                 <p>Ecco il riepilogo del tuo ordine</p>
                 {/* -- Order overview -- */}
-                <div className="container order_info p-5">
+                <div className="container order_info">
                   { /* Order overview header */}
                   <div className="d-flex order_header">
                     <div>
@@ -323,41 +479,36 @@ export default function AppOrderCheckout() {
                   </div>
                   {/* Order overview body */}
                   <div className="table_container">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th className="product_name">Prodotto</th>
-                          <th>Colore</th>
-                          <th>Taglia</th>
-                          <th>Quantità</th>
-                          <th className="collapsable">Prezzo</th>
-                          <th className="collapsable">Sconti</th>
-                          <th>Subtotale</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {console.log(orderResponse)}
-                        {(orderResponse[0]?.items)?.map(item => {
-                          return (
-                            <tr key={item.name + item.color + item.size}>
-                              <td className="product_name">{item.name}</td>
-                              <td>{item.color}</td>
-                              <td>{item.size}</td>
-                              <td>{item.quantity}</td>
-                              <td className="collapsable">{item.price}</td>
-                              <td className="collapsable">{item.discount == 0 ? '-' : `${item.discount}%`}</td>
-                              <td>{(item.price - (item.price * item.discount / 100)) * item.quantity}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr> {/* ⚠️ todo: fix colspan (should convert table into grid) */}
-                          <td colSpan="5" className="text-end">Totale</td>
-                          <td>{orderResponse[0]?.total_price}</td>
-                        </tr>
-                      </tfoot>
-                    </table>
+
+                    <div className="container overview_table">
+                      <div className="row table_header">
+                        <div className="col-3 product_name">Prodotto</div>
+                        <div className="col-2 product_color">Colore</div>
+                        <div className="col-1 product_size">Taglia</div>
+                        <div className="col-1 product_quantity">Quantità</div>
+                        <div className="col-2 collapsable product_price">Prezzo</div>
+                        <div className="col-1 collapsable product_discount">Sconti</div>
+                        <div className="col-2 product_subtotal">Subtotale</div>
+                      </div>
+                      {/* {console.log(orderResponse)} */}
+                      {(orderResponse[0]?.items)?.map(item => {
+                        return (
+                          <div className="row" key={item.name + item.color + item.size}>
+                            <div className="col-3 text-start product_name">{item.name}</div>
+                            <div className="col-2 product_color">{item.color}</div>
+                            <div className="col-1 product_size">{item.size}</div>
+                            <div className="col-1 product_quantity">{item.quantity}</div>
+                            <div className="col-2 collapsable product_price">{(item.price)}</div>
+                            <div className="col-1 collapsable discount_green product_discount">{item.discount == 0 ? '-' : `${item.discount}%`}</div>
+                            <div className="col-2 product_subtotal">{(item.price - (item.price * item.discount / 100)) * item.quantity}.00</div>
+                          </div>
+                        )
+                      })}
+                      <div className="row"> {/* ⚠️ todo: fix colspan (should convert table into grid) */}
+                        <div className="col-12 cart_total">tot. {orderResponse[0]?.total_price}</div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

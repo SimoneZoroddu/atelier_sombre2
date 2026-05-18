@@ -8,13 +8,25 @@
 }
 
 
-/* ─── CONTAINER ─── */
+/* ─── CONTAINERS ─── */
 .checkout_container {
   max-width: 900px;
   margin: auto;
-  padding: 0 2rem;
+  padding: 2rem;
   font-family: 'Jost', sans-serif;
   font-weight: 300;
+}
+
+.order_overview_container {
+  max-width: 100%;
+}
+
+.form-validation-alert {
+  color: red;
+}
+
+.order_info {
+  padding: 1.5rem;
 }
 
 /* color: red; */
@@ -34,6 +46,25 @@ form h3 {
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   letter-spacing: -0.01em;
   padding-top: 1.25rem;
+}
+
+#vat_number_field,
+#fiscal_code_field,
+#region_field {
+  text-transform: uppercase;
+}
+
+#firstname_field,
+#lastname_field,
+#country_field,
+#city_field,
+#address_field {
+  text-transform: lowercase;
+  text-transform: capitalize;
+}
+
+#email_field {
+  text-transform: lowercase;
 }
 
 .form-check-input:checked {
@@ -63,39 +94,54 @@ form h3 {
 }
 
 .order_info {
-  font-size: 1rem;
+  font-size: 0.9rem;
   border: 1px solid #EEF3F2;
 }
 
 .order_header p {
-  font-weight: 400;
+  font-weight: 300;
   margin: 0;
 }
 
-.order_header span {
-  font-weight: 300;
-}
 
-.table_container {
-  overflow-x: auto;
-}
 
-table {
+.overview_table {
   max-width: 100%;
   text-align: center;
-  font-size: 1rem;
   margin-top: 2rem;
 
-  th {
+  .table_header {
     font-weight: 400;
   }
 
-  th.product_name,
-  td.product_name {
+  .product_name,
+  .product_color,
+  .product_size,
+  .product_quantity,
+  .product_price,
+  .product_discount,
+  .product_subtotal,
+  .cart_total {
+    padding-top: 0.5rem;
+  }
+
+  .product_name,
+  .product_color {
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  .product_color {
+    text-transform: lowercase;
+  }
+
+  .product_price,
+  .product_subtotal,
+  .cart_total,
+  .cart_total_label {
+    text-align: right;
   }
 }
 
@@ -103,7 +149,11 @@ table {
   visibility: visible;
 }
 
-@media screen and (max-width: 600px) {
+.discount_green {
+  color: #198754;
+}
+
+@media screen and (max-width: 766px) {
   .collapsable {
     visibility: hidden;
   }
