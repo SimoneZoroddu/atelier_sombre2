@@ -21,6 +21,10 @@
   max-width: 100%;
 }
 
+.form-validation-alert {
+  color: red;
+}
+
 .order_info {
   padding: 1.5rem;
 }
