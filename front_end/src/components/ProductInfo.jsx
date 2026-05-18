@@ -32,17 +32,17 @@ export default function ProductInfo() {
             {product.on_sale !== 0 ? (
                 <p className="price d-flex">
                     <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                        {originalPrice} €
+                        {`${Math.ceil(originalPrice)}€`}
                     </span>
                     <span style={{ fontWeight: 600 }}>
-                        {finalPrice} €
+                        {`${Math.ceil(finalPrice)}€`}
                     </span>
                     <span className="ms-auto" >
-                        -{product.on_sale}%
+                        -{`${Math.ceil(product.on_sale)}%`}
                     </span>
                 </p>
             ) : (
-                <p className="price">{originalPrice} €</p>
+                <p className="price">{`${Math.ceil(originalPrice)}€`} </p>
             )}
 
             {/* ACCORDION */}

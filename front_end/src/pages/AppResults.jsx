@@ -141,14 +141,14 @@ export default function AppSearch() {
                                                                 {`${Math.ceil(shoe.price)}€`}
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {`${(shoe.price * (1 - shoe.on_sale / 100))}€`}
+                                                                {`${Math.ceil(shoe.price * (1 - shoe.on_sale / 100))}€`}
                                                             </span>
                                                             <span className="ms-auto" >
-                                                                -{shoe.on_sale}%
+                                                                -{`${Math.ceil(shoe.on_sale)}%`}
                                                             </span>
                                                         </p>
                                                     ) : (
-                                                        <p className="price">{Math.ceil(shoe.price)} €</p>
+                                                        <p className="price">{`${Math.ceil(shoe.price)}€`} </p>
                                                     )}
 
                                                 </div>

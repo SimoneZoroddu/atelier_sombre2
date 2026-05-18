@@ -88,20 +88,20 @@ export default function AppWishlist() {
                                                     (
                                                         <div className="price">
                                                             <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}     >
-                                                                {Math.ceil(item.price)} €
+                                                                {`${Math.ceil(item.price)}€`}
                                                             </span>
                                                             <span style={{ fontWeight: 550 }}>
-                                                                {calculateFinalPrice(item)} €
+                                                                {`${Math.ceil(calculateFinalPrice(item))}€`}
                                                             </span>
                                                             <div>
-                                                                -{item.on_sale}%
+                                                                -{`${Math.ceil(item.on_sale)}%`}
                                                             </div>
                                                         </div>
                                                     )
                                                     :
                                                     (
                                                         <p className="price">
-                                                            {Math.ceil(item.price)} €
+                                                            {`${Math.ceil(item.price)}€`}
                                                         </p>
                                                     )}
                                                 <button className="remove_btn" onClick={() => removeFromWishlist(index)} >
