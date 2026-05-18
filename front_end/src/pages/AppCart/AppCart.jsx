@@ -91,20 +91,26 @@ export default function AppCart() {
                         <p>Colore: <strong>{item.color}</strong></p>
                       </div>
 
-                      {Number(item.price) !== Number(item.finalPrice) ? (
-                        <p className="price">
-                          <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
-                            {`${Math.ceil(Number(item.price))}€`}
-                          </span>
-                          <span style={{ fontWeight: 550, }}>
-                            {`${Math.ceil(Number(item.finalPrice))}€`}
-                          </span>
-
-                        </p>
-                      ) : (
-                        <p className="price">{`${Math.ceil(item.price)}€`}</p>
-                      )}
-
+                      {Number(item.price) !== Number(item.finalPrice) ?
+                        (
+                          <div className="price">
+                            <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}     >
+                              {`${Math.ceil(item.price)}€`}
+                            </span>
+                            <span style={{ fontWeight: 550 }}>
+                              {`${Math.ceil(Number(item.finalPrice))}€`}
+                            </span>
+                            <div>
+                              -{`${Math.ceil(item.discount)}%`}
+                            </div>
+                          </div>
+                        )
+                        :
+                        (
+                          <p className="price">
+                            {`${Math.ceil(item.price)}€`}
+                          </p>
+                        )}
                       {/* QUANTITÀ */}
                       <div className="item_quantity">
                         {/* Decrement quantity or delete item */}
