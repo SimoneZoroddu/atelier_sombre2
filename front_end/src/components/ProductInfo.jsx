@@ -30,16 +30,19 @@ export default function ProductInfo() {
             <h1>{product.name}</h1>
             <p className="category">{product.category} · {product.genre}</p>
             {product.on_sale !== 0 ? (
-                <p className="price">
+                <p className="price d-flex">
                     <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                        {originalPrice.toFixed(2)} €
+                        {`${Math.ceil(originalPrice)}€`}
                     </span>
                     <span style={{ fontWeight: 600 }}>
-                        {finalPrice} €
+                        {`${Math.ceil(finalPrice)}€`}
+                    </span>
+                    <span className="ms-auto" >
+                        -{`${Math.ceil(product.on_sale)}%`}
                     </span>
                 </p>
             ) : (
-                <p className="price">{originalPrice.toFixed(2)} €</p>
+                <p className="price">{`${Math.ceil(originalPrice)}€`} </p>
             )}
 
             {/* ACCORDION */}

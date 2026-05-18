@@ -5,37 +5,36 @@ import { useShop } from "../contexts/GlobalContext";
 
 export default function AppHeader() {
 
-    const { cartList, storeWishlist, setIsVisibleCart, isVisibleCart } = useShop()
+    const { cartList, storeWishlist, setIsVisibleCart, isVisibleCart, setSearchValue } = useShop()
 
     return (
         <header>
             <nav className="navbar navbar-expand-lg background_color_basic mb-2">
                 <div className="container-fluid mx-2">
-                    <Link className="navbar-brand" to="/"  >
-                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
-                    </Link>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav mx-auto fs-4">
-                            {/* da eliminare... possiamo lasciarlo solo sul logo, ma rimane mezzo vuoto sarebbe bello trovare qualche link da associare */}
+                        <ul className="navbar-nav">
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" to="/shoes/1">Vedi tutte le nostre collezioni</Link>
+                                <Link className="nav-link" to="/shoes/1" onClick={() => setSearchValue("")}>Vedi tutte le nostre collezioni</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" >Uomo</Link>
+                                <Link className="nav-link" aria-current="page" to="/shoes/uomo/1" onClick={() => setSearchValue("")} >Uomo</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" aria-current="page" to="/shoes/donna/1" >Donna</Link>
+                                <Link className="nav-link" aria-current="page" to="/shoes/donna/1" onClick={() => setSearchValue("")} >Donna</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link" to="/">Informazioni</Link>
+                                <Link className="nav-link" to="/info" onClick={() => setSearchValue("")}>Informazioni</Link>
                             </li>
                             <li className="nav-item underline_hover fw-bolder">
-                                <Link className="nav-link text-danger" aria-current="page" to="/shoes/discounted/1" >In Sconto</Link>
+                                <Link className="nav-link text-danger" aria-current="page" to="/shoes/discounted/1" onClick={() => setSearchValue("")} >In Sconto</Link>
                             </li>
 
                         </ul>
                     </div>
-                    <Link to="/wishlist" className="nav-link px-3" >
+                    <Link className="navbar-brand position-absolute start-50 me-auto" to="/"  >
+                        <img src={img_logo} alt="logo_atelier_sombre" style={{ width: "4rem" }} />
+                    </Link>
+                    <Link to="/wishlist" className="nav-link px-3 ms-auto " >
                         {storeWishlist?.length
                             ?
                             <div className="cart-icon">

@@ -12,8 +12,18 @@ import AppCart from "./pages/AppCart/AppCart";
 import AppOrderCheckout from "./pages/AppCart/AppOrderCheckout";
 import AppWishlist from "./pages/AppWishlist";
 import ErrorMessage from "./components/ErrorMessage";
+import Info from "./pages/Info";
+import { useEffect } from "react";
+
 function App() {
 
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -29,6 +39,7 @@ function App() {
             <Route path="/wishlist" element={<AppWishlist />} />
             {/* la rotta dell'errore 404 deve stare sotto le altre rotte */}
             <Route path="*" element={<ErrorMessage message={"La pagina che stai cercando non esiste."} />} />
+            <Route path="/info" element={<Info />} />
           </Route>
         </Routes>
       </ShopProvider>

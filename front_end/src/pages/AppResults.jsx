@@ -7,16 +7,14 @@ import ErrorMessage from "../components/ErrorMessage";
 
 export default function AppSearch() {
 
-    const { normalizedColor, normalizedName, addWishlist, isInWishlist, cartList, isVisibleCart } = useShop();
+    const { normalizedColor, normalizedName, addWishlist, isInWishlist, searchValue } = useShop();
 
     const { genre, page, pages } = useParams();
 
-    const [results, setResults] = useState([]);
     const [sortBy, setSortBy] = useState("default");
     const [sortedResults, setSortedResults] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    // Ordinare
     const applySort = (data, sort) => {
         const sorted = [...data];
         switch (sort) {
@@ -38,7 +36,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error(err));
@@ -49,7 +46,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
 
@@ -59,7 +55,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error("Errore:", err))
@@ -69,7 +64,6 @@ export default function AppSearch() {
                 .then((res) => {
                     const data = res.data.results;
                     setTotalPages(res.data.total_pages);
-                    setResults(data);
                     setSortedResults(applySort(data, sortBy));
                 })
                 .catch((err) => console.error(err));
@@ -77,6 +71,14 @@ export default function AppSearch() {
     }, [genre, page, pages]);
 
 
+    const filteredResults = sortedResults.filter((shoe) =>
+        shoe.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    // setta la posizione al click
+    function setPosition() {
+        localStorage.setItem("position_now", window.scrollY)
+    }
 
     return (
         <>
@@ -89,7 +91,7 @@ export default function AppSearch() {
                                 <select className="form-select form-select-sm border-0 border-bottom rounded-0 bg-transparent" style={{ width: "200px" }}
                                     onChange={(e) => {
                                         setSortBy(e.target.value);
-                                        setSortedResults(applySort(results, e.target.value));
+                                        setSortedResults(applySort(sortedResults, e.target.value));
                                     }}
                                 >
                                     <option value="default">Ordina per</option>
@@ -104,12 +106,12 @@ export default function AppSearch() {
 
                         {/* List Shoes */}
                         <div className="container-fluid px-0">
-                            <div className="row g-0 row-cols-2 row-cols-md-4">
+                            <div className="row g-0 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                 {
-                                    sortedResults?.map((shoe) => (
+                                    filteredResults?.map((shoe) => (
                                         <div className="col position-relative gx-2" key={shoe.id}          >
                                             <div className="image-container">
-                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} >
+                                                <Link to={`/products/${normalizedName(shoe.name)}/${normalizedColor(shoe.color)}`} onClick={setPosition} >
                                                     <img className="w-100 d-flex align-items-center justify-content-center p-1" src={shoe.image?.main_image_url} alt={shoe.name} style={{ width: "18rem" }} />
                                                 </Link>
                                             </div>
@@ -134,16 +136,19 @@ export default function AppSearch() {
                                                         {shoe.color}
                                                     </p>
                                                     {shoe.on_sale !== 0 ? (
-                                                        <p className="price">
+                                                        <p className="price d-flex">
                                                             <span style={{ textDecoration: "line-through", color: "#777", marginRight: "0.5rem" }}>
-                                                                {shoe.price} €
+                                                                {`${Math.ceil(shoe.price)}€`}
                                                             </span>
                                                             <span style={{ fontWeight: 600, }}>
-                                                                {(shoe.price * (1 - shoe.on_sale / 100)).toFixed(2)} €
+                                                                {`${Math.ceil(shoe.price * (1 - shoe.on_sale / 100))}€`}
+                                                            </span>
+                                                            <span className="ms-auto" >
+                                                                -{`${Math.ceil(shoe.on_sale)}%`}
                                                             </span>
                                                         </p>
                                                     ) : (
-                                                        <p className="price">{shoe.price} €</p>
+                                                        <p className="price">{`${Math.ceil(shoe.price)}€`} </p>
                                                     )}
 
                                                 </div>

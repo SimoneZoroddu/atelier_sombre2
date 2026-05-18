@@ -34,7 +34,7 @@ export function useDetail() {
 export function DetailProvider({ children }) {
 
     // Context Global
-    const { cartList, setCartList, setGenre, addWishlist, isInWishlist, normalizedName, normalizedColor, isVisibleCart, setIsVisibleCart } = useShop();
+    const { cartList, setCartList, addWishlist, isInWishlist, normalizedName, normalizedColor, isVisibleCart, setIsVisibleCart } = useShop();
 
     // parametri del link
     const { name, color } = useParams();
@@ -67,7 +67,9 @@ export function DetailProvider({ children }) {
 
     const handleBack = () => {
         if (location.key !== "default") {
-            navigate(-1);
+            navigate(-1)
+            const position_now = localStorage.getItem("position_now")
+            setTimeout(() => { window.scrollTo(0, position_now); }, 500)
         } else {
             navigate("/");
         }

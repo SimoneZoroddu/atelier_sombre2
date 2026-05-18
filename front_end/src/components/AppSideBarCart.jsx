@@ -13,6 +13,7 @@ export default function AppSideBarCart() {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
 
+
     return (
         <>
             <div className="background_overlay_sidecart" onClick={(e) => setIsVisibleCart(!isVisibleCart)}>
@@ -23,8 +24,8 @@ export default function AppSideBarCart() {
                         <h1 className="d-inline me-auto">
                             Il tuo Carrello
                         </h1>
-                        <button className="remove_btn pb-3" onClick={() => setIsVisibleCart(!isVisibleCart)}  >
-                            Chiudi il Carrello
+                        <button className="btn-close" data-bs-dismiss="offcanvas" onClick={() => setIsVisibleCart(!isVisibleCart)}>
+
                         </button>
                     </div>
                     {
@@ -39,14 +40,19 @@ export default function AppSideBarCart() {
                                         <h3 className="item_name">{item.name}</h3>
                                     </Link>
                                     {item.price !== item.finalPrice ? (
-                                        <p className="price">
-                                            <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
-                                                {item.price} €
+                                        <div className="price d-flex justify-content-around">
+                                            <div>
+                                                <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
+                                                    {item.price} €
+                                                </span>
+                                                <span style={{ fontWeight: 550, }}>
+                                                    {item.finalPrice} €
+                                                </span>
+                                            </div>
+                                            <span className="" >
+                                                -{item.discount}%
                                             </span>
-                                            <span style={{ fontWeight: 550, }}>
-                                                {item.finalPrice} €
-                                            </span>
-                                        </p>
+                                        </div>
                                     ) : (
                                         <p className="price">{item.price} €</p>
                                     )}
@@ -135,9 +141,9 @@ export default function AppSideBarCart() {
                             <div className="d-flex justify-content-center fs-1 pb-1">
                                 Il tuo Carrello é Vuoto
                             </div>
-                            <Link to="/shoes/1" className="d-flex justify-content-center text-decoration-none" >
+                            <div className=" d-flex justify-content-center text-decoration-none">
                                 <button className="btn_continue" onClick={() => setIsVisibleCart(!isVisibleCart)}>Continua lo shopping</button>
-                            </Link>
+                            </div>
                         </>
                 }
             </div>

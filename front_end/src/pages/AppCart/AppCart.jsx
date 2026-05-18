@@ -94,15 +94,15 @@ export default function AppCart() {
                       {Number(item.price) !== Number(item.finalPrice) ? (
                         <p className="price">
                           <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}>
-                            {Number(item.price).toFixed(2)} €
+                            {`${Math.ceil(Number(item.price))}€`}
                           </span>
                           <span style={{ fontWeight: 550, }}>
-                            {Number(item.finalPrice).toFixed(2)} €
+                            {`${Math.ceil(Number(item.finalPrice))}€`}
                           </span>
 
                         </p>
                       ) : (
-                        <p className="price">{item.price} €</p>
+                        <p className="price">{`${Math.ceil(item.price)}€`}</p>
                       )}
 
                       {/* QUANTITÀ */}
@@ -115,7 +115,7 @@ export default function AppCart() {
                                 i.color === item.color &&
                                 i.size === item.size
                                 ?
-                                { ...i, quantity: i.quantity + 1 }
+                                { ...i, quantity: i.quantity - 1 }
                                 :
                                 i
                             ));

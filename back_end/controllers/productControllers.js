@@ -203,7 +203,7 @@ const show = (req, res, next) => {
                     return res.status(500).json({ error: 'Errore interno' });
                 }
                 finalResults[0].quantity = qtyResults;
-                console.log(finalResults[0]);
+                // console.log(finalResults[0]);
 
                 res.json(finalResults[0]);
             });
@@ -217,6 +217,7 @@ const showByCategory = (req, res, next) => {
     const limit = parseInt(req.query.limit) || 12;
     const offset = (page - 1) * limit;
     const category = req.params.category;
+
 
     const queryShoes = 'SELECT * FROM shoes WHERE category = ? LIMIT ? OFFSET ?';
     // Get from DB all shoes
@@ -257,6 +258,7 @@ const showByCategory = (req, res, next) => {
             });
 
             res.json(finalResults);
+            console.log(finalResults);
         });
     });
 }

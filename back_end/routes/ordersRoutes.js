@@ -4,8 +4,6 @@ const ordersControllers = require('../controllers/ordersControllers');
 const checkQty = require('../middlewares/checkQty');
 const checkPrices = require('../middlewares/checkPrices')
 const checkTotal = require('../middlewares/checkTotal');
-/* const sendOrderEmailSeller = require('../middlewares/sendOrderEmailSeller'); */
-const sendOrderEmailCustomer = require('../middlewares/sendOrderEmailCustomer');
 const sendResultPostOrder = require('../middlewares/sendResultPostOrder');
 
 
@@ -16,6 +14,6 @@ router.get('/index', ordersControllers.index);
 router.get('/:email', ordersControllers.show);
 
 // post route for add a new order
-router.post('/add-order', checkQty, checkPrices, checkTotal, ordersControllers.post, /* sendOrderEmailCustomer, sendOrderEmailSeller, */ sendResultPostOrder);
+router.post('/add-order', checkQty, checkPrices, checkTotal, ordersControllers.post, sendResultPostOrder);
 
 module.exports = router;

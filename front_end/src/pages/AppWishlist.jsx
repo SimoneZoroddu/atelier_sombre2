@@ -21,10 +21,10 @@ export default function AppWishlist() {
         const discount = Number(item.on_sale);
 
         if (discount > 0) {
-            return (originalPrice * (1 - discount / 100)).toFixed(2);
+            return (originalPrice * (1 - discount / 100));
         }
 
-        return originalPrice.toFixed(2);
+        return originalPrice;
     }
 
     function removeFromWishlist(indexToRemove) {
@@ -67,7 +67,7 @@ export default function AppWishlist() {
                     )
                     :
                     (
-                        <div className="cart_content">
+                        <div className="">
                             <section className="cart_body">
                                 <ul className="cart_list">
                                     {storeWishlist?.map((item, index) => (
@@ -86,19 +86,22 @@ export default function AppWishlist() {
                                                 {item.on_sale > 0
                                                     ?
                                                     (
-                                                        <p className="price">
+                                                        <div className="price">
                                                             <span style={{ textDecoration: "line-through", color: "#8a8888", marginRight: "0.5rem" }}     >
-                                                                {item.price} €
+                                                                {`${Math.ceil(item.price)}€`}
                                                             </span>
                                                             <span style={{ fontWeight: 550 }}>
-                                                                {calculateFinalPrice(item)} €
+                                                                {`${Math.ceil(calculateFinalPrice(item))}€`}
                                                             </span>
-                                                        </p>
+                                                            <div>
+                                                                -{`${Math.ceil(item.on_sale)}%`}
+                                                            </div>
+                                                        </div>
                                                     )
                                                     :
                                                     (
                                                         <p className="price">
-                                                            {item.price} €
+                                                            {`${Math.ceil(item.price)}€`}
                                                         </p>
                                                     )}
                                                 <button className="remove_btn" onClick={() => removeFromWishlist(index)} >

@@ -1,0 +1,163 @@
+/* ─── RESET ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ─── CONTAINERS ─── */
+.checkout_container {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+}
+
+.order_overview_container {
+  max-width: 100%;
+}
+
+.form-validation-alert {
+  color: red;
+}
+
+
+/* color: red; */
+
+/* ─── FORM ─── */
+form h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.01em;
+  padding-bottom: 1.25rem;
+}
+
+form h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  letter-spacing: -0.01em;
+  padding-top: 1.25rem;
+}
+
+#vat_number_field,
+#fiscal_code_field,
+#region_field {
+  text-transform: uppercase;
+}
+
+#firstname_field,
+#lastname_field,
+#country_field,
+#city_field,
+#address_field {
+  text-transform: lowercase;
+  text-transform: capitalize;
+}
+
+#email_field {
+  text-transform: lowercase;
+}
+
+.form-check-input:checked {
+  background-color: #83bdb2;
+  border-color: #83bdb2;
+}
+
+.form-check-input:focus {
+  /* border-color: #83bdb2; */
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem #83bdb280;
+}
+
+#submit_button {
+  /* width: 100%; */
+  padding: 0.95rem 1rem;
+  background: black;
+  color: white;
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* transition: background 0.2s; */
+  margin-top: 0.25rem;
+}
+
+.order_info {
+  font-size: 0.9rem;
+  border: 1px solid #EEF3F2;
+}
+
+.order_header p {
+  font-weight: 300;
+  margin: 0;
+}
+
+
+
+.overview_table {
+  max-width: 100%;
+  text-align: center;
+  margin-top: 2rem;
+
+  .table_header {
+    font-weight: 400;
+  }
+
+  .product_name,
+  .product_color,
+  .product_size,
+  .product_quantity,
+  .product_price,
+  .product_discount,
+  .product_subtotal,
+  .cart_total {
+    padding-top: 0.5rem;
+  }
+
+  .product_name,
+  .product_color {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .product_color {
+    text-transform: lowercase;
+  }
+
+  .product_price,
+  .product_subtotal,
+  .cart_total,
+  .cart_total_label {
+    text-align: right;
+  }
+}
+
+.collapsable {
+  visibility: visible;
+}
+
+.discount_green {
+  color: #198754;
+}
+
+@media screen and (max-width: 766px) {
+  .collapsable {
+    visibility: hidden;
+  }
+}
+
+/* ⚠️ ToDo
+- fix colspan (should convert table into grid)
+- remove decimals from total price
+- ??
+*/
