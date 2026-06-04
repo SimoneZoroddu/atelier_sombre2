@@ -67,5 +67,6 @@ Modern and responsive shopping experience featuring product browsing, wishlist m
 
 [Simone Zoroddu](https://github.com/SimoneZoroddu)
 [Lorenzo Rodigliano](https://github.com/RodiglianoLorenzo)
+[Gabriele Fontana](https://github.com/gabriele-fontana)
 [Francesca Golzio](https://github.com/francesca-golzio)
 [Angelo Ren](https://github.com/angeloren92)
